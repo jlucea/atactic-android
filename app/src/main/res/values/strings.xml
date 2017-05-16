@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Smartpath</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Acceder</string>
+    <string name="action_sign_in_short">Acceder</string>
+    <string name="error_invalid_email">La dirección de email no es válida</string>
+    <string name="error_invalid_password">La contraseña es demasiado corta</string>
+    <string name="error_incorrect_password">Contraseña incorrecta</string>
+    <string name="error_field_required">Este dato es obligatorio</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_quest_map">Mapa</string>
+
+</resources>
