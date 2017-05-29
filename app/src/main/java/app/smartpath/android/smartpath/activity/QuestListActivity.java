@@ -46,6 +46,7 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
         // Get reference to the RecyclerView component
         questListRecyclerView = (RecyclerView) findViewById(R.id.rv_quest_list);
 
+        /* Set the layout manager for the RecyclerView */
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         questListRecyclerView.setLayoutManager(layoutManager);
 
@@ -112,7 +113,7 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
     }
 
     /**
-     * Gives a readable text string format to the JSON array of quests
+     * Returns a readable text string format out of the JSON string holding a quest list.
      *
      * @param JSONResponse
      * @return Chain of printable text strings

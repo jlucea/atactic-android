@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import app.smartpath.android.smartpath.R;
@@ -43,6 +44,12 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
         return new QuestViewHolder(view);
     }
 
+    /**
+     * Uses the ViewHolder to populate the rows' view elements with data
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(QuestViewHolder holder, int position) {
         String q = questList[position];
@@ -71,20 +78,25 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
     }
 
     /**
-     * ViewHolder for Quest items. Will cache quest item views to optimize performance.
+     * ViewHolder class for Quest items. Will cache quest item views to optimize performance.
+     *
      */
     public class QuestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        private final ImageView questImage;
         private final TextView questItemView;
 
         public QuestViewHolder(View itemView){
             super(itemView);
             questItemView = (TextView) itemView.findViewById(R.id.tv_quest_item);
+            questImage = (ImageView) itemView.findViewById(R.id.imageView);
             itemView.setOnClickListener(this);
         }
 
         // TODO Implement setContent(qName, qDescription, qCurrentStep, qSteps, qDeadline...)
         public void setContent(String questDescription){
+
+            questImage.setImageResource(R.drawable.progress);
             questItemView.setText(questDescription);
         }
 

@@ -187,19 +187,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+
+
+
+            /*
+            // TODO UNCOMMENT THESE LINES
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+            */
+
+            ((SmartPathApplication)LoginActivity.this.getApplication()).setUserId(1);
+            ((SmartPathApplication)LoginActivity.this.getApplication()).setUserName("jaime@email.es");
+            ((SmartPathApplication)LoginActivity.this.getApplication()).setPassword("password");
+            Intent i = new Intent(LoginActivity.this, QuestListActivity.class);
+            startActivity(i);
+
+
         }
     }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        // return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return true;
     }
 
     /**

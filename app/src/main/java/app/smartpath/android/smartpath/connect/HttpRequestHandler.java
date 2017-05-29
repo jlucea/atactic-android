@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class HttpRequestHandler {
 
     private static final String API_SERVER = "http://10.0.2.2:8080";       // "http://localhost:8080";
-    private static final String API_ROOT = "/SmartPathAPI/api";
+    private static final String API_ROOT = "/smartpath/api";
     private static final String AUTH_RESOURCE = "/auth";
     private static final String QUESTLIST_RESOURCE = "/quest";
 
