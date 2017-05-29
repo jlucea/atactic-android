@@ -78,13 +78,13 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
 
     /**
      * This class' execute method sends an asynchronous http request to the server
-     * and writes the result on the UI.
+     * and displays the result on the UI.
      *
      */
-    public class QuestListAsyncHttpRequest extends AsyncTask<Void, Void, String[]> {
+    public class QuestListAsyncHttpRequest extends AsyncTask<Void, Void, JSONArray> {
 
         @Override
-        protected String[] doInBackground(Void... params) {
+        protected JSONArray doInBackground(Void... params) {
 
             // Retrieve user identification from global variables
             int userId = ((SmartPathApplication)QuestListActivity.this.getApplication()).getUserId();
@@ -92,15 +92,19 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
             // Send Http request and receive JSON response
             String response = HttpRequestHandler.sendQuestListRequest(userId);
 
-            // Format as an array of simple text strings
-            String[] questStrings = QuestListActivity.formatQuestStrings(response);
+            // Return JSON array containing the data to show in the view
+            try {
+                return new JSONArray(response);
 
-            return questStrings;
+            }catch (JSONException ex){
+                ex.printStackTrace();
+                return null;
+            }
         }
 
         @Override
-        protected void onPostExecute(String[] questData) {
-            if (questData != null && questData.length > 0) {
+        protected void onPostExecute(JSONArray questData) {
+            if (questData != null && questData.length() > 0) {
                 adapter.setQuestListData(questData);
             }
             // TODO else show NO QUESTS WHERE FOUND();
@@ -114,6 +118,8 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
 
     /**
      * Returns a readable text string format out of the JSON string holding a quest list.
+     *
+     * Something like "INTENSITY - Yearly Visits - (14/20)"
      *
      * @param JSONResponse
      * @return Chain of printable text strings

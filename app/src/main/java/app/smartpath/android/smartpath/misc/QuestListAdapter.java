@@ -1,11 +1,18 @@
 package app.smartpath.android.smartpath.misc;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.github.lzyzsd.circleprogress.ArcProgress;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import app.smartpath.android.smartpath.R;
 
@@ -16,7 +23,7 @@ import app.smartpath.android.smartpath.R;
  */
 public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.QuestViewHolder>{
 
-    private String[] questList;
+    private JSONArray questList;
 
     private ListItemClickListener clickListener;
 
@@ -52,14 +59,20 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
      */
     @Override
     public void onBindViewHolder(QuestViewHolder holder, int position) {
-        String q = questList[position];
-        holder.setContent(q);
+        try {
+            JSONObject q = questList.getJSONObject(position);
+
+            holder.setContent(q);
+
+        }catch(JSONException jse){
+
+        }
     }
 
     @Override
     public int getItemCount(){
         if (questList!=null) {
-            return questList.length;
+            return questList.length();
         }else{
             return 0;
         }
@@ -72,7 +85,7 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
      *
      * @param questListData The new quest list data to be displayed.
      */
-    public void setQuestListData(String[] questListData){
+    public void setQuestListData(JSONArray questListData){
         this.questList = questListData;
         notifyDataSetChanged();
     }
@@ -83,21 +96,50 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
      */
     public class QuestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private final ImageView questImage;
-        private final TextView questItemView;
+        private final ArcProgress progressIndicatorView;
+        private final TextView questDescriptionView;
 
         public QuestViewHolder(View itemView){
             super(itemView);
-            questItemView = (TextView) itemView.findViewById(R.id.tv_quest_item);
-            questImage = (ImageView) itemView.findViewById(R.id.imageView);
+
+            /* Store private references to the view components of the quest item */
+            questDescriptionView = (TextView) itemView.findViewById(R.id.tv_quest_item);
+            progressIndicatorView = (ArcProgress) itemView.findViewById(R.id.arc_progress);
+
+            /* Add a click listener to the view holder */
             itemView.setOnClickListener(this);
         }
 
-        // TODO Implement setContent(qName, qDescription, qCurrentStep, qSteps, qDeadline...)
-        public void setContent(String questDescription){
+        /**
+         *
+         * @param participationDescription
+         */
+        public void setContent(JSONObject participationDescription){
+            try {
+                /* Display progress */
+                String currentStepStr = participationDescription.getString("currentStep");
+                String totalStepsStr = participationDescription.getString("totalSteps");
 
-            questImage.setImageResource(R.drawable.progress);
-            questItemView.setText(questDescription);
+
+                int curr = Integer.parseInt(currentStepStr);
+                int tot = Integer.parseInt(totalStepsStr);
+                int progress = curr*100/tot;
+                                
+                System.out.println(curr + "/" + tot + " ("+progress+"%)");
+
+                progressIndicatorView.setBottomText(currentStepStr+"/"+totalStepsStr);
+                progressIndicatorView.setProgress(progress);
+                progressIndicatorView.setTextColor(Color.BLUE);
+
+                /* Display quest information */
+                String questInstructions = participationDescription.getJSONObject("campaign")
+                        .getString("summary");
+                questDescriptionView.setText(questInstructions);
+
+            }catch (JSONException jsonEx) {
+                jsonEx.printStackTrace();
+
+            }
         }
 
         @Override
