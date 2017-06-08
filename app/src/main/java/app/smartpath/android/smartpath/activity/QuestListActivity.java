@@ -52,7 +52,7 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
 
         /*
          * This setting improves performance if changes in content
-          * do not change the child layout size in the RecyclerView
+         * do not change the child layout size in the RecyclerView
          */
         questListRecyclerView.setHasFixedSize(true);
 
@@ -78,7 +78,7 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
 
     /**
      * This class' execute method sends an asynchronous http request to the server
-     * and displays the result on the UI.
+     * and sends the returning JSON Array to the QuestListAdapter.
      *
      */
     public class QuestListAsyncHttpRequest extends AsyncTask<Void, Void, JSONArray> {

@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
@@ -13,6 +12,13 @@ import com.github.lzyzsd.circleprogress.ArcProgress;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import app.smartpath.android.smartpath.R;
 
@@ -98,6 +104,7 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
 
         private final ArcProgress progressIndicatorView;
         private final TextView questDescriptionView;
+        private final TextView questDeadlineView;
 
         public QuestViewHolder(View itemView){
             super(itemView);
@@ -105,36 +112,71 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
             /* Store private references to the view components of the quest item */
             questDescriptionView = (TextView) itemView.findViewById(R.id.tv_quest_item);
             progressIndicatorView = (ArcProgress) itemView.findViewById(R.id.arc_progress);
+            questDeadlineView = (TextView) itemView.findViewById(R.id.tv_quest_deadline);
 
             /* Add a click listener to the view holder */
             itemView.setOnClickListener(this);
         }
 
         /**
+         * Set the contents to display on the views withing the quest ViewHolder
          *
          * @param participationDescription
          */
         public void setContent(JSONObject participationDescription){
             try {
-                /* Display progress */
+                /* Parse progress values from JSON object */
                 String currentStepStr = participationDescription.getString("currentStep");
                 String totalStepsStr = participationDescription.getString("totalSteps");
-
-
                 int curr = Integer.parseInt(currentStepStr);
                 int tot = Integer.parseInt(totalStepsStr);
                 int progress = curr*100/tot;
-                                
-                System.out.println(curr + "/" + tot + " ("+progress+"%)");
 
+                // System.out.println(curr + "/" + tot + " ("+progress+"%)");
+
+                /* Set progress values on progress indicator view */
                 progressIndicatorView.setBottomText(currentStepStr+"/"+totalStepsStr);
                 progressIndicatorView.setProgress(progress);
+
+                /* Set progress indicator view properties */
+                progressIndicatorView.setFinishedStrokeColor(Color.BLUE);
+                progressIndicatorView.setUnfinishedStrokeColor(Color.GRAY);
+                progressIndicatorView.setStrokeWidth(18);
+                progressIndicatorView.setBottomTextSize(32);
                 progressIndicatorView.setTextColor(Color.BLUE);
 
-                /* Display quest information */
+                /* Parse quest briefing (summary) */
                 String questInstructions = participationDescription.getJSONObject("campaign")
                         .getString("summary");
+
+                /* Display quest information (summary) */
                 questDescriptionView.setText(questInstructions);
+
+                /* Display remaining days */
+                String qDeadlineStr = participationDescription.getJSONObject("campaign")
+                        .getString("endDate");
+
+                String endDateStr = qDeadlineStr.split("T")[0];
+                // System.out.println("String to parse as date: "+ endDateStr);
+
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat();
+                    sdf.applyLocalizedPattern("yyyy-MM-dd");
+
+                    Date endDate = sdf.parse(endDateStr, new ParsePosition(0));
+                    Date now = Calendar.getInstance().getTime();
+
+                    long timeDiff = endDate.getTime() - now.getTime();
+                    long daysDiff = TimeUnit.MILLISECONDS.toDays(timeDiff);
+
+                    // System.out.println("daysDiff: "+daysDiff);
+                    questDeadlineView.setText("Quedan "+daysDiff+" días");
+
+                }catch (Exception e){
+
+                    e.printStackTrace();
+                    questDeadlineView.setVisibility(View.INVISIBLE);
+                }
 
             }catch (JSONException jsonEx) {
                 jsonEx.printStackTrace();

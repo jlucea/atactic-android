@@ -26,18 +26,35 @@
             android:layout_marginLeft="18dp"
             android:layout_width="92dp"
             android:layout_height="92dp"
-            custom:arc_bottom_text_size="16sp"
+            custom:arc_bottom_text_size="24sp"
             />
 
-        <!-- Quest description -->
-        <TextView
-            android:id="@+id/tv_quest_item"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:textSize="16sp"
-            android:padding="16dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <!-- Quest briefing text view -->
+            <TextView
+                android:id="@+id/tv_quest_item"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="86dp"
+                android:layout_marginLeft="8dp"
+                android:textSize="16sp"
+                android:padding="16dp"/>
+
+            <!-- Quest deadline text view -->
+            <TextView
+                android:id="@+id/tv_quest_deadline"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:textSize="12sp"
+                android:padding="16dp"/>
+
+            </LinearLayout>
 
     </LinearLayout>
 
