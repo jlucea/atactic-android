@@ -131,7 +131,6 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
                 int curr = Integer.parseInt(currentStepStr);
                 int tot = Integer.parseInt(totalStepsStr);
                 int progress = curr*100/tot;
-
                 // System.out.println(curr + "/" + tot + " ("+progress+"%)");
 
                 /* Set progress values on progress indicator view */
@@ -139,11 +138,11 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
                 progressIndicatorView.setProgress(progress);
 
                 /* Set progress indicator view properties */
-                progressIndicatorView.setFinishedStrokeColor(Color.BLUE);
-                progressIndicatorView.setUnfinishedStrokeColor(Color.GRAY);
-                progressIndicatorView.setStrokeWidth(18);
-                progressIndicatorView.setBottomTextSize(32);
-                progressIndicatorView.setTextColor(Color.BLUE);
+                // progressIndicatorView.setStrokeWidth(18);
+                // progressIndicatorView.setBottomTextSize(32);
+                // progressIndicatorView.setFinishedStrokeColor(R.color.sp_turquoise);
+                // progressIndicatorView.setUnfinishedStrokeColor(Color.GRAY);
+                // progressIndicatorView.setTextColor(R.color.sp_blue);
 
                 /* Parse quest briefing (summary) */
                 String questInstructions = participationDescription.getJSONObject("campaign")
@@ -180,7 +179,6 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
 
             }catch (JSONException jsonEx) {
                 jsonEx.printStackTrace();
-
             }
         }
 

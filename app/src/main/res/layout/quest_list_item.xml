@@ -1,33 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:custom="http://schemas.android.com/tools"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="8dp">
+
+    auto:cardBackgroundColor="@color/White"
+    auto:cardCornerRadius="8dp"
+    auto:cardElevation="0dp">
 
     <!-- This view holds the data for one particular quest participation -->
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="148dp"
+        android:layout_height="136dp"
         android:orientation="horizontal" >
 
         <!-- Circular progress indicator -->
         <com.github.lzyzsd.circleprogress.ArcProgress
             android:id="@+id/arc_progress"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
             android:layout_width="92dp"
             android:layout_height="92dp"
-            custom:arc_bottom_text_size="24sp"
-            />
+            auto:arc_finished_color="@color/sp_turquoise"
+            auto:arc_unfinished_color="@color/silver"
+            auto:arc_stroke_width="6dp"
+            auto:arc_bottom_text_size="12sp"
+            auto:arc_text_color="@color/sp_turquoise"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,35 +45,57 @@
             <!-- Quest briefing text view -->
             <TextView
                 android:id="@+id/tv_quest_item"
-                style="@style/TextAppearance.AppCompat.Title"
+                style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
-                android:layout_height="86dp"
+                android:layout_height="78dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:textSize="16sp"
                 android:padding="16dp"/>
 
-            <!-- Quest deadline text view -->
-            <TextView
-                android:id="@+id/tv_quest_deadline"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <!-- Quest deadline -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:layout_marginLeft="8dp"
-                android:textSize="12sp"
-                android:padding="16dp"/>
+                android:layout_marginStart="8dp"
+                android:padding="12dp" >
+
+                <!-- Clock icon -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_clock2" />
+
+                <!-- TextView indicating remaining time until deadline -->
+                <TextView
+                    android:id="@+id/tv_quest_deadline"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/silver"
+                    android:textSize="13sp"
+                    android:padding="2dp"/>
 
             </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <!--This View serves as a visual divider between list items-->
+    <!--
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#dadada"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp" />
-
+    -->
 
 </android.support.v7.widget.CardView>
 
