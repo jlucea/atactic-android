@@ -26,7 +26,7 @@ import app.smartpath.android.smartpath.connect.HttpRequestHandler;
  * The data shown is gathered from an online API through an asynchronous request task that returns
  * results in JSON format. This response is parsed and converted into a viewable format.
  *
- * The activity implements a click listeners for the elements in the view as well as a menu bar
+ * The activity implements a click listeners for the elements in the view as well as a top_menu_items bar
  * that is also clickable.
  *
  * @author Jaime Lucea
@@ -73,7 +73,6 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
     @Override
     public void onListItemClick(int clickedItemIdex) {
         Toast.makeText(this, "Item " + clickedItemIdex + " clicked", Toast.LENGTH_SHORT).show();
-
     }
 
     /**
@@ -150,11 +149,11 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /* Use AppCompatActivity's method getMenuInflater to get a handle on the menu inflater */
+        /* Use AppCompatActivity's method getMenuInflater to get a handle on the top_menu_items inflater */
         MenuInflater inflater = getMenuInflater();
-        /* Use the inflater's inflate method to inflate our menu layout to this menu */
-        inflater.inflate(R.menu.menu, menu);
-        /* Return true so that the menu is displayed in the Toolbar */
+        /* Use the inflater's inflate method to inflate our top_menu_items layout to this top_menu_items */
+        inflater.inflate(R.menu.top_menu_items, menu);
+        /* Return true so that the top_menu_items is displayed in the Toolbar */
         return true;
     }
 
@@ -163,8 +162,6 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
         int id = item.getItemId();
 
         if (id == R.id.map_button) {
-            // TODO Intent that goes to MAP SCREEN
-            // Toast.makeText(this,"Go to map view",Toast.LENGTH_LONG).show();
             Intent i = new Intent(QuestListActivity.this, QuestMapActivity.class);
             startActivity(i);
             return true;

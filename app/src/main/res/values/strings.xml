@@ -13,6 +13,15 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Section header titles -->
+    <string name="title_activity_quest_list">Campañas</string>
     <string name="title_activity_quest_map">Mapa</string>
+
+    <!-- Bottom navigation bar strings -->
+    <string name="navbar_quests">Campañas</string>
+    <string name="navbar_map">Mapa</string>
+    <string name="navbar_checkin">Check-in</string>
+
 
 </resources>

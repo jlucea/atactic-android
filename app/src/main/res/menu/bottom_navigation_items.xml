@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_favorites"
+        android:enabled="true"
+        android:icon="@drawable/icon_flag"
+        android:title="@string/navbar_quests"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_schedules"
+        android:enabled="true"
+        android:icon="@drawable/icon_checkin"
+        android:title="@string/navbar_checkin"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_music"
+        android:enabled="true"
+        android:icon="@drawable/icon_map"
+        android:title="@string/navbar_map"
+        app:showAsAction="ifRoom"
+        />
+
+</menu>

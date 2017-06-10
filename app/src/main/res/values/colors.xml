@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Default Android app colors -->
-    <color name="colorPrimary">#3F51B5</color>      <!-- Blue used for menu bar -->
+    <color name="colorPrimary">#3F51B5</color>      <!-- Blue used for top_menu_items bar -->
     <color name="colorPrimaryDark">#303F9F</color>  <!-- Darker blue -->
     <color name="colorAccent">#FF4081</color>       <!-- Horrible red -->
 
@@ -10,6 +10,7 @@
     <color name="sp_turquoise">#4D9EAF</color>
     <color name="sp_blue">#404872</color>
     <color name="sp_blue2">#212F4A</color>
+    <color name="sp_darkgray">#333435</color>
 
     <!-- w3c -->
     <color name="white">#FFFFFF</color>
