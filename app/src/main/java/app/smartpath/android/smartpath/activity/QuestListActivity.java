@@ -55,7 +55,7 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
         // Get reference to the RecyclerView component
         questListRecyclerView = (RecyclerView) findViewById(R.id.rv_quest_list);
 
-        /* Set the layout manager for the RecyclerView */
+        // Set the layout manager for the RecyclerView */
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         questListRecyclerView.setLayoutManager(layoutManager);
 
@@ -145,17 +145,20 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
         return true;
     }
 
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /* Use AppCompatActivity's method getMenuInflater to get a handle on the top_menu_items inflater */
+        // Use AppCompatActivity's method getMenuInflater to get a handle on the top_menu_items inflater
         MenuInflater inflater = getMenuInflater();
-        /* Use the inflater's inflate method to inflate our top_menu_items layout to this top_menu_items */
+        // Use the inflater's inflate method to inflate our top_menu_items layout to this top_menu_items
         inflater.inflate(R.menu.top_menu_items, menu);
-        /* Return true so that the top_menu_items is displayed in the Toolbar */
+        // Return true so that the top_menu_items is displayed in the Toolbar
         return true;
     }
+*/
+/*
 
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -167,6 +170,6 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
         }
         return super.onOptionsItemSelected(item);
     }
-
+*/
 
 }

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +27,9 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest_map);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        this.setActionBar(myToolbar);
 
         /*
          * Get the reference to the bottom navigation bar and add this class as
@@ -59,7 +63,6 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
         map.addMarker(new MarkerOptions().position(pos).title("My marker"));
         map.moveCamera(CameraUpdateFactory.newLatLng(pos));
     }
-
 
 
     /**

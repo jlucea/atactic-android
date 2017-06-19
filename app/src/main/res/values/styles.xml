@@ -1,9 +1,17 @@
 <resources>
 
+    <!-- Custom application theme. -->
+    <style name="SmartpathTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/bckgr_lightgrey_angular</item>
+        <item name="colorPrimary">@color/sp_turquoise</item>
+        <item name="colorPrimaryDark">@color/sp_blue</item>
+        <item name="colorAccent">@color/red</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@drawable/bckgr_lightgrey_angular</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
