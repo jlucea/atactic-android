@@ -2,6 +2,8 @@ package app.smartpath.android.smartpath.activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +15,6 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import app.smartpath.android.smartpath.R;
 import app.smartpath.android.smartpath.misc.QuestListAdapter;
@@ -32,9 +33,10 @@ import app.smartpath.android.smartpath.connect.HttpRequestHandler;
  * @author Jaime Lucea
  * @date May 2017
  */
-public class QuestListActivity extends AppCompatActivity implements QuestListAdapter.ListItemClickListener {
+public class QuestListActivity extends AppCompatActivity implements QuestListAdapter.ListItemClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView questListRecyclerView;
+    private BottomNavigationView navigationView;
 
     private QuestListAdapter adapter;
 
@@ -42,6 +44,13 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest_list);
+
+        /*
+         * Get the reference to the bottom navigation bar and add this class as
+         * ItemSelectedListener
+         */
+        navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        navigationView.setOnNavigationItemSelectedListener(this);
 
         // Get reference to the RecyclerView component
         questListRecyclerView = (RecyclerView) findViewById(R.id.rv_quest_list);
@@ -116,34 +125,24 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
     }
 
     /**
-     * Returns a readable text string format out of the JSON string holding a quest list.
+     * This method defines the behavior of the bottom navigation bar of this section.
      *
-     * Something like "INTENSITY - Yearly Visits - (14/20)"
-     *
-     * @param JSONResponse
-     * @return Chain of printable text strings
+     * However, the right way to do this would be to create a component that extended
+     * the BottomNavigationBar class and included an OnNavigationItemSelectedListener that
+     * could navigate between FRAGMENTS.
      */
-    private static String[] formatQuestStrings(String JSONResponse){
-        try {
-            JSONArray jsonArray = new JSONArray(JSONResponse);
-            String[] qStrings = new String[jsonArray.length()];
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            for (int i=0; i < jsonArray.length(); i++){
-                JSONObject q = jsonArray.getJSONObject(i);
+        switch (item.getItemId()) {
 
-                String type = q.getJSONObject("campaign").getString("type");
-                String name = q.getJSONObject("campaign").getString("name");
-                String currentStep = q.getString("currentStep");
-                String totalSteps = q.getString("totalSteps");
-
-                qStrings[i] = type + " - " + name + "  ("+currentStep+"/"+totalSteps+")" + "\n";
-            }
-            return qStrings;
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+            case R.id.action_map:
+                // Toast.makeText(this, "Map icon clicked", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(QuestListActivity.this, QuestMapActivity.class);
+                startActivity(i);
+                return true;
         }
-        return null;
+        return true;
     }
 
 
