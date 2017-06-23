@@ -16,8 +16,9 @@ public class HttpRequestHandler {
 
     private static final String API_SERVER = "http://10.0.2.2:8080";       // "http://localhost:8080";
     private static final String API_ROOT = "/smartpath/api";
-    private static final String AUTH_RESOURCE = "/auth";
-    private static final String QUESTLIST_RESOURCE = "/quest";
+    private static final String RSC_AUTH = "/auth";
+    private static final String RSC_QUESTS = "/quest";
+    private static final String RSC_ACCOUNTS = "/account";
 
     /**
      * Attempt login based on user credentials
@@ -28,7 +29,7 @@ public class HttpRequestHandler {
      */
     public static LoginResponse sendAuthenticationRequest(String username, String password){
 
-        URL url = buildUrl(AUTH_RESOURCE);
+        URL url = buildUrl(RSC_AUTH);
 
         try {
             // Open connection
@@ -66,7 +67,6 @@ public class HttpRequestHandler {
         }
     }
 
-
     /**
      * Request list of quests for a given user
      *
@@ -74,7 +74,7 @@ public class HttpRequestHandler {
      * @return
      */
     public static String sendQuestListRequest(int userId){
-        URL url = buildUrl(QUESTLIST_RESOURCE + "/" + userId);
+        URL url = buildUrl(RSC_QUESTS + "/" + userId);
         HttpURLConnection urlConnection = null;
 
         try {
@@ -92,6 +92,28 @@ public class HttpRequestHandler {
             urlConnection.disconnect();
         }
         return null;
+    }
+
+    public static String sendAccountListRequest(int userId){
+        URL url = buildUrl(RSC_ACCOUNTS + "/" + userId);
+        HttpURLConnection urlConnection = null;
+
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                String responseContent = readStreamContent(urlConnection.getInputStream());
+
+                return responseContent;
+            }
+
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
+        }
+        return null;
+
     }
 
     /**
