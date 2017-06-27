@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -27,15 +28,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.logging.Logger;
-
 import app.smartpath.android.smartpath.R;
 import app.smartpath.android.smartpath.connect.HttpRequestHandler;
 import app.smartpath.android.smartpath.misc.SmartPathApplication;
 
 public class QuestMapActivity extends FragmentActivity implements OnMapReadyCallback, BottomNavigationView.OnNavigationItemSelectedListener {
-
-    private JSONArray accounts;
 
     private GoogleMap map;
     private BottomNavigationView navigationView;
@@ -149,27 +146,56 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
         private void drawAccountMarkers(JSONArray accounts){
             Log.d("drawAccountMarkers", accounts.length() + " markers to draw");
             try {
+                // Iterate through JSON Array objects (accounts)
                 for(int i=0; i<accounts.length(); i++) {
+
+                    // Parse account information to display from JSON array
                     JSONObject accountObj = accounts.getJSONObject(i);
                     int accId = accountObj.getInt("id");
                     String accName =accountObj.getString("name");
                     LatLng accPos = new LatLng(accountObj.getDouble("latitude"),
                             accountObj.getDouble("longitude"));
+                    JSONArray participations = accountObj.getJSONArray("participations");
 
                     Log.d("drawAccountMarkers", "drawing marker for account " + accId
                             + " at ("+accPos.latitude+" , " + accPos.longitude + ")");
+                    Log.d("drawAccountMarkers", "account " + accId + " will trigger " +
+                            participations.length() + " quests");
 
-                    map.addMarker(new MarkerOptions()
+                    // Set up the marker options
+                    MarkerOptions markerOptions = new MarkerOptions()
                             .position(accPos)
-                            .title(accId + ": "+accName)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                            .title(accName);
+
+                    BitmapDescriptor markerIcon;
+                    if (participations.length()>0){
+                        // Set icon for highlighted targets
+                        markerIcon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+
+                        // Set up snippet text for highlighted targets
+                        String snippetText = "";
+                        for (int j=0; j < participations.length(); j++){
+                            String questName = participations.getJSONObject(j)
+                                    .getJSONObject("campaign").getString("name");
+
+                            Log.d("drawAccountMarkers", "Quest name: " + questName);
+                            snippetText = snippetText + " - " + questName;
+                        }
+                        markerOptions.snippet(snippetText);
+                    }else{
+                        // Default marker icon
+                        markerIcon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                    }
+                    markerOptions.icon(markerIcon);
+
+                    // Add the marker to the map
+                    map.addMarker(markerOptions);
                 }
 
             }catch (JSONException jsonerr){
                 Log.e("drawAccountMarkers", jsonerr.getMessage());
             }
         }
-
 
     }
 
