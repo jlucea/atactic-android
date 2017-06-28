@@ -67,7 +67,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_clock" />
+                    android:src="@drawable/icon_clock_20x20" />
 
                 <!-- TextView indicating remaining time until deadline -->
                 <TextView

@@ -6,21 +6,21 @@
     <item
         android:id="@+id/action_quests"
         android:enabled="true"
-        android:icon="@drawable/icon_flag"
+        android:icon="@drawable/icon_navbar_flag"
         android:title="@string/navbar_quests"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_checkin"
         android:enabled="true"
-        android:icon="@drawable/icon_checkin"
+        android:icon="@drawable/icon_navbar_checkin"
         android:title="@string/navbar_checkin"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_map"
         android:enabled="true"
-        android:icon="@drawable/icon_map"
+        android:icon="@drawable/icon_navbar_map"
         android:title="@string/navbar_map"
         app:showAsAction="ifRoom"
         />

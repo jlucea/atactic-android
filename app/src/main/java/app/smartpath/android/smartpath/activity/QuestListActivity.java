@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import app.smartpath.android.smartpath.R;
 import app.smartpath.android.smartpath.misc.QuestListAdapter;
@@ -81,7 +82,34 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
 
     @Override
     public void onListItemClick(int clickedItemIdex) {
-        Toast.makeText(this, "Item " + clickedItemIdex + " clicked", Toast.LENGTH_SHORT).show();
+        try {
+            // Recover and parse quest data, which are held in the adapter
+            JSONObject quest = adapter.getQuest(clickedItemIdex);
+            String questName = quest.getJSONObject("campaign").getString("name");
+            String questSummary = quest.getJSONObject("campaign").getString("summary");
+            String questLongDesc = quest.getJSONObject("campaign").getString("description");
+            String questDeadline = quest.getJSONObject("campaign").getString("endDate");
+            int currentStep = quest.getInt("currentStep");
+            int totalSteps = quest.getInt("totalSteps");
+
+            // Toast.makeText(this, "Quest " + questName + " clicked", Toast.LENGTH_SHORT).show();
+
+            // Create an intent and put the quest information to display in the detail view
+            Intent i = new Intent(QuestListActivity.this, QuestDetailActivity.class);
+            i.putExtra("questName", questName);
+            i.putExtra("questSummary", questSummary);
+            i.putExtra("questDeadline", questDeadline);
+            i.putExtra("questLongDesc", questLongDesc);
+            i.putExtra("currentStep", currentStep);
+            i.putExtra("totalSteps", totalSteps);
+            // TODO Include campaign owner and long description
+
+            startActivity(i);
+
+        }catch (JSONException jsonex){
+            Toast.makeText(this, "Error: " + jsonex.getMessage(), Toast.LENGTH_SHORT).show();
+            jsonex.printStackTrace();
+        }
     }
 
     /**

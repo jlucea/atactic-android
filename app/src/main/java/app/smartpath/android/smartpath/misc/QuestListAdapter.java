@@ -95,9 +95,16 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
         notifyDataSetChanged();
     }
 
+    public JSONArray getQuestList() {
+        return questList;
+    }
+
+    public JSONObject getQuest(int index) throws JSONException{
+        return questList.getJSONObject(index);
+    }
+
     /**
      * ViewHolder class for Quest items. Will cache quest item views to optimize performance.
-     *
      */
     public class QuestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
