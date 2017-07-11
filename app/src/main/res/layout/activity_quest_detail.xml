@@ -121,6 +121,7 @@
 
     </LinearLayout>
 
+
     <!-- Long quest description -->
     <TextView
         android:id="@+id/tv_questdetail_longdesc"

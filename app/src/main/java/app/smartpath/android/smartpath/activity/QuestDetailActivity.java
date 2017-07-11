@@ -3,14 +3,20 @@ package app.smartpath.android.smartpath.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import app.smartpath.android.smartpath.R;
 
 public class QuestDetailActivity extends AppCompatActivity {
-
 
     private ArcProgress progressIndicatorView;
     private TextView questNameTextView;
@@ -41,11 +47,30 @@ public class QuestDetailActivity extends AppCompatActivity {
         questLongDescriptionTextView.setText(getIntent().getStringExtra("questLongDesc"));
 
         questOwnerTextView = (TextView) findViewById(R.id.tv_questdetail_owner);
-        questOwnerTextView.setText("Jaime Lucea Quiñones \n Founder & CEO");
+        questOwnerTextView.setText(getIntent().getStringExtra("questOwner"));
 
         questDeadlineTextView = (TextView) findViewById(R.id.tv_questdetail_deadline);
-        questDeadlineTextView.setText("Hasta 31 de octubre de 2017 \n Faltan 124 días");
 
+        String unformattedDeadline = getIntent().getStringExtra("questDeadline");
+        String endDateStr = unformattedDeadline.split("T")[0];
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat();
+            sdf.applyLocalizedPattern("yyyy-MM-dd");
+
+            Date endDate = sdf.parse(endDateStr, new ParsePosition(0));
+            Date now = Calendar.getInstance().getTime();
+
+            long timeDiff = endDate.getTime() - now.getTime();
+            long daysDiff = TimeUnit.MILLISECONDS.toDays(timeDiff);
+
+            questDeadlineTextView.setText(sdf.format(endDate) + "\n" + "Quedan "+daysDiff+" días");
+
+        }catch (Exception e){
+            e.printStackTrace();
+            questDeadlineTextView.setVisibility(View.INVISIBLE);
+            // TODO Also hide icon
+        }
     }
 
 }

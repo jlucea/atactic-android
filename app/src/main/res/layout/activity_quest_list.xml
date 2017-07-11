@@ -4,19 +4,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <!-- RecyclerView will show the list of individual elements representing quests -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_quest_list"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_above="@+id/bottom_navigation" >
+
+        <!-- RecyclerView will show the list of individual elements representing quests -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_quest_list"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+
+    </FrameLayout>
 
     <!-- Bottom navigation view -->
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         app:itemBackground="@color/sp_darkgray"
         app:itemIconTint="@color/white"

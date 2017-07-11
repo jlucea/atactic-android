@@ -23,5 +23,11 @@
     <string name="navbar_map">Mapa</string>
     <string name="navbar_checkin">Check-in</string>
 
+    <!-- Check-in window labels -->
+    <string name="checkin_account">Empresa</string>
+    <string name="checkin_comments">Comentarios</string>
+    <string name="checkin_button">CHECK-IN</string>
+    <string name="msg_checkin_ok">"Check-in guardado</string>
+    <string name="msg_checkin_error">Error de check-in</string>
 
 </resources>

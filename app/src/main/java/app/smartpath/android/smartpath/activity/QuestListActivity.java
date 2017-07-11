@@ -89,6 +89,12 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
             String questSummary = quest.getJSONObject("campaign").getString("summary");
             String questLongDesc = quest.getJSONObject("campaign").getString("description");
             String questDeadline = quest.getJSONObject("campaign").getString("endDate");
+            String questOwnerFirstName = quest.getJSONObject("campaign").getJSONObject("owner")
+                    .getString("firstName");
+            String questOwnerLastName = quest.getJSONObject("campaign").getJSONObject("owner")
+                    .getString("lastName");
+            String questOwnerPosition = quest.getJSONObject("campaign").getJSONObject("owner")
+                    .getString("position");
             int currentStep = quest.getInt("currentStep");
             int totalSteps = quest.getInt("totalSteps");
 
@@ -102,7 +108,11 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
             i.putExtra("questLongDesc", questLongDesc);
             i.putExtra("currentStep", currentStep);
             i.putExtra("totalSteps", totalSteps);
-            // TODO Include campaign owner and long description
+
+            String questOwner = questOwnerFirstName + " " + questOwnerLastName
+                    + "\n" + questOwnerPosition;
+
+            i.putExtra("questOwner", questOwner);
 
             startActivity(i);
 
@@ -162,11 +172,17 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+        Intent i;
         switch (item.getItemId()) {
 
             case R.id.action_map:
                 // Toast.makeText(this, "Map icon clicked", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(QuestListActivity.this, QuestMapActivity.class);
+                i = new Intent(QuestListActivity.this, QuestMapActivity.class);
+                startActivity(i);
+                return true;
+
+            case R.id.action_checkin:
+                i = new Intent(QuestListActivity.this, CheckInActivity.class);
                 startActivity(i);
                 return true;
         }
