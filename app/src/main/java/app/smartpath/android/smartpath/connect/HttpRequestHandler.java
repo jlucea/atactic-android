@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class HttpRequestHandler {
     private static final String RSC_ACCOUNTS = "/account";
     private static final String RSC_CHECKIN = "/activity";
     private static final String RSC_TARGETS= "/target/query";
+    private static final String RSC_PROFILE = "/profile";
 
     private static final String LOG_TAG = "HttpRequest";
 
@@ -169,6 +171,31 @@ public class HttpRequestHandler {
         return null;
     }
 
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    public static JSONObject sendUserProfileRequest(int userId){
+        URL url = buildUrl(RSC_PROFILE + "/" + userId);
+        Log.d(LOG_TAG,url.toString());
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                String responseContent = readStreamContent(urlConnection.getInputStream());
+                return new JSONObject(responseContent);
+            }
+        } catch(JSONException je) {
+            je.printStackTrace();
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            if (urlConnection != null) urlConnection.disconnect();
+        }
+        return null;
+    }
 
 
     public static JSONArray sendEligibleTargetsRequest(int userId, float usrPosLat, float usrPosLon){

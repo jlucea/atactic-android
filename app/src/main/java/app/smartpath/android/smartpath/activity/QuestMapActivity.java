@@ -8,6 +8,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
@@ -50,8 +52,7 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
         this.setActionBar(myToolbar);
 
         /*
-         * Get the reference to the bottom navigation bar and add this class as
-         * ItemSelectedListener
+         * Get the reference to the bottom navigation bar and add an ItemSelectedListener
          */
         bottomNavigationBar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationBar.setOnNavigationItemSelectedListener(
@@ -199,5 +200,27 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Use AppCompatActivity's method getMenuInflater to get a handle on the top_menu_items inflater
+        MenuInflater inflater = getMenuInflater();
+        // Use the inflater's inflate method to inflate our top_menu_items layout to this top_menu_items
+        inflater.inflate(R.menu.top_menu_items, menu);
+        // Return true so that the top_menu_items is displayed in the Toolbar
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.profile_button) {
+            Intent i = new Intent(QuestMapActivity.this, ProfileActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

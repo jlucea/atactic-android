@@ -3,9 +3,17 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+
+    <item
+        android:id="@+id/profile_button"
+        android:orderInCategory="1"
+        android:title="Mi perfil" />
+
+    <!--
     <item
         android:id="@+id/map_button"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="Mapa" />
+        -->
 
 </menu>

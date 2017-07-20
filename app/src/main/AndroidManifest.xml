@@ -39,7 +39,9 @@
         <activity
             android:name=".activity.QuestMapActivity"
             android:label="@string/title_activity_quest_map" />
-
+        <activity android:name=".activity.QuestDetailActivity" />
+        <activity android:name=".activity.CheckInActivity" />
+        <activity android:name=".activity.ProfileActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -52,8 +54,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activity.QuestDetailActivity" />
-        <activity android:name=".activity.CheckInActivity"></activity>
+        <activity
+            android:name=".activity.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/SmartpathTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
