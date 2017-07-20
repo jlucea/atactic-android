@@ -29,6 +29,7 @@
         app:itemBackground="@color/sp_darkgray"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:menu="@menu/bottom_navigation_items" />
+        app:menu="@menu/bottom_navigation_items"
+        />
 
 </RelativeLayout>

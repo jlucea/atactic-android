@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="@string/checkin_account" />
 
-        <!-- Account selector (drop-down list) -->
+        <!-- Account nav_item_color_state (drop-down list) -->
         <Spinner
             android:id="@+id/spinner_account"
             android:layout_width="wrap_content"

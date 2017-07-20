@@ -1,139 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:auto="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="app.smartpath.android.smartpath.activity.QuestDetailActivity"
 
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Circular progress indicator -->
-    <com.github.lzyzsd.circleprogress.ArcProgress
-        android:id="@+id/arc_questdetail_arcprogress"
-        android:layout_marginTop="40dp"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:paddingTop="24dp"
-        android:layout_gravity="center"
-        auto:arc_finished_color="@color/sp_turquoise"
-        auto:arc_unfinished_color="@color/silver"
-        auto:arc_stroke_width="8dp"
-        auto:arc_bottom_text_size="15sp"
-        auto:arc_text_color="@color/sp_turquoise"/>
-
-    <!-- Quest name -->
-    <TextView
-        android:id="@+id/tv_questdetail_name"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginStart="8dp"
-        android:textSize="18sp"
-        android:textAlignment="center"
-        android:paddingTop="16dp"/>
-
-    <!-- Quest briefing text -->
-    <TextView
-        android:id="@+id/tv_questdetail_briefing"
-        style="@style/TextAppearance.AppCompat.Body1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginStart="8dp"
-        android:textSize="16sp"
-        android:textAlignment="center"
-        android:padding="6dp"/>
-
-    <!-- Quest owner and deadline -->
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="24dp">
+        android:layout_height="match_parent">
 
-        <!-- Relative layout filling the first half of the screen's width -->
-        <RelativeLayout
-            android:layout_width="0dp"
+        <!-- Circular progress indicator -->
+        <com.github.lzyzsd.circleprogress.ArcProgress
+            android:id="@+id/arc_questdetail_arcprogress"
+            android:layout_marginTop="40dp"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:paddingTop="24dp"
+            android:layout_gravity="center"
+            auto:arc_finished_color="@color/sp_turquoise"
+            auto:arc_unfinished_color="@color/silver"
+            auto:arc_stroke_width="8dp"
+            auto:arc_bottom_text_size="15sp"
+            auto:arc_text_color="@color/sp_turquoise"/>
+
+        <!-- Quest name -->
+        <TextView
+            android:id="@+id/tv_questdetail_name"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5">
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="8dp"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:paddingTop="16dp"/>
 
-            <!-- Vertical linear layout displaying the quest owner's info: icon + name and role -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/icon_user_32x32" />
-
-                <!-- Quest owner name & role -->
-                <TextView
-                    android:id="@+id/tv_questdetail_owner"
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:textSize="13sp"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:padding="6dp"/>
-
-            </LinearLayout>
-        </RelativeLayout>
-
-        <!-- Relative layout filling the second half of the screen's width -->
-        <RelativeLayout
-            android:layout_width="0dp"
+        <!-- Quest briefing text -->
+        <TextView
+            android:id="@+id/tv_questdetail_briefing"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5">
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:padding="6dp"/>
 
-            <!-- Deadline info: icon + text -->
-            <LinearLayout
-                android:layout_width="match_parent"
+        <!-- Quest owner and deadline -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp">
+
+            <!-- Relative layout filling the first half of the screen's width -->
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_weight="0.5">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <!-- Vertical linear layout displaying the quest owner's info: icon + name and role -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/icon_clock_32x32" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_questdetail_deadline"
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/icon_user_32x32" />
+
+                    <!-- Quest owner name & role -->
+                    <TextView
+                        android:id="@+id/tv_questdetail_owner"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textSize="13sp"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="6dp"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- Relative layout filling the second half of the screen's width -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5">
+
+                <!-- Deadline info: icon + text -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:textSize="13sp"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:padding="6dp"/>
-            </LinearLayout>
-        </RelativeLayout>
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/icon_clock_32x32" />
+
+                    <TextView
+                        android:id="@+id/tv_questdetail_deadline"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textSize="13sp"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"
+                        android:padding="6dp"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <!-- Long quest description -->
+        <TextView
+            android:id="@+id/tv_questdetail_longdesc"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/sp_darkgray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"
+            android:padding="12dp"/>
+
 
     </LinearLayout>
 
 
-    <!-- Long quest description -->
-    <TextView
-        android:id="@+id/tv_questdetail_longdesc"
-        style="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/sp_darkgray"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:textSize="14sp"
-        android:lineSpacingExtra="4dp"
-        android:padding="12dp"/>
-
-</LinearLayout>
+</RelativeLayout>

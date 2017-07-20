@@ -29,27 +29,30 @@ public class QuestDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest_detail);
-        Intent intent = getIntent();
 
+        /*
+         * Get references to the views
+         */
         progressIndicatorView = (ArcProgress) findViewById(R.id.arc_questdetail_arcprogress);
+        questNameTextView = (TextView) findViewById(R.id.tv_questdetail_name);
+        questBriefingTextView = (TextView) findViewById(R.id.tv_questdetail_briefing);
+        questLongDescriptionTextView = (TextView) findViewById(R.id.tv_questdetail_longdesc);
+        questOwnerTextView = (TextView) findViewById(R.id.tv_questdetail_owner);
+        questDeadlineTextView = (TextView) findViewById(R.id.tv_questdetail_deadline);
+
+        /*
+         * Get all info to display from the intent and set the view values
+         */
+        Intent intent = getIntent();
         int current = intent.getIntExtra("currentStep",0);
         int goal = intent.getIntExtra("totalSteps",10);
+
         progressIndicatorView.setProgress(current*100/goal);
         progressIndicatorView.setBottomText(current + " / " + goal);
-
-        questNameTextView = (TextView) findViewById(R.id.tv_questdetail_name);
         questNameTextView.setText(getIntent().getStringExtra("questName"));
-
-        questBriefingTextView = (TextView) findViewById(R.id.tv_questdetail_briefing);
         questBriefingTextView.setText(getIntent().getStringExtra("questSummary"));
-
-        questLongDescriptionTextView = (TextView) findViewById(R.id.tv_questdetail_longdesc);
         questLongDescriptionTextView.setText(getIntent().getStringExtra("questLongDesc"));
-
-        questOwnerTextView = (TextView) findViewById(R.id.tv_questdetail_owner);
         questOwnerTextView.setText(getIntent().getStringExtra("questOwner"));
-
-        questDeadlineTextView = (TextView) findViewById(R.id.tv_questdetail_deadline);
 
         String unformattedDeadline = getIntent().getStringExtra("questDeadline");
         String endDateStr = unformattedDeadline.split("T")[0];

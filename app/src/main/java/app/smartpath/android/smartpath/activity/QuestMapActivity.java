@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -30,12 +29,13 @@ import org.json.JSONObject;
 
 import app.smartpath.android.smartpath.R;
 import app.smartpath.android.smartpath.connect.HttpRequestHandler;
+import app.smartpath.android.smartpath.misc.BottomNavigationBarClickListener;
 import app.smartpath.android.smartpath.misc.SmartPathApplication;
 
-public class QuestMapActivity extends FragmentActivity implements OnMapReadyCallback, BottomNavigationView.OnNavigationItemSelectedListener {
+public class QuestMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap map;
-    private BottomNavigationView navigationView;
+    private BottomNavigationView bottomNavigationBar;
     private FusedLocationProviderClient locationProvider;
 
     private static final int ZOOM_LEVEL = 16;
@@ -53,8 +53,9 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
          * Get the reference to the bottom navigation bar and add this class as
          * ItemSelectedListener
          */
-        navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        navigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationBar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationBar.setOnNavigationItemSelectedListener(
+                new BottomNavigationBarClickListener(getBaseContext(),this.getClass()));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -63,7 +64,6 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
 
         // Get user location provider
         locationProvider = LocationServices.getFusedLocationProviderClient(this);
-
     }
 
     /**
@@ -198,29 +198,6 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
         }
 
     }
-
-
-    /**
-     * Defines the behavior of the bottom navigation bar of this section.
-     *
-     * However, the right way to do this would be to create a component that extended
-     * the BottomNavigationBar class and included an OnNavigationItemSelectedListener that
-     * could navigate between FRAGMENTS.
-     */
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-
-            case R.id.action_quests:
-                // Toast.makeText(this, "Quests icon clicked", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(QuestMapActivity.this, QuestListActivity.class);
-                startActivity(i);
-                return true;
-        }
-        return true;
-    }
-
 
 
 }

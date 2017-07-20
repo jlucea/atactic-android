@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -18,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.smartpath.android.smartpath.R;
+import app.smartpath.android.smartpath.misc.BottomNavigationBarClickListener;
 import app.smartpath.android.smartpath.misc.QuestListAdapter;
 import app.smartpath.android.smartpath.misc.SmartPathApplication;
 import app.smartpath.android.smartpath.connect.HttpRequestHandler;
@@ -34,10 +33,11 @@ import app.smartpath.android.smartpath.connect.HttpRequestHandler;
  * @author Jaime Lucea
  * @date May 2017
  */
-public class QuestListActivity extends AppCompatActivity implements QuestListAdapter.ListItemClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class QuestListActivity extends AppCompatActivity
+        implements QuestListAdapter.ListItemClickListener {
 
     private RecyclerView questListRecyclerView;
-    private BottomNavigationView navigationView;
+    private BottomNavigationView bottomNavigationView;
 
     private QuestListAdapter adapter;
 
@@ -47,11 +47,11 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
         setContentView(R.layout.activity_quest_list);
 
         /*
-         * Get the reference to the bottom navigation bar and add this class as
-         * ItemSelectedListener
+         * Get the reference to the bottom navigation bar and add an ItemSelectedListener
          */
-        navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        navigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationBarClickListener(getBaseContext(),this.getClass()));
 
         // Get reference to the RecyclerView component
         questListRecyclerView = (RecyclerView) findViewById(R.id.rv_quest_list);
@@ -160,33 +160,6 @@ public class QuestListActivity extends AppCompatActivity implements QuestListAda
             Toast.makeText(QuestListActivity.this, "Hello "+username, Toast.LENGTH_LONG).show();
         }
 
-    }
-
-    /**
-     * This method defines the behavior of the bottom navigation bar of this section.
-     *
-     * However, the right way to do this would be to create a component that extended
-     * the BottomNavigationBar class and included an OnNavigationItemSelectedListener that
-     * could navigate between FRAGMENTS.
-     */
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        Intent i;
-        switch (item.getItemId()) {
-
-            case R.id.action_map:
-                // Toast.makeText(this, "Map icon clicked", Toast.LENGTH_SHORT).show();
-                i = new Intent(QuestListActivity.this, QuestMapActivity.class);
-                startActivity(i);
-                return true;
-
-            case R.id.action_checkin:
-                i = new Intent(QuestListActivity.this, CheckInActivity.class);
-                startActivity(i);
-                return true;
-        }
-        return true;
     }
 
 /*
