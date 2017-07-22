@@ -27,6 +27,7 @@ public class HttpRequestHandler {
     private static final String RSC_CHECKIN = "/activity";
     private static final String RSC_TARGETS= "/target/query";
     private static final String RSC_PROFILE = "/profile";
+    private static final String RSC_RANKING = "/ranking";
 
     private static final String LOG_TAG = "HttpRequest";
 
@@ -226,6 +227,29 @@ public class HttpRequestHandler {
         return null;
     }
 
+
+    public static JSONArray sendRankingRequest(){
+        URL url = buildUrl(RSC_RANKING);
+        Log.d(LOG_TAG,url.toString());
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                String responseContent = readStreamContent(urlConnection.getInputStream());
+
+                return new JSONArray(responseContent);
+            }
+        } catch(JSONException je) {
+            je.printStackTrace();
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            if (urlConnection != null) urlConnection.disconnect();
+        }
+        return null;
+    }
 
 
     /**

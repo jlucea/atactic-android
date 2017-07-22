@@ -8,7 +8,7 @@
 
     <android.widget.Toolbar
         android:id="@+id/my_toolbar"
-        android:title="@string/title_activity_quest_map"
+        android:title="@string/title_activity_map"
         android:titleTextColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -20,8 +20,8 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="app.smartpath.android.smartpath.activity.QuestMapActivity" />
-
+        tools:context="app.smartpath.android.smartpath.activity.MapActivity" />
+    
     <!-- Bottom navigation view -->
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -29,8 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:itemBackground="@color/sp_darkgray"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/color_state_selector"
+        app:itemTextColor="@color/color_state_selector"
         app:menu="@menu/bottom_navigation_items" />
 
 </RelativeLayout>

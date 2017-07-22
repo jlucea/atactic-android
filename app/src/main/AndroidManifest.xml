@@ -24,6 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/SmartpathTheme">
+
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/app_name">
@@ -37,11 +38,13 @@
             android:name=".activity.QuestListActivity"
             android:label="@string/title_activity_quest_list" />
         <activity
-            android:name=".activity.QuestMapActivity"
-            android:label="@string/title_activity_quest_map" />
+            android:name=".activity.MapActivity"
+            android:label="@string/title_activity_map" />
         <activity android:name=".activity.QuestDetailActivity" />
         <activity android:name=".activity.CheckInActivity" />
         <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.RankingActivity" />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -54,10 +57,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".activity.ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/SmartpathTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

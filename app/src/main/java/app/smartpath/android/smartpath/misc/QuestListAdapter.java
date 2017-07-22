@@ -52,7 +52,7 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
     @Override
     public QuestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.quest_list_item, parent, false);      // boolean shouldAttachToParentImmediately = false;
+        View view = inflater.inflate(R.layout.list_item_quest, parent, false);      // boolean shouldAttachToParentImmediately = false;
         return new QuestViewHolder(view);
     }
 
@@ -70,7 +70,7 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
             holder.setContent(q);
 
         }catch(JSONException jse){
-
+            jse.printStackTrace();
         }
     }
 

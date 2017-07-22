@@ -79,7 +79,7 @@ public class QuestDetailActivity extends AppCompatActivity {
         }
     }
 
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Use AppCompatActivity's method getMenuInflater to get a handle on the top_menu_items inflater
@@ -100,6 +100,6 @@ public class QuestDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 }

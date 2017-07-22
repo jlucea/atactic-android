@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -19,6 +21,7 @@ import org.json.JSONObject;
 
 import app.smartpath.android.smartpath.R;
 import app.smartpath.android.smartpath.misc.BottomNavigationBarClickListener;
+import app.smartpath.android.smartpath.misc.BottomNavigationBarClickListenerFactory;
 import app.smartpath.android.smartpath.misc.QuestListAdapter;
 import app.smartpath.android.smartpath.misc.SmartPathApplication;
 import app.smartpath.android.smartpath.connect.HttpRequestHandler;
@@ -52,13 +55,15 @@ public class QuestListActivity extends AppCompatActivity
          * Get the reference to the bottom navigation bar and add an ItemSelectedListener
          */
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.action_quests);
         bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationBarClickListener(getBaseContext(),this.getClass()));
+                BottomNavigationBarClickListenerFactory.getClickListener(getBaseContext(),
+                        this.getClass()));
 
         // Get reference to the RecyclerView component
         questListRecyclerView = (RecyclerView) findViewById(R.id.rv_quest_list);
 
-        // Set the layout manager for the RecyclerView */
+        // Set the layout manager for the RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         questListRecyclerView.setLayoutManager(layoutManager);
 
@@ -80,6 +85,16 @@ public class QuestListActivity extends AppCompatActivity
          * and prints them on the UI
          */
         new QuestListAsyncHttpRequest().execute();
+
+        // Activate the check-in floating button
+        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab_checkin);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(QuestListActivity.this,CheckInActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
     @Override
@@ -158,13 +173,13 @@ public class QuestListActivity extends AppCompatActivity
             // TODO else show NO QUESTS WHERE FOUND();
 
             // Say hello
-            String username = ((SmartPathApplication)QuestListActivity.this.getApplication()).getUserName();
-            Toast.makeText(QuestListActivity.this, "Hello "+username, Toast.LENGTH_LONG).show();
+            //String username = ((SmartPathApplication)QuestListActivity.this.getApplication()).getUserName();
+            // Toast.makeText(QuestListActivity.this, "Hello "+username, Toast.LENGTH_LONG).show();
         }
 
     }
 
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Use AppCompatActivity's method getMenuInflater to get a handle on the top_menu_items inflater
@@ -186,5 +201,5 @@ public class QuestListActivity extends AppCompatActivity
         }
         return super.onOptionsItemSelected(item);
     }
-
+*/
 }

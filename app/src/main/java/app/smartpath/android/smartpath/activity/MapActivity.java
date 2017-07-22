@@ -1,16 +1,12 @@
 package app.smartpath.android.smartpath.activity;
 
-import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toolbar;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -31,10 +27,10 @@ import org.json.JSONObject;
 
 import app.smartpath.android.smartpath.R;
 import app.smartpath.android.smartpath.connect.HttpRequestHandler;
-import app.smartpath.android.smartpath.misc.BottomNavigationBarClickListener;
+import app.smartpath.android.smartpath.misc.BottomNavigationBarClickListenerFactory;
 import app.smartpath.android.smartpath.misc.SmartPathApplication;
 
-public class QuestMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap map;
     private BottomNavigationView bottomNavigationBar;
@@ -47,16 +43,18 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
         super.onCreate(savedInstanceState);
 
         // Initialize views
-        setContentView(R.layout.activity_quest_map);
+        setContentView(R.layout.activity_map);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         this.setActionBar(myToolbar);
 
         /*
-         * Get the reference to the bottom navigation bar and add an ItemSelectedListener
+         * Get the reference to the bottom navigation bar. Update click listener and selected item
          */
-        bottomNavigationBar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationBar = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        bottomNavigationBar.setSelectedItemId(R.id.action_map);
         bottomNavigationBar.setOnNavigationItemSelectedListener(
-                new BottomNavigationBarClickListener(getBaseContext(),this.getClass()));
+            BottomNavigationBarClickListenerFactory.getClickListener(getBaseContext(),
+                        this.getClass()));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -87,10 +85,14 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
                 @Override
                 public void onSuccess(Location location) {
                     LatLng usrLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+                    BitmapDescriptor usrIcon =
+                            BitmapDescriptorFactory.fromResource(R.drawable.marker_user_36);
+
+                    // BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)
+
                     map.addMarker(new MarkerOptions()
                             .position(usrLatLng)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                            // .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_user_marker)));
+                            .icon(usrIcon));
 
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(usrLatLng, ZOOM_LEVEL));
                 }
@@ -118,7 +120,7 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
         protected JSONArray doInBackground(Void... params) {
 
             // Retrieve user identification from global variables
-            int userId = ((SmartPathApplication)QuestMapActivity.this.getApplication()).getUserId();
+            int userId = ((SmartPathApplication)MapActivity.this.getApplication()).getUserId();
             Log.d("AccountsHttpRequest", "User ID: " + userId);
 
             // Send Http request and receive JSON response
@@ -171,7 +173,7 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
                     BitmapDescriptor markerIcon;
                     if (participations.length()>0){
                         // Set icon for highlighted targets
-                        markerIcon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+                        markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.marker_important2_36);
 
                         // Set up snippet text for highlighted targets
                         String snippetText = "";
@@ -185,7 +187,8 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
                         markerOptions.snippet(snippetText);
                     }else{
                         // Default marker icon
-                        markerIcon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                        // markerIcon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                        markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.marker_account_24);
                     }
                     markerOptions.icon(markerIcon);
 
@@ -200,7 +203,7 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
 
     }
 
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Use AppCompatActivity's method getMenuInflater to get a handle on the top_menu_items inflater
@@ -216,11 +219,11 @@ public class QuestMapActivity extends FragmentActivity implements OnMapReadyCall
         int id = item.getItemId();
 
         if (id == R.id.profile_button) {
-            Intent i = new Intent(QuestMapActivity.this, ProfileActivity.class);
+            Intent i = new Intent(MapActivity.this, ProfileActivity.class);
             startActivity(i);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
+*/
 }
