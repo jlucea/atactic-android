@@ -8,11 +8,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Section header -->
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <!-- Section header -->
 
         <ImageView
             android:id="@+id/iv_user_portrait"
@@ -61,8 +63,8 @@
             android:orientation="horizontal"
             android:clickable="true"
             android:layout_marginStart="42dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
 
             <RelativeLayout
@@ -75,6 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
                     android:layout_centerVertical="true"
+                    android:tint="@color/atactic_dark_gray"
                     android:src="@drawable/icon_trophy_36" />
 
                 <TextView
@@ -85,7 +88,7 @@
                     android:layout_centerVertical="true"
                     android:textColor="@color/Black"
                     android:textSize="16sp"
-                    android:text="Ranking" />
+                    android:text="@string/title_activity_ranking" />
 
             </RelativeLayout>
 
@@ -95,8 +98,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="#B6B6B6" />
 
 
@@ -107,8 +110,8 @@
             android:orientation="horizontal"
             android:clickable="true"
             android:layout_marginStart="42dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
 
             <RelativeLayout
@@ -121,6 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
                     android:layout_centerVertical="true"
+                    android:tint="@color/atactic_dark_gray"
                     android:src="@drawable/icon_settings_36" />
 
                 <TextView
@@ -141,9 +145,27 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="#B6B6B6" />
+
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:src="@drawable/img_atactic_logo_red_metallic" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="6dp"
+            android:textColor="@color/Black"
+            android:textSize="12sp"
+            android:text="@string/app_version" />
 
     </LinearLayout>
 

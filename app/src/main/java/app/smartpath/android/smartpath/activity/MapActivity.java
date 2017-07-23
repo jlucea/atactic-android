@@ -1,8 +1,10 @@
 package app.smartpath.android.smartpath.activity;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +35,6 @@ import app.smartpath.android.smartpath.misc.SmartPathApplication;
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap map;
-    private BottomNavigationView bottomNavigationBar;
     private FusedLocationProviderClient locationProvider;
 
     private static final int ZOOM_LEVEL = 16;
@@ -41,9 +42,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map);
 
         // Initialize views
-        setContentView(R.layout.activity_map);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         this.setActionBar(myToolbar);
 
@@ -63,6 +64,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         // Get user location provider
         locationProvider = LocationServices.getFusedLocationProviderClient(this);
+
+        // Activate the check-in floating button
+        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab_checkin);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(MapActivity.this,CheckInActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     /**
@@ -86,7 +96,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 public void onSuccess(Location location) {
                     LatLng usrLatLng = new LatLng(location.getLatitude(),location.getLongitude());
                     BitmapDescriptor usrIcon =
-                            BitmapDescriptorFactory.fromResource(R.drawable.marker_user_36);
+                            BitmapDescriptorFactory.fromResource(R.drawable.marker_user_42);
 
                     // BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)
 

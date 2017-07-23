@@ -23,7 +23,7 @@
             android:paddingTop="24dp"
             android:layout_gravity="center"
             auto:arc_finished_color="@color/sp_turquoise"
-            auto:arc_unfinished_color="@color/silver"
+            auto:arc_unfinished_color="@color/Silver"
             auto:arc_stroke_width="8dp"
             auto:arc_bottom_text_size="15sp"
             auto:arc_text_color="@color/sp_turquoise"/>

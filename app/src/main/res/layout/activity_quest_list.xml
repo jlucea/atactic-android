@@ -23,12 +23,12 @@
             android:id="@+id/fab_checkin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="bottom|end"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
             android:src="@drawable/icon_fab_checkin_48"
-            android:backgroundTint="@color/MediumVioletRed"
-            android:tint="@color/white"
+            android:backgroundTint="@color/atactic_space_cadet_blue"
+            android:tint="@color/White"
             app:elevation="4dp"/>
 
     </FrameLayout>

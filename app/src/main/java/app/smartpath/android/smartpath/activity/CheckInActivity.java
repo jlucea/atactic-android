@@ -30,7 +30,7 @@ import app.smartpath.android.smartpath.misc.SmartPathApplication;
 public class CheckInActivity extends AppCompatActivity {
 
     private EditText commentsTextField;
-    private TextView userlocationTextView;
+    private TextView userLocationTextView;
     private Spinner accountSpinnerView;
     private Button checkInButton;
 
@@ -46,23 +46,24 @@ public class CheckInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_in);
+        super.onCreate(savedInstanceState);
 
         // Store local references to screen views
         checkInButton = (Button)findViewById(R.id.btn_checkIn);
         accountSpinnerView = (Spinner)findViewById(R.id.spinner_account);
         commentsTextField = (EditText)findViewById(R.id.et_comments);
-        userlocationTextView = (TextView)findViewById(R.id.tv_user_position);
+        userLocationTextView = (TextView)findViewById(R.id.tv_user_position);
 
-        // Add a click listener to the button that will call the checkIn method
+        /*
+         * Add a click listener to the button that will call the checkIn method,
+         *  but disable checkIn until the activity loads the accounts eligible for checkIn
+         */
         checkInButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 checkIn();
             }
         });
-
-        // Disable checkIn until the activity loads the accounts eligible for checkIn
         checkInButton.setClickable(false);
 
         // Get user's location (latitude and longitude)
@@ -77,7 +78,7 @@ public class CheckInActivity extends AppCompatActivity {
                                 // TODO Work with DOUBLE precision position
                                 userLocationLongitude = (float)location.getLongitude();
                                 userLocationLatitude = (float)location.getLatitude();
-                                userlocationTextView.setText(userLocationLatitude + " , "
+                                userLocationTextView.setText(userLocationLatitude + " , "
                                     + userLocationLongitude);
 
                                 Log.d(LOG_TAG,"User LATITUDE: " + userLocationLatitude);
@@ -95,8 +96,19 @@ public class CheckInActivity extends AppCompatActivity {
                         }
                     });
         }catch(SecurityException se){
-            se.printStackTrace();
-            // TODO Control cases where user rejects location permission
+            Log.w("LOG_TAG", "Security exception caught.·);" +
+                    " Device location will probably be unavailable.");
+            Log.w("LOG_TAG", se);
+
+            /**
+             * Currently the app doesn't allow a user to check-in in his location is unavailable.
+             *
+             * TODO check if proximityRequirement for check-in is disabled. If it is, allow the user to report a non-geolocated check-in.
+             *
+             */
+            Toast.makeText(CheckInActivity.this,
+                    R.string.err_no_user_location, Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
@@ -201,7 +213,7 @@ public class CheckInActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(JSONArray eligibleAccountsJsonArray) {
-            if (eligibleAccountsJsonArray != null) {
+            if ((eligibleAccountsJsonArray != null) & (eligibleAccountsJsonArray.length()>0)){
                 /*
                 Toast.makeText(CheckInActivity.this,
                         "Found " + eligibleAccountsJsonArray.length()
@@ -221,8 +233,9 @@ public class CheckInActivity extends AppCompatActivity {
                 checkInButton.setClickable(true);
             }else{
                 Toast.makeText(CheckInActivity.this,
-                        "No accounts eligible for checkin were found",
+                        R.string.err_no_eligible_accounts,
                         Toast.LENGTH_LONG).show();
+                finish();
             }
         }
 

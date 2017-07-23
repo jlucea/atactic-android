@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="52dp"
@@ -14,8 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="36dp"
-        />
+        android:layout_marginEnd="36dp" />
 
     <ImageView
         android:id="@+id/icon_ranking"
@@ -31,16 +29,13 @@
         android:layout_width="158dp"
         android:layout_height="match_parent"
         android:layout_marginTop="12dp"
-        android:text="Username"
-        />
+        android:text="" />
 
     <TextView
         android:id="@+id/tv_ranked_user_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="100"
-        />
-
+        android:text="" />
 
 </LinearLayout>
