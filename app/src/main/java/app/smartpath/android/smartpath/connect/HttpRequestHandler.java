@@ -18,7 +18,14 @@ import java.util.Scanner;
 
 public class HttpRequestHandler {
 
-    private static final String API_SERVER = "http://10.0.2.2:8080";  // "http://localhost:8080";
+    /*
+     * "http://localhost:8080"; --> Localhost
+     * "http://10.0.2.2:8080";  --> Identifies emulating machine. Use when emulating
+     * "http://192.168.1.202:8080" --> Server IP within a shared WiFi network
+     */
+    private static final String API_SERVER = "http://10.0.2.2:8080";
+    // private static final String API_SERVER = "http://192.168.1.202:8080";
+
     private static final String API_ROOT = "/smartpath/api";
 
     private static final String RSC_AUTH = "/auth";

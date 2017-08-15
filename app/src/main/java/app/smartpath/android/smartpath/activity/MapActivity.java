@@ -66,6 +66,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         locationProvider = LocationServices.getFusedLocationProviderClient(this);
 
         // Activate the check-in floating button
+
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab_checkin);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -73,6 +74,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 startActivity(i);
             }
         });
+
     }
 
     /**

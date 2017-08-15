@@ -39,7 +39,7 @@
     <string name="points">puntos</string>
 
     <!-- Error messages -->
-    <string name="err_no_eligible_accounts">No han encontrado objetivos cercanos para reportar
+    <string name="err_no_eligible_accounts">No se encontraron objetivos cercanos para reportar
         una visita</string>
     <string name="err_no_user_location">No se pudo obtener la posición del dispositivo,
         necesaria para reportar una visita.

@@ -6,7 +6,7 @@
         <item name="android:windowBackground">@drawable/bckgr_lightgrey_angular</item>
         <item name="colorPrimary">@color/atactic_bright_red</item>
         <item name="colorPrimaryDark">@color/atactic_dark_red</item>
-        <item name="colorAccent">@color/Red</item>
+        <item name="colorAccent">@color/atactic_bright_red</item>
     </style>
 
     <!-- Base application theme. -->
