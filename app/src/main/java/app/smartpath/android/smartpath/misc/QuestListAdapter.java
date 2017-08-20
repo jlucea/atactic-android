@@ -109,16 +109,21 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
     public class QuestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final ArcProgress progressIndicatorView;
-        private final TextView questDescriptionView;
-        private final TextView questDeadlineView;
+        private final TextView questNameTextView;
+        private final TextView questBriefingTextView;
+        private final TextView questDeadlineTextView;
+        private final TextView questScoreTextView;
 
         public QuestViewHolder(View itemView){
             super(itemView);
 
             /* Store private references to the view components of the quest item */
-            questDescriptionView = (TextView) itemView.findViewById(R.id.tv_quest_item);
-            progressIndicatorView = (ArcProgress) itemView.findViewById(R.id.arc_progress);
-            questDeadlineView = (TextView) itemView.findViewById(R.id.tv_quest_deadline);
+
+            questNameTextView = itemView.findViewById(R.id.tv_quest_name);
+            questBriefingTextView = itemView.findViewById(R.id.tv_quest_briefing);
+            progressIndicatorView = itemView.findViewById(R.id.arc_progress);
+            questDeadlineTextView = itemView.findViewById(R.id.tv_quest_deadline);
+            questScoreTextView = itemView.findViewById(R.id.tv_quest_score);
 
             /* Add a click listener to the view holder */
             itemView.setOnClickListener(this);
@@ -150,12 +155,17 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
                 // progressIndicatorView.setUnfinishedStrokeColor(Color.GRAY);
                 // progressIndicatorView.setTextColor(R.color.sp_blue);
 
+                String questName = participationDescription.getJSONObject("campaign")
+                        .getString("name");
+
+                questNameTextView.setText(questName);
+
                 /* Parse quest briefing (summary) */
                 String questInstructions = participationDescription.getJSONObject("campaign")
                         .getString("summary");
 
                 /* Display quest information (summary) */
-                questDescriptionView.setText(questInstructions);
+                questBriefingTextView.setText(questInstructions);
 
                 /* Display remaining days */
                 String qDeadlineStr = participationDescription.getJSONObject("campaign")
@@ -175,13 +185,17 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
                     long daysDiff = TimeUnit.MILLISECONDS.toDays(timeDiff);
 
                     // System.out.println("daysDiff: "+daysDiff);
-                    questDeadlineView.setText("Quedan "+daysDiff+" días");
+                    questDeadlineTextView.setText("Quedan "+daysDiff+" días");
 
                 }catch (Exception e){
 
                     e.printStackTrace();
-                    questDeadlineView.setVisibility(View.INVISIBLE);
+                    questDeadlineTextView.setVisibility(View.INVISIBLE);
                 }
+
+                String pointsPerVisit = participationDescription.getJSONObject("campaign")
+                        .getString("visitScore");
+                questScoreTextView.setText(pointsPerVisit);
 
             }catch (JSONException jsonEx) {
                 jsonEx.printStackTrace();

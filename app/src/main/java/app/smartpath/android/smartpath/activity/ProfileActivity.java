@@ -23,7 +23,7 @@ import app.smartpath.android.smartpath.misc.SmartPathApplication;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
-        private ImageView userPortraitImageView;
+    private ImageView userPortraitImageView;
     private TextView userNameTextView;
     private TextView userPositionTextView;
     private TextView userScoreTextView;
@@ -38,7 +38,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_profile);
 
         // Store references to views
-
         userPortraitImageView = (ImageView)findViewById(R.id.iv_user_portrait);
         userNameTextView = (TextView)findViewById(R.id.tv_user_name);
         userPositionTextView = (TextView) findViewById(R.id.tv_user_position);
