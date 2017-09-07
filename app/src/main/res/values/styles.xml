@@ -1,6 +1,6 @@
 <resources>
 
-    <!-- Custom application theme. -->
+    <!-- ATACTIC theme -->
     <style name="AtacticTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@drawable/bckgr_lightgrey_angular</item>
@@ -9,18 +9,18 @@
         <item name="colorAccent">@color/atactic_bright_red</item>
     </style>
 
-    <!-- Base application theme. -->
+    <!-- In case we want to remove the action bar -->
+    <style name="AtacticTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <!-- In case we want to remove the action bar -->
-    <style name="AtacticTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="SmartpathTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

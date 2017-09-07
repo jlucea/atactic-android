@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,12 +23,13 @@ public class HttpRequestHandler {
      * "http://localhost:8080"; --> Localhost
      * "http://10.0.2.2:8080";  --> Identifies emulating machine. Use when emulating
      * "http://192.168.1.202:8080" --> Server IP within a shared WiFi network
+     * "http://env-6775033.jelastic.cloudhosted.es" --> Production environment
      */
+    private static final String API_SERVER = "http://env-6775033.jelastic.cloudhosted.es";
     // private static final String API_SERVER = "http://10.0.2.2:8080";
-    private static final String API_SERVER = "http://10.0.2.2:8080";
 
-    private static final String API_ROOT = "/smartpath/api";
 
+    private static final String API_ROOT = "/atactic/api";
     private static final String RSC_AUTH = "/auth";
     private static final String RSC_QUESTS = "/quest";
     private static final String RSC_ACCOUNTS = "/account";
@@ -39,7 +41,13 @@ public class HttpRequestHandler {
     private static final String LOG_TAG = "HttpRequest";
 
     /**
-     * Attempt login based on user credentials
+     * Attempt login based on user credentials. Sends an URL-Encoded form through a POST Http request.
+     *
+     * Returns:
+     *  - A LoginResponse with its content property filled with the ID
+     *  of the authenticated user in case the authentication is successful.
+     *  - A LoginResponse with response.ok = false and no content
+     *  - NULL in case there's no connection
      *
      * @param username
      * @param password
@@ -49,6 +57,8 @@ public class HttpRequestHandler {
         URL url = buildUrl(RSC_AUTH);
         Log.d(LOG_TAG,url.toString());
 
+        LoginResponse response;
+
         try {
             // Open connection
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -56,31 +66,50 @@ public class HttpRequestHandler {
             connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
             connection.setDoOutput(true);
 
+            // Get output data stream and write the request body
+            OutputStream connectionOutputStream = connection.getOutputStream();
+            DataOutputStream writer = new DataOutputStream(connectionOutputStream);
             String params = "username="+username+"&password="+password;
-
-            DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
             writer.writeBytes(params);
             writer.flush();
             writer.close();
 
-            // Get Http response values
-            int responseCode = connection.getResponseCode();
-            String responseMessage = readStreamContent(connection.getInputStream());
+            int responseCode = 0;
+            try {
+                // Get Http response values
+                responseCode = connection.getResponseCode();
+                Log.d("AuthenticationRequest", "Response code " + responseCode
+                        + " for authentication of user " + username);
 
-            Log.v("AuthenticationRequest", "Username: "+username);
-            Log.v("AuthenticationRequest", "Response code: "+responseCode);
-            Log.v("AuthenticationRequest", "Response content: "+responseMessage);
+                response = new LoginResponse();
+                response.setResponseCode(responseCode);
 
-            // Build and return response object
-            LoginResponse response = new LoginResponse();
-            response.setResponseCode(responseCode);
-            response.setOk(responseCode==HttpURLConnection.HTTP_OK);
-            response.setContent(responseMessage);
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // This would launch an IOException if response code is higher than 400!
+                    String responseMessage = readStreamContent(connection.getInputStream());
+                    Log.d("AuthenticationRequest", "Response content: " + responseMessage);
+                    response.setOk(true);
+                    response.setContent(responseMessage);
 
-            return response;
+                }else{
+                    response.setOk(false);
+                }
+                return response;
+
+            }catch (IOException ioe){
+                Log.w("AuthenticationRequest", "Exception caught while getting Http response", ioe);
+                Log.d("AuthenticationRequest", "Response code: " + connection.getResponseCode());
+                response = new LoginResponse();
+                response.setOk(false);
+                response.setResponseCode(connection.getResponseCode());
+                return response;
+
+            } finally{
+                connection.disconnect();
+            }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("AuthenticationRequest", "Exception caught while connecting", e);
             return null;
         }
     }
@@ -235,8 +264,8 @@ public class HttpRequestHandler {
     }
 
 
-    public static JSONArray sendRankingRequest(){
-        URL url = buildUrl(RSC_RANKING);
+    public static JSONArray sendRankingRequest(int userId){
+        URL url = buildUrl(RSC_RANKING + "/" + userId);
         Log.d(LOG_TAG,url.toString());
 
         HttpURLConnection urlConnection = null;

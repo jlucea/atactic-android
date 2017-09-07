@@ -13,6 +13,7 @@ import app.smartpath.android.smartpath.R;
 import app.smartpath.android.smartpath.connect.HttpRequestHandler;
 import app.smartpath.android.smartpath.misc.QuestListAdapter;
 import app.smartpath.android.smartpath.misc.RankingAdapter;
+import app.smartpath.android.smartpath.misc.SmartPathApplication;
 
 public class RankingActivity extends AppCompatActivity {
 
@@ -41,7 +42,11 @@ public class RankingActivity extends AppCompatActivity {
 
         @Override
         protected JSONArray doInBackground(Void... params) {
-            return HttpRequestHandler.sendRankingRequest();
+
+            // Retrieve user identification from global variables
+            int userId = ((SmartPathApplication)RankingActivity.this.getApplication()).getUserId();
+
+            return HttpRequestHandler.sendRankingRequest(userId);
         }
 
         @Override

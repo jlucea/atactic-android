@@ -202,14 +202,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         // Analyzing the participation of an account in campaigns (as a target)
                         JSONObject p = participations.getJSONObject(j);
                         boolean accountChecked  = p.getInt("checked")==1;
-                        boolean participationIncomplete = p.getJSONObject("id")
-                                .getJSONObject("participation").getInt("currentStep") <
-                                p.getJSONObject("id")
-                                        .getJSONObject("participation").getInt("totalSteps");
+                        boolean participationIncomplete = p.getJSONObject("participation").getInt("currentStep")
+                                < p.getJSONObject("participation").getInt("totalSteps");
 
-                        JSONObject q = p.getJSONObject("id").getJSONObject("participation")
-                                .getJSONObject("campaign");
-
+                        JSONObject q = p.getJSONObject("participation").getJSONObject("campaign");
 
                         String qName = q.getString("name");
                         String qStatus = q.getString("status");

@@ -5,9 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <!--
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    -->
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -18,22 +20,35 @@
 
     <application
         android:name=".misc.SmartPathApplication"
-        android:label="@string/app_name"
         android:allowBackup="true"
-        android:supportsRtl="true"
-        android:theme="@style/AtacticTheme"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round" >
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AtacticTheme">
 
         <activity
-            android:name=".activity.LoginActivity"
-            android:label="@string/app_name">
+            android:name=".activity.SimpleLoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AtacticTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AtacticTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        -->
+
         <activity
             android:name=".activity.QuestListActivity"
             android:label="@string/title_activity_quest_list" />
@@ -42,16 +57,16 @@
             android:label="@string/title_activity_map" />
         <activity
             android:name=".activity.QuestDetailActivity"
-            android:label="@string/title_activity_quest_detail"/>
+            android:label="@string/title_activity_quest_detail" />
         <activity
             android:name=".activity.CheckInActivity"
-            android:label="@string/title_activity_checkin"/>
+            android:label="@string/title_activity_checkin" />
         <activity
             android:name=".activity.ProfileActivity"
-            android:label="@string/title_activity_profile"/>
+            android:label="@string/title_activity_profile" />
         <activity
             android:name=".activity.RankingActivity"
-            android:label="@string/title_activity_ranking"/>
+            android:label="@string/title_activity_ranking" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

@@ -9,13 +9,15 @@ import app.smartpath.android.smartpath.connect.HttpRequestHandler;
 
 public class HttpRequestUnitTest {
 
-    @Test
+    /*
+
+         @Test
     public void queslistRequestTest() throws Exception {
         String res = HttpRequestHandler.sendQuestListRequest("ivan@email.es","peraltasan");
         Log.v("queslistRequestTest", "Result form sendQuestListRequest: " + res);
 
     }
-
+    */
 
 
 }

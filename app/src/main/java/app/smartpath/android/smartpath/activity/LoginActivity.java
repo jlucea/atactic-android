@@ -189,16 +189,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
 
 
-
-            /*
-            // TODO UNCOMMENT THESE LINES
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
-            */
 
+            /*
             ((SmartPathApplication)LoginActivity.this.getApplication()).setUserId(1);
             ((SmartPathApplication)LoginActivity.this.getApplication()).setUserName("jaime@email.es");
             ((SmartPathApplication)LoginActivity.this.getApplication()).setPassword("password");
+            */
             Intent i = new Intent(LoginActivity.this, QuestListActivity.class);
             startActivity(i);
 

@@ -3,8 +3,14 @@
     <string name="app_version">ATACTIC v1.0</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
+    <string name="atactic_claim">Objetivos tácticos para vendedores profesionales</string>
+    <string name="atactic_claim2">Objetivos y rutas para vendedores profesionales</string>
+    <string name="prompt_email">Correo electrónico</string>
     <string name="prompt_password">Contraseña</string>
+    <string name="failed_login">Credenciales incorrectas: revise sus datos y vuelva a intentarlo</string>
+    <string name="no_login_connection">Error al conectar al servicio de autenticación: compruebe su conexión</string>
+    <string name="unknown_error">Se ha producido un error desconocido</string>
+
     <string name="action_sign_in">Acceder</string>
     <string name="action_sign_in_short">Acceder</string>
     <string name="error_invalid_email">La dirección de email no es válida</string>

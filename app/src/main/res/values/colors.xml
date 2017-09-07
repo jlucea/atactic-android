@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Default Android app colors -->
-    <color name="colorPrimary">#3F51B5</color>      <!-- Blue used for top_menu_items bar -->
-    <color name="colorPrimaryDark">#303F9F</color>  <!-- Darker blue -->
-    <color name="colorAccent">#FF4081</color>       <!-- Horrible red -->
-
-    <!-- Smartpath palette -->
-    <color name="sp_turquoise">#4D9EAF</color>
-    <color name="sp_blue">#404872</color>
-    <color name="sp_blue2">#212f4a</color>
-    <color name="sp_darkgray">#333435</color>
-
     <!-- ATACTIC palette -->
     <color name="atactic_brighter_red">#E00808</color>
     <color name="atactic_bright_red">#c90000</color>
@@ -23,11 +12,13 @@
     <color name="atactic_platinum">#E5E5E5</color>
     <color name="atactic_silver">#C0C0C0</color>
     <color name="atactic_medium_gray">#8E8E8E</color>
+    <color name="atactic_medium_dark_gray">#3c3737</color>
     <color name="atactic_dark_gray">#333435</color>
+
+    <color name="atactic_rich_black">#071013</color>
 
     <color name="atactic_space_cadet_blue">#222E50</color>
     <color name="atactic_maastricht_blue">#031927</color>
-    <color name="atactic_rich_black">#071013</color>
 
     <!-- x11 -->
     <color name="White">#FFFFFF</color>
@@ -171,5 +162,15 @@
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
 
+    <!-- Default Android app colors -->
+    <color name="colorPrimary">#3F51B5</color>      <!-- Blue used for top_menu_items bar -->
+    <color name="colorPrimaryDark">#303F9F</color>  <!-- Darker blue -->
+    <color name="colorAccent">#FF4081</color>       <!-- Horrible red -->
+
+    <!-- Smartpath palette -->
+    <color name="sp_turquoise">#4D9EAF</color>
+    <color name="sp_blue">#404872</color>
+    <color name="sp_blue2">#212f4a</color>
+    <color name="sp_darkgray">#333435</color>
 
 </resources>
