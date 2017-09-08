@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.smartpath.android.smartpath">
+    package="io.atactic.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name=".misc.SmartPathApplication"
+        android:name="io.atactic.android.misc.AtacticApplication"
         android:allowBackup="true"
         android:label="@string/app_name"
         android:icon="@mipmap/ic_atactic_silverred"
@@ -28,7 +28,7 @@
         <!-- android:roundIcon="@mipmap/ic_launcher_round" -->
 
         <activity
-            android:name=".activity.SimpleLoginActivity"
+            android:name="io.atactic.android.activity.SimpleLoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AtacticTheme.NoActionBar">
             <intent-filter>
@@ -50,22 +50,22 @@
         -->
 
         <activity
-            android:name=".activity.QuestListActivity"
+            android:name="io.atactic.android.activity.QuestListActivity"
             android:label="@string/title_activity_quest_list" />
         <activity
-            android:name=".activity.MapActivity"
+            android:name="io.atactic.android.activity.MapActivity"
             android:label="@string/title_activity_map" />
         <activity
-            android:name=".activity.QuestDetailActivity"
+            android:name="io.atactic.android.activity.QuestDetailActivity"
             android:label="@string/title_activity_quest_detail" />
         <activity
-            android:name=".activity.CheckInActivity"
+            android:name="io.atactic.android.activity.CheckInActivity"
             android:label="@string/title_activity_checkin" />
         <activity
-            android:name=".activity.ProfileActivity"
+            android:name="io.atactic.android.activity.ProfileActivity"
             android:label="@string/title_activity_profile" />
         <activity
-            android:name=".activity.RankingActivity"
+            android:name="io.atactic.android.activity.RankingActivity"
             android:label="@string/title_activity_ranking" />
 
         <!--
