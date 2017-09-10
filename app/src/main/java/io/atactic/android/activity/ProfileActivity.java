@@ -15,8 +15,8 @@ import org.json.JSONObject;
 
 import io.atactic.android.R;
 import io.atactic.android.connect.HttpRequestHandler;
-import io.atactic.android.misc.BottomNavigationBarClickListenerFactory;
-import io.atactic.android.misc.AtacticApplication;
+import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
+import io.atactic.android.element.AtacticApplication;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
 

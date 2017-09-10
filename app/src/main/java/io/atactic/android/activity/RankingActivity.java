@@ -11,8 +11,8 @@ import org.json.JSONArray;
 
 import io.atactic.android.R;
 import io.atactic.android.connect.HttpRequestHandler;
-import io.atactic.android.misc.AtacticApplication;
-import io.atactic.android.misc.RankingAdapter;
+import io.atactic.android.element.AtacticApplication;
+import io.atactic.android.element.RankingAdapter;
 
 public class RankingActivity extends AppCompatActivity {
 

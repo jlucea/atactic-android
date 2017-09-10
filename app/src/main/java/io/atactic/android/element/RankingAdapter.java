@@ -1,4 +1,4 @@
-package io.atactic.android.misc;
+package io.atactic.android.element;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;

@@ -16,9 +16,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.atactic.android.R;
-import io.atactic.android.misc.AtacticApplication;
-import io.atactic.android.misc.BottomNavigationBarClickListenerFactory;
-import io.atactic.android.misc.QuestListAdapter;
+import io.atactic.android.element.AtacticApplication;
+import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
+import io.atactic.android.element.QuestListAdapter;
 import io.atactic.android.connect.HttpRequestHandler;
 
 /**
@@ -109,6 +109,8 @@ public class QuestListActivity extends AppCompatActivity
                     .getString("position");
             int currentStep = quest.getInt("currentStep");
             int totalSteps = quest.getInt("totalSteps");
+            int visitScore = quest.getJSONObject("campaign").getInt("visitScore");
+            int completionScore = quest.getJSONObject("campaign").getInt("completionScore");
 
             // Toast.makeText(this, "Quest " + questName + " clicked", Toast.LENGTH_SHORT).show();
 
@@ -120,6 +122,8 @@ public class QuestListActivity extends AppCompatActivity
             i.putExtra("questLongDesc", questLongDesc);
             i.putExtra("currentStep", currentStep);
             i.putExtra("totalSteps", totalSteps);
+            i.putExtra("visitScore",visitScore);
+            i.putExtra("completionScore",completionScore);
 
             String questOwner = questOwnerFirstName + " " + questOwnerLastName
                     + "\n" + questOwnerPosition;
