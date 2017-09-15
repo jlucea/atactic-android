@@ -1,6 +1,10 @@
 package io.atactic.android.element;
 
+import android.content.res.Resources;
+import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +17,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.atactic.android.R;
+import io.atactic.android.activity.RankingActivity;
 
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankedUserViewHolder>{
 
     private JSONArray jsonArrayRanking;
+    private int userId;
 
     @Override
     public RankedUserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,7 +37,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankedUs
         Log.d("RankingAdapter","ViewHolder Binded ("+position+")");
         try {
             JSONObject rankedUserJsonData = jsonArrayRanking.getJSONObject(position);
-            holder.setRankedUserDataToDisplay(position+1,rankedUserJsonData);
+            holder.setRankedUserDataToDisplay(position+1,rankedUserJsonData, userId);
 
         }catch (JSONException jse){
             jse.printStackTrace();
@@ -50,8 +56,9 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankedUs
     }
 
 
-    public void setContent(JSONArray ranking){
+    public void setContent(JSONArray ranking, int userId){
         jsonArrayRanking = ranking;
+        this.userId = userId;
         notifyDataSetChanged();
     }
 
@@ -67,22 +74,46 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankedUs
         public RankedUserViewHolder(View itemView) {
             super(itemView);
 
-            rankedUserRankTextView = (TextView)itemView.findViewById(R.id.tv_rank);
-            rankedUserNameTextView = (TextView)itemView.findViewById(R.id.tv_ranked_user_name);
-            rankedUserScoreTextView = (TextView)itemView.findViewById(R.id.tv_ranked_user_score);
+            rankedUserRankTextView = itemView.findViewById(R.id.tv_rank);
+            rankedUserNameTextView = itemView.findViewById(R.id.tv_ranked_user_name);
+            rankedUserScoreTextView = itemView.findViewById(R.id.tv_ranked_user_score);
             /*
             userPortrait.setImageResource(R.drawable.icon_user_32x32);
             */
         }
 
-        public void setRankedUserDataToDisplay(int rank, JSONObject rankedUserData){
+        public void setRankedUserDataToDisplay(int rank, JSONObject rankedUserData, int userId){
             try {
-                String name = rankedUserData.getString("firstName");
+                int rankedUserId = rankedUserData.getInt("userId");
+                String fullName = rankedUserData.getString("firstName") + " " +
+                    rankedUserData.getString("lastName");
                 int score = rankedUserData.getInt("score");
 
                 rankedUserRankTextView.setText(String.valueOf(rank));
-                rankedUserNameTextView.setText(name);
+                rankedUserNameTextView.setText(fullName);
                 rankedUserScoreTextView.setText(String.valueOf(score));
+
+                if (rankedUserId == userId){
+                    // Highlight current user in the list
+                    rankedUserNameTextView.setTextColor(
+                            ContextCompat.getColor(rankedUserNameTextView.getContext(),
+                                    R.color.atactic_brighter_red));
+                    rankedUserNameTextView.setTypeface(null, Typeface.BOLD);
+                    rankedUserScoreTextView.setTextColor(
+                            ContextCompat.getColor(rankedUserNameTextView.getContext(),
+                                    R.color.atactic_brighter_red));
+                    rankedUserScoreTextView.setTypeface(null, Typeface.BOLD);
+
+                }else{
+                    rankedUserNameTextView.setTextColor(
+                            ContextCompat.getColor(rankedUserNameTextView.getContext(),
+                                    R.color.atactic_dark_gray));
+                    rankedUserNameTextView.setTypeface(null, Typeface.NORMAL);
+                    rankedUserScoreTextView.setTextColor(
+                            ContextCompat.getColor(rankedUserNameTextView.getContext(),
+                                    R.color.atactic_dark_gray));
+                    rankedUserScoreTextView.setTypeface(null, Typeface.NORMAL);
+                }
 
             }catch(JSONException jse){
                 jse.printStackTrace();

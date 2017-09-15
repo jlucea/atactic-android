@@ -43,6 +43,8 @@
 
     <!-- Gamification-related strings -->
     <string name="points">puntos</string>
+    <string name="ranking_score">Puntuación</string>
+    <string name="ranking_rank">Posición</string>
 
     <!-- Error messages -->
     <string name="err_no_eligible_accounts">No se encontraron objetivos cercanos para reportar

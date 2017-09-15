@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -19,6 +21,7 @@ import io.atactic.android.element.RankingAdapter;
 
 public class RankingActivity extends AppCompatActivity {
 
+    private ImageView backImageButton;
     private TextView userRankTextView;
     private TextView userScoreTextView;
 
@@ -33,6 +36,14 @@ public class RankingActivity extends AppCompatActivity {
         // Get references to header fields
         userRankTextView = findViewById(R.id.tv_ranking_user_rank);
         userScoreTextView = findViewById(R.id.tv_ranking_user_score);
+
+        backImageButton = findViewById(R.id.ctrl_ranking_back);
+
+        backImageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // Get reference to the RecyclerView component
         rankingRecyclerView = findViewById(R.id.rv_ranking_list);
@@ -60,13 +71,15 @@ public class RankingActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(JSONArray jsonArray) {
             Log.d("RankingActivity", jsonArray.toString());
-            adapter.setContent(jsonArray);
+
+            int userId = ((AtacticApplication)RankingActivity.this.getApplication()).getUserId();
+            Log.d("RankingActivity", "User ID = " + userId);
+
+            adapter.setContent(jsonArray, userId);
 
             Log.d("RankingActivity", "Starting iteration of JSON Array (length = " + jsonArray.length() + ")");
             // Iterate the jsonArray until we find userId
             // Then get the position and score and print them on the header text views
-            int userId = ((AtacticApplication)RankingActivity.this.getApplication()).getUserId();
-            Log.d("RankingActivity", "User ID = " + userId);
 
             for (int r=0; r < jsonArray.length(); r++){
                 try {

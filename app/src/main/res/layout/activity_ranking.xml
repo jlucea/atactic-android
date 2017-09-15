@@ -22,7 +22,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="70dp">
 
                 <TextView
                     android:id="@+id/tv_ranking_user_rank"
@@ -30,7 +32,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="60dp"
                     android:text="2"
                     android:textAlignment="center"
                     android:textSize="28sp"
@@ -42,7 +43,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Posición"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/ranking_rank"
                     android:textAlignment="center"
                     android:textSize="14sp"
                     android:textColor="@color/White"
@@ -59,8 +61,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/icon_trophy_36"
+                android:layout_marginTop="24dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/icon_award_64"
                 android:tint="@color/White"/>
 
         </RelativeLayout>
@@ -73,7 +76,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="70dp">
 
                 <TextView
                     android:id="@+id/tv_ranking_user_score"
@@ -81,7 +86,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="60dp"
                     android:text="117"
                     android:textSize="28sp"
                     android:textColor="@color/White"
@@ -92,7 +96,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Puntuación"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/ranking_score"
                     android:textAlignment="center"
                     android:textSize="14sp"
                     android:textColor="@color/White"
@@ -104,9 +109,26 @@
     </LinearLayout>
 
     <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ctrl_ranking_back"
+            android:src="@drawable/icon_back_32"
+            android:tint="@color/White"
+            android:layout_margin="24dp"
+            android:visibility="visible"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_below="@id/layout_ranking_header">
 
         <!-- RecyclerView will show the list of users and their scores -->
