@@ -117,7 +117,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                 .position(usrLatLng)
                                 .icon(usrIcon));
                         */
-
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(usrLatLng, ZOOM_LEVEL));
                     }else{
                         Log.w(LOG_TAG,"User location is NULL");
@@ -130,29 +129,131 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             se.printStackTrace();
         }
 
-        // Send an asynchronous request to get the account list
-        new AccountsAsyncHttpRequest().execute();
+        // Send an asynchronous request to get non-target accounts
+        new OffTargetAccountsAsyncHttpRequest().execute();
+
+        // Send an asynchronous request to get live targets
+        new ActiveTargetsAsyncHttpRequest().execute();
     }
+
 
 
 
     /**
      * This class' execute method sends an asynchronous http request to the server
-     * and assigns the returning JSON Array to the private variable accounts.
-     *
+     * and draws Account markers on post-execute
      */
-    public class AccountsAsyncHttpRequest extends AsyncTask<Void, Void, JSONArray> {
+
+    public class ActiveTargetsAsyncHttpRequest extends AsyncTask<Void, Void, JSONArray> {
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+
+            // Retrieve user identification from global variables
+            int userId = ((AtacticApplication) MapActivity.this.getApplication()).getUserId();
+            Log.d("ActiveTargetsRequest", "User ID: " + userId);
+
+            // Send Http request and receive JSON response
+            String response = HttpRequestHandler.sendRequestForActiveTargets(userId);
+            Log.d("ActiveTargetsRequest", "JSON Response: " + response);
+
+            // Return JSON array containing the data to show in the view
+            try {
+                return new JSONArray(response);
+
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray JSONResponse) {
+            drawAccountMarkers(JSONResponse);
+        }
+
+        /**
+         * @param targets
+         */
+        private void drawAccountMarkers(JSONArray targets) {
+
+            String snippetText ="";
+            for (int j=0; j < targets.length(); j++) {
+                try {
+                    JSONObject tgt = targets.getJSONObject(j);
+                    JSONObject account = tgt.getJSONObject("account");
+                    JSONObject participation = tgt.getJSONObject("participation");
+                    JSONObject campaign = participation.getJSONObject("campaign");
+
+                    int accId = account.getInt("id");
+                    String accName = account.getString("name");
+                    LatLng accPos = new LatLng(
+                            account.getDouble("latitude"),
+                            account.getDouble("longitude"));
+
+                    String qName = campaign.getString("name");
+                    /*
+                    String qStartDate = campaign.getString("startDate").split("T")[0];
+                    String qEndDate = campaign.getString("endDate").split("T")[0];
+                    */
+
+                    boolean drawMarker = true;
+                    if (j<targets.length()-1) {
+                        int nextAccId = targets.getJSONObject(j+1).getJSONObject("account").getInt("id");
+                        if (accId != nextAccId) {
+                            // Draw Marker
+                            snippetText += qName;
+                        } else {
+                            // Don't draw marker yet: edit snippet text and continue iteration
+                            drawMarker = false;
+                            snippetText += qName + "\n";
+                        }
+                    }
+                    if (drawMarker){
+                        // Set up  marker options: position, title, icon and snippet
+                        MarkerOptions markerOptions = new MarkerOptions()
+                            .position(accPos)
+                            .title(accName)
+                            .snippet(snippetText)
+                            .icon(BitmapDescriptorFactory.fromResource(
+                                    R.drawable.marker_important_32));
+
+                        // Add the marker to the map
+                        map.addMarker(markerOptions);
+                        snippetText = "";
+                    }
+
+                } catch (JSONException jsonerr) {
+                    jsonerr.printStackTrace();
+                }
+            }// End of loop
+        }
+
+    }
+
+
+
+
+
+
+
+
+    /**
+     * This class' execute method sends an asynchronous http request to the server
+     * and draws Account markers on post-execute
+     */
+    public class OffTargetAccountsAsyncHttpRequest extends AsyncTask<Void, Void, JSONArray> {
 
         @Override
         protected JSONArray doInBackground(Void... params) {
 
             // Retrieve user identification from global variables
             int userId = ((AtacticApplication)MapActivity.this.getApplication()).getUserId();
-            Log.d("AccountsHttpRequest", "User ID: " + userId);
+            Log.d("OffTgtAccountsRequest", "User ID: " + userId);
 
             // Send Http request and receive JSON response
             String response = HttpRequestHandler.sendAccountListRequest(userId);
-            Log.d("AccountsHttpRequest", "JSON Response: " + response);
+            Log.d("OffTgtAccountsRequest", "JSON Response: " + response);
 
             // Return JSON array containing the data to show in the view
             try {
@@ -169,10 +270,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             drawAccountMarkers(JSONResponse);
         }
 
-        /**
-         *
-         * @param accounts
-         */
+
         private void drawAccountMarkers(JSONArray accounts){
             Log.d("drawAccountMarkers", accounts.length() + " markers to draw");
             try {
@@ -182,77 +280,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     // Parse account information to display from JSON array
                     JSONObject accountObj = accounts.getJSONObject(i);
                     // int accId = accountObj.getInt("id");
-                    String accName =accountObj.getString("name");
-                    LatLng accPos = new LatLng(accountObj.getDouble("latitude"),
+                    String accName = accountObj.getString("name");
+                    LatLng accPos = new LatLng(
+                            accountObj.getDouble("latitude"),
                             accountObj.getDouble("longitude"));
-                    JSONArray participations = accountObj.getJSONArray("participations");
 
                     // Set up  marker options: position and title
                     MarkerOptions markerOptions = new MarkerOptions()
                             .position(accPos)
                             .title(accName);
 
-                    /*
-                     * Iterate through all participationTargets associated to the account.
-                     * For each participation, check if the campaign is active (not paused),
-                     * started and not yet finished.
-                     */
-                    ArrayList<String> actionableQuestNames = new ArrayList<>();
-                    for (int j=0; j < participations.length(); j++) {
-                        // Analyzing the participation of an account in campaigns (as a target)
-                        JSONObject p = participations.getJSONObject(j);
-                        boolean accountChecked  = p.getInt("checked")==1;
-                        boolean participationIncomplete = p.getJSONObject("participation").getInt("currentStep")
-                                < p.getJSONObject("participation").getInt("totalSteps");
-
-                        JSONObject q = p.getJSONObject("participation").getJSONObject("campaign");
-
-                        String qName = q.getString("name");
-                        String qStatus = q.getString("status");
-                        String qStartDate = q.getString("startDate").split("T")[0];
-                        String qEndDate = q.getString("endDate").split("T")[0];
-
-                        SimpleDateFormat sdf = new SimpleDateFormat();
-                        sdf.applyLocalizedPattern("yyyy-MM-dd");
-
-                        Date startDate = sdf.parse(qStartDate, new ParsePosition(0));
-                        Date endDate = sdf.parse(qEndDate, new ParsePosition(0));
-                        Date now = Calendar.getInstance().getTime();
-
-                        if (qStatus.compareTo("STATUS_ACTIVE")==0 &
-                                now.compareTo(startDate) >=0 &
-                                now.compareTo(endDate)<=0 &
-                                participationIncomplete &
-                                !accountChecked){
-
-                            if (!actionableQuestNames.contains(qName))
-                                actionableQuestNames.add(qName);
-                        }
-                    }
-                    // An account will be highlighted in case it's the target of at least one
-                    // active targeted campaign
-                    boolean highlight = actionableQuestNames.size() > 0;
-
-                    // Set the icon
-                    BitmapDescriptor markerIcon;
-                    if (highlight){
-                        // Set icon for highlighted targets
-                        markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.marker_important_32);
-
-                        // Set up snippet text for highlighted targets
-                        String snippetText = "";
-                        for (int j=0; j < actionableQuestNames.size(); j++){
-                            String questName = actionableQuestNames.get(j);
-
-                            Log.d("drawAccountMarkers", "Quest name: " + questName);
-                            snippetText = snippetText + " - " + questName;
-                        }
-                        markerOptions.snippet(snippetText);
-                    }else{
-                        // Non-highlighted marker icon
-                        // markerIcon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
-                        markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.marker_neutral_24g);
-                    }
+                    BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(
+                            R.drawable.marker_neutral_24g);
 
                     // Add the marker to the map
                     markerOptions.icon(markerIcon);

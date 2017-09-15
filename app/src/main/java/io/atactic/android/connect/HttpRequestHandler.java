@@ -27,10 +27,11 @@ public class HttpRequestHandler {
     private static final String RSC_AUTH = "/auth";
     private static final String RSC_QUESTS = "/quest";
     private static final String RSC_ACCOUNTS = "/account";
-    private static final String RSC_CHECKIN = "/activity";
-    private static final String RSC_TARGETS= "/target/query";
+    private static final String RSC_CHECKIN = "/checkin";
+    private static final String RSC_NEARBY_ACCOUNTS= "/account/nearby";
+    private static final String RSC_TARGETS= "/target/u";
     private static final String RSC_PROFILE = "/profile";
-    private static final String RSC_RANKING = "/ranking";
+    private static final String RSC_RANKING = "/game/ranking";
 
     private static final String LOG_TAG = "HttpRequest";
 
@@ -79,7 +80,7 @@ public class HttpRequestHandler {
                 response.setResponseCode(responseCode);
 
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    // This would launch an IOException if response code is higher than 400!
+                    // This would launch an IOException if response code were greater than 400!
                     String responseMessage = readStreamContent(connection.getInputStream());
                     Log.d("AuthenticationRequest", "Response content: " + responseMessage);
                     response.setOk(true);
@@ -154,7 +155,8 @@ public class HttpRequestHandler {
      * @return
      */
     public static String sendQuestListRequest(int userId){
-        URL url = buildUrl(RSC_QUESTS + "/" + userId);
+        URL url = buildUrl(RSC_QUESTS + "?uid=" + userId);
+
         Log.d(LOG_TAG,url.toString());
 
         HttpURLConnection urlConnection = null;
@@ -176,12 +178,16 @@ public class HttpRequestHandler {
     }
 
     /**
+     * Returns OFF-TARGET accounts only.
      *
      * @param userId
      * @return JSON block
      */
     public static String sendAccountListRequest(int userId){
-        URL url = buildUrl(RSC_ACCOUNTS + "/" + userId);
+        URL url = buildUrl(RSC_ACCOUNTS
+                + "?uid=" + userId
+                + "&offtgtonly=true" );
+
         Log.d(LOG_TAG,url.toString());
 
         HttpURLConnection urlConnection = null;
@@ -201,6 +207,32 @@ public class HttpRequestHandler {
         }
         return null;
     }
+
+
+    public static String sendRequestForActiveTargets(int userId){
+        URL url = buildUrl(RSC_TARGETS
+                + "?uid=" + userId );
+
+        Log.d(LOG_TAG,url.toString());
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                String responseContent = readStreamContent(urlConnection.getInputStream());
+
+                return responseContent;
+            }
+
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
+        }
+        return null;
+    }
+
 
     /**
      *
@@ -208,7 +240,7 @@ public class HttpRequestHandler {
      * @return
      */
     public static JSONObject sendUserProfileRequest(int userId){
-        URL url = buildUrl(RSC_PROFILE + "/" + userId);
+        URL url = buildUrl(RSC_PROFILE + "?uid=" + userId);
         Log.d(LOG_TAG,url.toString());
 
         HttpURLConnection urlConnection = null;
@@ -231,8 +263,8 @@ public class HttpRequestHandler {
 
     public static JSONArray sendEligibleTargetsRequest(int userId, float usrPosLat, float usrPosLon){
 
-        URL url = buildUrl(RSC_TARGETS
-                + "?userId=" + userId
+        URL url = buildUrl(RSC_NEARBY_ACCOUNTS
+                + "?uid=" + userId
                 + "&usrLat=" + usrPosLat
                 + "&usrLon=" + usrPosLon);
 
@@ -259,7 +291,7 @@ public class HttpRequestHandler {
 
 
     public static JSONArray sendRankingRequest(int userId){
-        URL url = buildUrl(RSC_RANKING + "/" + userId);
+        URL url = buildUrl(RSC_RANKING + "?uid=" + userId);
         Log.d(LOG_TAG,url.toString());
 
         HttpURLConnection urlConnection = null;
