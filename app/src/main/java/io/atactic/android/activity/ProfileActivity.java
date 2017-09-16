@@ -26,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView userScoreTextView;
 
     private LinearLayout rankingWidgetBar;
+    private LinearLayout closeSessionBar;
 
     private BottomNavigationView bottomNavigationBar;
 
@@ -35,13 +36,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_profile);
 
         // Store references to views
-        userPortraitImageView = (ImageView)findViewById(R.id.iv_user_portrait);
-        userNameTextView = (TextView)findViewById(R.id.tv_user_name);
-        userPositionTextView = (TextView) findViewById(R.id.tv_user_position);
-        userScoreTextView = (TextView) findViewById(R.id.tv_user_score);
+        userPortraitImageView = findViewById(R.id.iv_user_portrait);
+        userNameTextView = findViewById(R.id.tv_user_name);
+        userPositionTextView = findViewById(R.id.tv_user_position);
+        userScoreTextView = findViewById(R.id.tv_user_score);
 
-        rankingWidgetBar = (LinearLayout)findViewById(R.id.ll_ranking);
+        rankingWidgetBar = findViewById(R.id.ll_ranking);
         rankingWidgetBar.setOnClickListener(this);
+        closeSessionBar = findViewById(R.id.ll_close_session);
+        closeSessionBar.setOnClickListener(this);
 
         /*
          * Get the reference to the bottom navigation bar. Update click listener and selected item
@@ -60,6 +63,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (v.getId() == R.id.ll_ranking){
             // Toast.makeText(this, "Ranking clicked", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(ProfileActivity.this, RankingActivity.class);
+            startActivity(i);
+
+        }else if (v.getId() == R.id.ll_close_session){
+            Intent i = new Intent(ProfileActivity.this, SimpleLoginActivity.class);
             startActivity(i);
         }
     }

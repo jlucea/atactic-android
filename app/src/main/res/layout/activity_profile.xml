@@ -8,11 +8,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
+    <!-- Header -->
     <LinearLayout
+        android:id="@+id/header_user_profile"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="240dp"
+        android:background="@color/atactic_medium_dark_gray">
 
         <!-- Section header -->
 
@@ -22,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            android:src="@drawable/icon_user_32x32" />
+            android:src="@drawable/img_userpic_128"
+            android:tint="@color/White"/>
 
         <TextView
             android:id="@+id/tv_user_name"
@@ -30,6 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
+            android:textColor="@color/White"
+            android:text="Userame Here"
+            android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"/>
 
@@ -38,22 +44,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp" />
+            android:textColor="@color/White"
+            android:layout_marginTop="3dp"
+            android:textAlignment="center"
+            android:text="User position goes here"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tv_user_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp"
             android:visibility="invisible"/>
+
+    </LinearLayout> <!-- End of header -->
+
+
+    <!-- Setting options -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/header_user_profile">
 
         <!-- Separator -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="32dp"
             android:background="#B6B6B6" />
 
         <!-- Bar: ranking -->
@@ -65,12 +82,12 @@
             android:clickable="true"
             android:layout_marginStart="42dp"
             android:layout_marginEnd="14dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/icon_ranking"
@@ -79,7 +96,7 @@
                     android:layout_marginEnd="24dp"
                     android:layout_centerVertical="true"
                     android:tint="@color/atactic_dark_gray"
-                    android:src="@drawable/icon_trophy_36" />
+                    android:src="@drawable/icon_trophy_32" />
 
                 <TextView
                     android:id="@+id/tv_ranking"
@@ -89,7 +106,7 @@
                     android:layout_centerVertical="true"
                     android:textColor="@color/Black"
                     android:textSize="16sp"
-                    android:text="@string/title_activity_ranking" />
+                    android:text="Consultar ranking" />
 
             </RelativeLayout>
 
@@ -99,21 +116,19 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
             android:background="#B6B6B6" />
-
 
         <!-- Bar: settings -->
         <LinearLayout
+            android:id="@+id/ll_close_session"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:clickable="true"
             android:layout_marginStart="42dp"
             android:layout_marginEnd="14dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -126,7 +141,7 @@
                     android:layout_marginEnd="24dp"
                     android:layout_centerVertical="true"
                     android:tint="@color/atactic_dark_gray"
-                    android:src="@drawable/icon_settings_36" />
+                    android:src="@drawable/icon_logout_32" />
 
                 <TextView
                     android:id="@+id/tv_settings"
@@ -136,7 +151,7 @@
                     android:layout_centerVertical="true"
                     android:textColor="@color/Black"
                     android:textSize="16sp"
-                    android:text="Ajustes" />
+                    android:text="Cerrar sesión" />
 
             </RelativeLayout>
 
@@ -146,8 +161,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
             android:background="#B6B6B6" />
 
     </LinearLayout>

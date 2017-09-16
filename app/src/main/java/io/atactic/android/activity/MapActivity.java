@@ -200,13 +200,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     boolean drawMarker = true;
                     if (j<targets.length()-1) {
                         int nextAccId = targets.getJSONObject(j+1).getJSONObject("account").getInt("id");
+
                         if (accId != nextAccId) {
                             // Draw Marker
                             snippetText += qName;
                         } else {
                             // Don't draw marker yet: edit snippet text and continue iteration
                             drawMarker = false;
-                            snippetText += qName + "\n";
+                            snippetText += qName + ", ";
                         }
                     }
                     if (drawMarker){

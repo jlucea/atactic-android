@@ -30,11 +30,11 @@
             android:layout_marginStart="18dp"
             android:layout_width="92dp"
             android:layout_height="92dp"
-            auto:arc_finished_color="@color/atactic_space_cadet_blue"
+            auto:arc_finished_color="@color/atactic_brighter_red"
             auto:arc_unfinished_color="@color/atactic_silver"
-            auto:arc_stroke_width="6dp"
-            auto:arc_bottom_text_size="12sp"
-            auto:arc_text_color="@color/atactic_space_cadet_blue"/>
+            auto:arc_stroke_width="5dp"
+            auto:arc_bottom_text_size="13sp"
+            auto:arc_text_color="@color/atactic_medium_dark_gray"/>
 
         <LinearLayout
             android:layout_width="match_parent"
