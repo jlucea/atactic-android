@@ -34,7 +34,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
             android:textColor="@color/White"
-            android:text="Userame Here"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"/>
@@ -47,7 +46,6 @@
             android:textColor="@color/White"
             android:layout_marginTop="3dp"
             android:textAlignment="center"
-            android:text="User position goes here"
             android:textSize="14sp"/>
 
         <TextView

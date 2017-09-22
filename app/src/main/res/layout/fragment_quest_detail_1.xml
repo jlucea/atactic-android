@@ -18,7 +18,8 @@
             android:layout_marginStart="45dp"
             android:layout_marginEnd="22dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/icon_user_32" />
+            android:src="@drawable/icon_user_32"
+            android:tint="@color/atactic_dark_gray"/>
 
         <TextView
             android:id="@+id/tv_questdetail_owner"
@@ -29,6 +30,7 @@
             android:textSize="13sp"
             android:paddingTop="2dp"
             android:text="Quest administrator name"
+            android:lineSpacingExtra="6dp"
             android:layout_gravity="center_vertical"
             />
 
@@ -39,7 +41,7 @@
         android:layout_width="90sp"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:paddingTop="1dp"
+        android:paddingTop="0dp"
         android:text="Administrador"
         android:textSize="12sp"
         android:textAlignment="center"
@@ -52,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -60,7 +62,8 @@
             android:layout_marginStart="45dp"
             android:layout_marginEnd="24dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/icon_time_28" />
+            android:tint="@color/atactic_dark_gray"
+            android:src="@drawable/icon_sandclock_32" />
 
         <TextView
             android:id="@+id/tv_questdetail_deadline"
@@ -69,8 +72,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:textSize="13sp"
-            android:text="Quest deadline"
+            android:text="Quest deadline goes here"
             android:paddingTop="2dp"
+            android:lineSpacingExtra="6dp"
             android:layout_gravity="center_vertical"
             />
 
@@ -81,8 +85,8 @@
         android:layout_width="90sp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:paddingTop="1dp"
-        android:text="Fecha límite"
+        android:paddingTop="0dp"
+        android:text="@string/quest_deadline"
         android:textSize="12sp"
         android:textAlignment="center"
         android:layout_gravity="center_vertical"
@@ -93,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -101,7 +105,8 @@
             android:layout_marginStart="45dp"
             android:layout_marginEnd="24dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/icon_reward_28" />
+            android:tint="@color/atactic_dark_gray"
+            android:src="@drawable/icon_coins_32" />
 
         <TextView
             android:id="@+id/tv_questdetail_reward"
@@ -109,9 +114,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="Quest reward"
+            android:text="Quest score goes here"
             android:textSize="13sp"
             android:paddingTop="2dp"
+            android:lineSpacingExtra="6dp"
             android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
@@ -121,8 +127,8 @@
         android:layout_width="90sp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:paddingTop="2dp"
-        android:text="Puntuación"
+        android:paddingTop="1dp"
+        android:text="@string/quest_score"
         android:textSize="12sp"
         android:textAlignment="center"
         android:layout_gravity="center_vertical"

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.atactic.android.R;
@@ -116,16 +117,19 @@ public class QuestDetailActivity extends AppCompatActivity {
         formattedDeadline = "";
         String endDateStr = unformattedDeadline.split("T")[0];
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat();
-            sdf.applyLocalizedPattern("yyyy-MM-dd");
+            SimpleDateFormat parsingDateFormat = new SimpleDateFormat();
+            parsingDateFormat.applyLocalizedPattern("yyyy-MM-dd");
 
-            Date endDate = sdf.parse(endDateStr, new ParsePosition(0));
+            Date endDate = parsingDateFormat.parse(endDateStr, new ParsePosition(0));
             Date now = Calendar.getInstance().getTime();
 
             long timeDiff = endDate.getTime() - now.getTime();
             long daysDiff = TimeUnit.MILLISECONDS.toDays(timeDiff);
 
-            formattedDeadline = sdf.format(endDate) + "\n" + "Quedan "+daysDiff+" días";
+            // SimpleDateFormat writingDateFormat = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", Locale.getDefault());
+            SimpleDateFormat writingDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+            formattedDeadline = writingDateFormat.format(endDate) + "\n" + "Quedan "+daysDiff+" días";
             // questDeadlineTextView.setText(sdf.format(endDate) + "\n" + "Quedan "+daysDiff+" días");
 
         }catch (Exception e){

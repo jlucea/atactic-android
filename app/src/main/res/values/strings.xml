@@ -21,6 +21,11 @@
         completions."
     </string>
 
+    <!-- Quest detail -->
+    <string name="quest_admin">Administrador</string>
+    <string name="quest_deadline">Fecha límite</string>
+    <string name="quest_score">Puntuación</string>
+
     <!-- Section header titles -->
     <string name="title_activity_quest_list">Campañas</string>
     <string name="title_activity_quest_detail">Campaña</string>

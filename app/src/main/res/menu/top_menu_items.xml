@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
 
     <item
-        android:id="@+id/profile_button"
-        android:orderInCategory="1"
-        android:title="Mi perfil" />
+        android:id="@+id/btn_daily_route"
+        android:icon="@drawable/icon_navbar_map_24"
+        android:iconTint="@color/White"
+        auto:showAsAction="always"
+        android:orderInCategory="0"
+        android:title="Ruta" />
 
     <!--
     <item
