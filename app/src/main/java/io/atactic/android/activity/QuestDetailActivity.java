@@ -1,6 +1,7 @@
 package io.atactic.android.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,18 +16,23 @@ import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.atactic.android.R;
+import io.atactic.android.connect.HttpRequestHandler;
+import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.QuestDetailDescriptionFragment;
 import io.atactic.android.element.QuestDetailGeneralFragment;
+import io.atactic.android.element.QuestDetailTargetsFragment;
 
 public class QuestDetailActivity extends AppCompatActivity {
 
@@ -39,7 +45,9 @@ public class QuestDetailActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    private int participationId;
     private String qNameStr;
+    private String qTypeStr;
     private String qBriefingStr;
     private int current;
     private int goal;
@@ -49,6 +57,9 @@ public class QuestDetailActivity extends AppCompatActivity {
     String rewardText;
 
     String longDescription;
+
+    QuestDetailTargetsFragment fragment3;
+    ViewPagerAdapter fragmentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +80,10 @@ public class QuestDetailActivity extends AppCompatActivity {
             }
         });
 
-
         /*
          * Get info to display from intent variables
          */
+        int userId = ((AtacticApplication)QuestDetailActivity.this.getApplication()).getUserId();
         readQuestData(getIntent());
 
         /*
@@ -85,25 +96,41 @@ public class QuestDetailActivity extends AppCompatActivity {
 
         // Set up multi-tab panel
         viewPager = findViewById(R.id.viewpager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        fragmentAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         QuestDetailGeneralFragment fragment1 = new QuestDetailGeneralFragment(
                 questOwner, formattedDeadline, rewardText);
         QuestDetailDescriptionFragment fragment2 = new QuestDetailDescriptionFragment(
                 longDescription);
 
-        adapter.addFragment(fragment1, "General");
-        adapter.addFragment(fragment2,"Descripción");
+        fragmentAdapter.addFragment(fragment1, "General");
+        fragmentAdapter.addFragment(fragment2, "Descripción");
 
-        viewPager.setAdapter(adapter);
+
+        if ("TARGETED".equals(qTypeStr)) {
+            fragment3 = new QuestDetailTargetsFragment();
+            fragmentAdapter.addFragment(fragment3, "Objetivos");
+            new QuestTargetsHttpRequest().execute(new QuestTargetsRequestParams(userId, participationId));
+        }
+
+        viewPager.setAdapter(fragmentAdapter);
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
+    /**
+     * Reads the quest data to display from the Intent and stores it
+     * in the local String variable
+     *
+     * @param intent
+     */
     private void readQuestData(Intent intent){
+
+        participationId = intent.getIntExtra("participationId",0);
+
         // Header info
         qNameStr = intent.getStringExtra("questName");
+        qTypeStr = intent.getStringExtra("questType");
         qBriefingStr = intent.getStringExtra("questSummary");
 
         // Data to display on ArcProgress view
@@ -130,7 +157,6 @@ public class QuestDetailActivity extends AppCompatActivity {
             SimpleDateFormat writingDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
             formattedDeadline = writingDateFormat.format(endDate) + "\n" + "Quedan "+daysDiff+" días";
-            // questDeadlineTextView.setText(sdf.format(endDate) + "\n" + "Quedan "+daysDiff+" días");
 
         }catch (Exception e){
             // Log.(e);
@@ -175,6 +201,48 @@ public class QuestDetailActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+
+
+    private class QuestTargetsRequestParams {
+        int userId;
+        int participationId;
+
+        public QuestTargetsRequestParams(int uid, int pid){
+            this.userId = uid;
+            this.participationId = pid;
+        }
+
+    }
+
+    public class QuestTargetsHttpRequest extends AsyncTask<QuestTargetsRequestParams, Void, String> {
+
+        @Override
+        protected String doInBackground(QuestTargetsRequestParams... params) {
+
+            // Retrieve user identification from global variables
+            int userId = params[0].userId;
+            int participationId = params[0].participationId;
+
+            return HttpRequestHandler.sendRequestForParticipationargets(userId, participationId);
+        }
+
+        @Override
+        protected void onPostExecute(String jsonArray) {
+            Log.d("QuestTargetsHttpRequest", "JSON array received: " + jsonArray);
+
+            try {
+                JSONArray targets = new JSONArray(jsonArray);
+
+                fragment3.setContent(targets);
+
+
+            }catch (JSONException err){
+                Log.e("QuestTargetsHttpRequest","Error while parsing targets array", err);
+            }
+
+        }
+    }
+
 
 
 }

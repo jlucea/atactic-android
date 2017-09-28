@@ -69,7 +69,7 @@ public class QuestListActivity extends AppCompatActivity
         questListRecyclerView.setHasFixedSize(true);
 
         /*
-         * Instantiate adapter. The adapter is responsible for linking the quest data
+         * Instantiate fragmentAdapter. The fragmentAdapter is responsible for linking the quest data
          * with the Views that will display quest data.
          */
         adapter = new QuestListAdapter(this);
@@ -95,9 +95,10 @@ public class QuestListActivity extends AppCompatActivity
     @Override
     public void onListItemClick(int clickedItemIdex) {
         try {
-            // Recover and parse quest data, which are held in the adapter
+            // Recover and parse quest data, which are held in the fragmentAdapter
             JSONObject quest = adapter.getQuest(clickedItemIdex);
             String questName = quest.getJSONObject("campaign").getString("name");
+            String questType = quest.getJSONObject("campaign").getString("type");
             String questSummary = quest.getJSONObject("campaign").getString("summary");
             String questLongDesc = quest.getJSONObject("campaign").getString("description");
             String questDeadline = quest.getJSONObject("campaign").getString("endDate");
@@ -111,12 +112,14 @@ public class QuestListActivity extends AppCompatActivity
             int totalSteps = quest.getInt("totalSteps");
             int visitScore = quest.getJSONObject("campaign").getInt("visitScore");
             int completionScore = quest.getJSONObject("campaign").getInt("completionScore");
+            int participationId = quest.getInt("participationId");
 
             // Toast.makeText(this, "Quest " + questName + " clicked", Toast.LENGTH_SHORT).show();
 
             // Create an intent and put the quest information to display in the detail view
             Intent i = new Intent(QuestListActivity.this, QuestDetailActivity.class);
             i.putExtra("questName", questName);
+            i.putExtra("questType", questType);
             i.putExtra("questSummary", questSummary);
             i.putExtra("questDeadline", questDeadline);
             i.putExtra("questLongDesc", questLongDesc);
@@ -124,6 +127,7 @@ public class QuestListActivity extends AppCompatActivity
             i.putExtra("totalSteps", totalSteps);
             i.putExtra("visitScore",visitScore);
             i.putExtra("completionScore",completionScore);
+            i.putExtra("participationId",participationId);
 
             String questOwner = questOwnerFirstName + " " + questOwnerLastName
                     + "\n" + questOwnerPosition;
@@ -172,7 +176,7 @@ public class QuestListActivity extends AppCompatActivity
             // TODO else show NO QUESTS WHERE FOUND();
 
             // Say hello
-            //String username = ((AtacticApplication)QuestListActivity.this.getApplication()).getUserName();
+            // String username = ((AtacticApplication)QuestListActivity.this.getApplication()).getUserName();
             // Toast.makeText(QuestListActivity.this, "Hello "+username, Toast.LENGTH_LONG).show();
         }
 

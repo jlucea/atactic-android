@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="12dp">
+
+    <ImageView
+        android:id="@+id/img_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_gravity="center"
+        android:src="@drawable/marker_important_32" />
+
+    <TextView
+        android:id="@+id/tv_target_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Recommended target goes here"
+        android:textColor="@color/atactic_dark_gray"
+        android:textSize="16sp" />
+
+</LinearLayout>

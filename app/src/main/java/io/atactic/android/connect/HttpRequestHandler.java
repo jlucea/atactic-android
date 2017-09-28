@@ -32,6 +32,7 @@ public class HttpRequestHandler {
     private static final String RSC_CHECKIN = "/checkin";
     private static final String RSC_NEARBY_ACCOUNTS= "/account/nearby";
     private static final String RSC_TARGETS= "/target/u";
+    private static final String RSC_QUEST_TARGETS= "/target/p";
     private static final String RSC_PROFILE = "/profile";
     private static final String RSC_RANKING = "/game/ranking";
     private static final String RSC_PATH= "/path/short";
@@ -215,6 +216,31 @@ public class HttpRequestHandler {
     public static String sendRequestForActiveTargets(int userId){
         URL url = buildUrl(RSC_TARGETS
                 + "?uid=" + userId );
+
+        Log.d(LOG_TAG,url.toString());
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                String responseContent = readStreamContent(urlConnection.getInputStream());
+
+                return responseContent;
+            }
+
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
+        }
+        return null;
+    }
+
+    public static String sendRequestForParticipationargets(int userId, int participationId){
+        URL url = buildUrl(RSC_QUEST_TARGETS
+                + "?uid=" + userId
+                + "&pid=" + participationId);
 
         Log.d(LOG_TAG,url.toString());
 
