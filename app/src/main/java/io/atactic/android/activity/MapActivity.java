@@ -1,14 +1,20 @@
 package io.atactic.android.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -26,18 +32,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
 import io.atactic.android.R;
 import io.atactic.android.connect.HttpRequestHandler;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.element.AtacticApplication;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap map;
     private FusedLocationProviderClient locationProvider;
@@ -45,6 +45,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private static final int ZOOM_LEVEL = 16;
 
     private static final String LOG_TAG = "MapActivity";
+
+    private LatLng userLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         BottomNavigationView bottomNavigationBar = findViewById(R.id.bottom_navigation);
         bottomNavigationBar.setSelectedItemId(R.id.action_map);
         bottomNavigationBar.setOnNavigationItemSelectedListener(
-            BottomNavigationBarClickListenerFactory.getClickListener(getBaseContext(),
+                BottomNavigationBarClickListenerFactory.getClickListener(getBaseContext(),
                         this.getClass()));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -72,7 +75,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         FloatingActionButton myFab = findViewById(R.id.fab_checkin);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(MapActivity.this,CheckInActivity.class);
+                Intent i = new Intent(MapActivity.this, CheckInActivity.class);
                 startActivity(i);
             }
         });
@@ -102,29 +105,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             // This should display user's location as a blue dot icon and an accuracy radius
             map.setMyLocationEnabled(true);
 
-            // We can also add a custom marker representing user's position
             locationProvider.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
 
-                    if (location!=null) {
-                        LatLng usrLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    if (location != null) {
+                        userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                        /*
-                        BitmapDescriptor usrIcon =
-                                BitmapDescriptorFactory.fromResource(R.drawable.marker_user_42);
-                        map.addMarker(new MarkerOptions()
-                                .position(usrLatLng)
-                                .icon(usrIcon));
-                        */
-                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(usrLatLng, ZOOM_LEVEL));
-                    }else{
-                        Log.w(LOG_TAG,"User location is NULL");
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, ZOOM_LEVEL));
+                    } else {
+                        Log.w(LOG_TAG, "User location is NULL");
                     }
                 }
+
             });
 
-        }catch (SecurityException se){
+
+        } catch (SecurityException se) {
             // TODO Promt user for permission
             se.printStackTrace();
         }
@@ -135,8 +132,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         // Send an asynchronous request to get live targets
         new ActiveTargetsAsyncHttpRequest().execute();
     }
-
-
 
 
     /**
@@ -177,8 +172,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
          */
         private void drawAccountMarkers(JSONArray targets) {
 
-            String snippetText ="";
-            for (int j=0; j < targets.length(); j++) {
+            String snippetText = "";
+            for (int j = 0; j < targets.length(); j++) {
                 try {
                     JSONObject tgt = targets.getJSONObject(j);
                     JSONObject account = tgt.getJSONObject("account");
@@ -198,8 +193,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     */
 
                     boolean drawMarker = true;
-                    if (j<targets.length()-1) {
-                        int nextAccId = targets.getJSONObject(j+1).getJSONObject("account").getInt("id");
+                    if (j < targets.length() - 1) {
+                        int nextAccId = targets.getJSONObject(j + 1).getJSONObject("account").getInt("id");
 
                         if (accId != nextAccId) {
                             // Draw Marker
@@ -210,14 +205,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                             snippetText += qName + ", ";
                         }
                     }
-                    if (drawMarker){
+                    if (drawMarker) {
                         // Set up  marker options: position, title, icon and snippet
                         MarkerOptions markerOptions = new MarkerOptions()
-                            .position(accPos)
-                            .title(accName)
-                            .snippet(snippetText)
-                            .icon(BitmapDescriptorFactory.fromResource(
-                                    R.drawable.marker_important_32));
+                                .position(accPos)
+                                .title(accName)
+                                .snippet(snippetText)
+                                .icon(BitmapDescriptorFactory.fromResource(
+                                        R.drawable.marker_important_32));
 
                         // Add the marker to the map
                         map.addMarker(markerOptions);
@@ -233,12 +228,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
 
-
-
-
-
-
-
     /**
      * This class' execute method sends an asynchronous http request to the server
      * and draws Account markers on post-execute
@@ -249,7 +238,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         protected JSONArray doInBackground(Void... params) {
 
             // Retrieve user identification from global variables
-            int userId = ((AtacticApplication)MapActivity.this.getApplication()).getUserId();
+            int userId = ((AtacticApplication) MapActivity.this.getApplication()).getUserId();
             Log.d("OffTgtAccountsRequest", "User ID: " + userId);
 
             // Send Http request and receive JSON response
@@ -260,7 +249,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             try {
                 return new JSONArray(response);
 
-            }catch (JSONException ex){
+            } catch (JSONException ex) {
                 ex.printStackTrace();
                 return null;
             }
@@ -272,11 +261,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
 
 
-        private void drawAccountMarkers(JSONArray accounts){
+        private void drawAccountMarkers(JSONArray accounts) {
             Log.d("drawAccountMarkers", accounts.length() + " markers to draw");
             try {
                 // Iterate through JSON Array objects (accounts)
-                for(int i=0; i<accounts.length(); i++) {
+                for (int i = 0; i < accounts.length(); i++) {
 
                     // Parse account information to display from JSON array
                     JSONObject accountObj = accounts.getJSONObject(i);
@@ -299,14 +288,109 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                     map.addMarker(markerOptions);
                 }
 
-            }catch (JSONException jsonerr){
+            } catch (JSONException jsonerr) {
                 Log.e("drawAccountMarkers", jsonerr.getMessage());
             }
         }
 
     }
 
-/*
+
+    public class GeneratePathAsyncHttpRequest extends AsyncTask<Void, Void, JSONArray> {
+
+        private int NUMBER_OF_WAYPOINTS = 4;
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+
+            // Retrieve user identification from global variables
+            int userId = ((AtacticApplication) MapActivity.this.getApplication()).getUserId();
+            Log.d("GeneratePathAsync", "User ID: " + userId);
+
+            // Send Http request and receive JSON response
+            String response = HttpRequestHandler.sendRequestForRecommendedRoute(userId,
+                    (float)userLocation.latitude, (float)userLocation.longitude, NUMBER_OF_WAYPOINTS);
+
+            Log.d("GeneratePathAsync", "JSON Response: " + response);
+
+            // Return JSON array containing the data to show in the view
+            try {
+                return new JSONArray(response);
+
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray JSONResponse) {
+            // Build Uri for Google Maps intent call
+            Uri googleMapsUri = buildGoogleMapsUri(JSONResponse);
+
+            if (googleMapsUri != null) {
+                // Prepare intent
+                Intent intent = new Intent(Intent.ACTION_VIEW, googleMapsUri);
+                intent.setPackage("com.google.android.apps.maps");
+                try {
+                    startActivity(intent);
+
+                } catch (ActivityNotFoundException ex) {
+                    try {
+                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, googleMapsUri);
+                        startActivity(unrestrictedIntent);
+
+                    } catch (ActivityNotFoundException innerEx) {
+                        Toast.makeText(getBaseContext(), "Please install a maps application",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+        }
+
+        // Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=18.519513,73.868315&destination=18.518496,73.879259&waypoints=18.520561,73.872435|18.519254,73.876614|18.52152,73.877327|18.52019,73.879935&travelmode=driving");
+        /**
+         * Currently assuming number of waypoints > 2
+         *
+         * @param waypointsJSON
+         * @return
+         */
+        private Uri buildGoogleMapsUri(JSONArray waypointsJSON){
+
+            String mapsBaseUri = "https://www.google.com/maps/dir/?api=1";
+            String originParam = "&origin=" + (float)userLocation.latitude + "," + (float)userLocation.longitude;
+            String waypointsParam = "&waypoints=";
+            String destinationParam = "&destination=";
+            String travelModeParam = "&travelmode=driving";
+
+            Uri gmmIntentUri;
+            try {
+                for (int i = 0; i < waypointsJSON.length(); i++) {
+                    double lat = waypointsJSON.getJSONObject(i).getDouble("latitude");
+                    double lon = waypointsJSON.getJSONObject(i).getDouble("longitude");
+                    if (i == waypointsJSON.length() - 1) {
+                        destinationParam += lat + "," + lon;
+                    } else {
+                        waypointsParam += lat + "," + lon;
+                        if (i < waypointsJSON.length() - 2) waypointsParam += "|";
+                    }
+                }
+
+                gmmIntentUri = Uri.parse(mapsBaseUri + originParam + destinationParam + waypointsParam + travelModeParam);
+                Log.d("buildGoogleMapsUri", "URI =" + gmmIntentUri.toString());
+
+            }catch (JSONException err){
+                Log.e("GeneratePathAsync", err.getMessage());
+                Toast.makeText(getBaseContext(),"Se ha producido un error al calcular la ruta", Toast.LENGTH_LONG).show();
+                gmmIntentUri = null;
+            }
+            return gmmIntentUri;
+        }
+
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Use AppCompatActivity's method getMenuInflater to get a handle on the top_menu_items inflater
@@ -317,16 +401,37 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.profile_button) {
-            Intent i = new Intent(MapActivity.this, ProfileActivity.class);
-            startActivity(i);
-            return true;
+        if (id == R.id.btn_daily_route) {
+            /*
+            Toast.makeText(MapActivity.this,
+                    "Route button pressed", Toast.LENGTH_SHORT).show();
+            */
+            Log.v("MapActivity","Route button pressed");
+
+            if (userLocation != null) {
+
+                String usrPosLong = String.valueOf(userLocation.longitude);
+                String usrPosLat = String.valueOf(userLocation.latitude);
+
+                /*
+                Toast.makeText(MapActivity.this,
+                        "Long=" + usrPosLong + ", Lat=" + usrPosLat, Toast.LENGTH_SHORT).show();
+                */
+                Log.d("MapActivity","User location: " + "Long=" + usrPosLong + ", Lat=" + usrPosLat);
+
+                new GeneratePathAsyncHttpRequest().execute();
+
+            }else{
+                Toast.makeText(MapActivity.this,
+                        "User location unknown", Toast.LENGTH_SHORT).show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
-*/
+
 }

@@ -19,9 +19,9 @@ import java.util.Scanner;
 
 public class HttpRequestHandler {
 
-    private static final String API_SERVER = "http://api.atactic.io";   // Jelastic server
+    // private static final String API_SERVER = "http://api.atactic.io";   // Jelastic server
     // private static final String API_SERVER = "http://env-6775033.jelastic.cloudhosted.es";   // Jelastic server
-    // private static final String API_SERVER = "http://10.0.2.2:8080";        // Emulating machine IP
+    private static final String API_SERVER = "http://10.0.2.2:8080";        // Emulating machine IP
     // private static final String API_SERVER = "http://192.168.1.35:8080";  // Local server IP within WiFi network
 
     private static final String API_ROOT = "/mobile/rsc";
@@ -34,6 +34,7 @@ public class HttpRequestHandler {
     private static final String RSC_TARGETS= "/target/u";
     private static final String RSC_PROFILE = "/profile";
     private static final String RSC_RANKING = "/game/ranking";
+    private static final String RSC_PATH= "/path/short";
 
     private static final String LOG_TAG = "HttpRequest";
 
@@ -234,6 +235,35 @@ public class HttpRequestHandler {
         }
         return null;
     }
+
+
+    public static String sendRequestForRecommendedRoute(int userId, float usrLat, float usrLon, int waypoints){
+        URL url = buildUrl(RSC_PATH
+                + "?uid=" + userId
+                + "&lat=" + usrLat
+                + "&lon=" + usrLon
+                + "&waypoints=" + waypoints);
+
+        Log.d(LOG_TAG,url.toString());
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                String responseContent = readStreamContent(urlConnection.getInputStream());
+
+                return responseContent;
+            }
+
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
+        }
+        return null;
+    }
+
 
 
     /**

@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.net.HttpURLConnection;
+
 import io.atactic.android.R;
 import io.atactic.android.connect.HttpRequestHandler;
 import io.atactic.android.connect.LoginResponse;
@@ -79,8 +81,10 @@ public class SimpleLoginActivity extends AppCompatActivity {
         // private final String userToken;
         private int userId;
 
+        private LoginResponse response;
+
         private int error;
-        private final static int ERR_NULL_RESPONSE = 10;
+        private final static int ERR_NULL_RESPONSE = -1;
         private final static int ERR_WRONG_CREDENTIALS = 401;
 
         UserLoginTask(String email, String password) {
@@ -93,7 +97,7 @@ public class SimpleLoginActivity extends AppCompatActivity {
             Log.v("UserLoginTask", "Calling HttpRequestHandler.sendAuthenticationRequest");
 
             // Send Http request attempting login based on credentials
-            LoginResponse response = HttpRequestHandler.sendAuthenticationRequest(mEmail,mPassword);
+            response = HttpRequestHandler.sendAuthenticationRequest(mEmail,mPassword);
 
             if (response !=null ){
                 Log.d("UserLoginTask", "Http response received");
@@ -109,12 +113,10 @@ public class SimpleLoginActivity extends AppCompatActivity {
                         Log.e("UserLoginTask","Error parsing user id from response", nfe);
                     }
                 }else{
-                    Log.d("UserLoginTask", "Http response received NOT ok");
-                    error = ERR_WRONG_CREDENTIALS;
+                    Log.w("UserLoginTask", "Http response received NOT ok");
                 }
             }else{
                 Log.e(LOG_TAG,"NULL response from authentication service");
-                error = ERR_NULL_RESPONSE;
             }
             return false;
         }
@@ -122,7 +124,7 @@ public class SimpleLoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             if (success) {
-                Log.v("UserLoginTask", "Executing OnPostExecute after success");
+                Log.v("UserLoginTask", "onPostExecute login success");
                 Log.d("UserLoginTask", "User ID = " + userId);
 
                 ((AtacticApplication)SimpleLoginActivity.this.getApplication()).setUserId(userId);
@@ -133,18 +135,25 @@ public class SimpleLoginActivity extends AppCompatActivity {
                 Intent i = new Intent(SimpleLoginActivity.this, QuestListActivity.class);
                 startActivity(i);
             }else{
-                Log.v("UserLoginTask", "onPostExecute failure scenario");
+                Log.v("UserLoginTask", "onPostExecute login failure");
                 loginButton.setEnabled(true);
 
-                if (error == ERR_NULL_RESPONSE){
+                if (response == null){
+                    Log.e("UserLoginTask", "Null response");
                     Toast.makeText(SimpleLoginActivity.this,
                             R.string.no_login_connection, Toast.LENGTH_LONG).show();
-                }else if(error == ERR_WRONG_CREDENTIALS){
-                    Toast.makeText(SimpleLoginActivity.this,
-                            R.string.failed_login, Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(SimpleLoginActivity.this,
-                            R.string.unknown_error, Toast.LENGTH_SHORT).show();
+                    Log.d("UserLoginTask", "Response Code = " + response.getResponseCode());
+                    if(response.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED){
+                        Toast.makeText(SimpleLoginActivity.this,
+                                R.string.failed_login, Toast.LENGTH_LONG).show();
+                    }else if (response.getResponseCode() == HttpURLConnection.HTTP_BAD_GATEWAY) {
+                        Toast.makeText(SimpleLoginActivity.this,
+                                R.string.no_login_connection, Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(SimpleLoginActivity.this,
+                                R.string.unknown_error, Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
