@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -30,14 +29,12 @@ import io.atactic.android.element.AtacticApplication;
 public class CheckInActivity extends AppCompatActivity {
 
     private EditText commentsTextField;
-    private TextView userLocationTextView;
+    // private TextView userLocationTextView;
     private Spinner accountSpinnerView;
     private Button checkInButton;
 
     private float userLocationLatitude;
     private float userLocationLongitude;
-
-    private FusedLocationProviderClient locationProvider;
 
     private static final String LOG_TAG = "CheckInActivity";
 
@@ -50,10 +47,10 @@ public class CheckInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Store local references to screen views
-        checkInButton = (Button)findViewById(R.id.btn_checkIn);
-        accountSpinnerView = (Spinner)findViewById(R.id.spinner_account);
-        commentsTextField = (EditText)findViewById(R.id.et_comments);
-        userLocationTextView = (TextView)findViewById(R.id.tv_user_position);
+        checkInButton = findViewById(R.id.btn_checkIn);
+        accountSpinnerView = findViewById(R.id.spinner_account);
+        commentsTextField = findViewById(R.id.et_comments);
+        // userLocationTextView = findViewById(R.id.tv_user_position);
 
         /*
          * Add a click listener to the button that will call the checkIn method,
@@ -67,7 +64,7 @@ public class CheckInActivity extends AppCompatActivity {
         checkInButton.setClickable(false);
 
         // Get user's location (latitude and longitude)
-        locationProvider = LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(this);
         try {
             locationProvider.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -78,8 +75,10 @@ public class CheckInActivity extends AppCompatActivity {
                                 // TODO Work with DOUBLE precision position
                                 userLocationLongitude = (float)location.getLongitude();
                                 userLocationLatitude = (float)location.getLatitude();
+                                /*
                                 userLocationTextView.setText(userLocationLatitude + " , "
                                     + userLocationLongitude);
+                                */
 
                                 Log.d(LOG_TAG,"User LATITUDE: " + userLocationLatitude);
                                 Log.d(LOG_TAG,"User LONGITUDE: " + userLocationLongitude);
@@ -100,7 +99,7 @@ public class CheckInActivity extends AppCompatActivity {
                     " Device location will probably be unavailable.");
             Log.w("LOG_TAG", se);
 
-            /**
+            /*
              * Currently the app doesn't allow a user to check-in in his location is unavailable.
              *
              * TODO check if proximityRequirement for check-in is disabled. If it is, allow the user to report a non-geolocated check-in.
@@ -198,7 +197,7 @@ public class CheckInActivity extends AppCompatActivity {
 
 
 
-    public class EligibleTargetsHttpRequest extends AsyncTask<Void, Void, JSONArray>{
+    private class EligibleTargetsHttpRequest extends AsyncTask<Void, Void, JSONArray>{
 
         @Override
         protected JSONArray doInBackground(Void... params) {
@@ -223,7 +222,7 @@ public class CheckInActivity extends AppCompatActivity {
 
                 // Parse eligible accounts JSON block and populate spinner
                 String[] accountDescriptors = parseAccounts(eligibleAccountsJsonArray);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
                         accountSpinnerView.getContext(),
                         R.layout.support_simple_spinner_dropdown_item);
                 adapter.addAll(accountDescriptors);

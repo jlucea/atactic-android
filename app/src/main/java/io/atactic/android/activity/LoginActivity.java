@@ -340,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         ((AtacticApplication)LoginActivity.this.getApplication()).setPassword(mPassword);
                         return true;
                     }catch(NumberFormatException nfe){
-                        Log.e("UserLoginTask","Error parsing user id from response", nfe);
+                        Log.e("UserLoginAsyncTask","Error parsing user id from response", nfe);
                     }
                 }
             }

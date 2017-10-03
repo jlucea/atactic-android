@@ -18,7 +18,24 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_quest_list"
             android:layout_height="match_parent"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:visibility="gone"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center">
+
+            <ProgressBar
+                android:id="@+id/questlist_loading_indicator"
+                style="?android:attr/progressBarStyle"
+                android:indeterminate="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:visibility="gone" />  <!-- Change to visible to show in the design screen -->
+
+        </FrameLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_checkin"

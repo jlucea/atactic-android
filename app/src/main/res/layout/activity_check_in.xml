@@ -2,95 +2,119 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="io.atactic.android.activity.CheckInActivity"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="48dp"
-    android:layout_marginStart="32dp"
-    android:layout_marginEnd="32dp"
     android:orientation="vertical">
 
-    <!-- Target account: label + input field -->
+    <!-- Header -->
     <LinearLayout
+        android:id="@+id/layout_checkin_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="120dp"
+        android:background="@color/atactic_medium_dark_gray"
+        android:orientation="vertical">
 
-        <!-- Label -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/checkin_account" />
-
-        <!-- Account selector (drop-down list) -->
-        <Spinner
-            android:id="@+id/spinner_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_marginStart="42dp" />
-
-        <!--
-        <EditText
-            android:id="@+id/et_account_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_marginStart="42dp"/>
-         -->
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_clipboard_512"
+            android:tint="@color/White" />
 
     </LinearLayout>
 
-    <!-- Comments: label + input field -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="12dp">
-
-        <!-- Label -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/checkin_comments" />
-
-        <!-- EditText block for comments -->
-        <EditText
-            android:id="@+id/et_comments"
-            android:layout_width="match_parent"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_height="164dp" />
-
-    </LinearLayout>
-
-
+    <!-- Body -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="vertical" >
+
+        <!-- Target account: label + input field -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkin_account" />
+
+            <!-- Account selector (drop-down list) -->
+            <Spinner
+                android:id="@+id/spinner_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_marginStart="42dp" />
+
+            <!--
+            <EditText
+                android:id="@+id/et_account_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_marginStart="42dp"/>
+             -->
+
+        </LinearLayout>
+
+        <!-- Comments: label + input field -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp">
+
+            <!-- Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkin_comments" />
+
+            <!-- EditText block for comments -->
+            <EditText
+                android:id="@+id/et_comments"
+                android:layout_width="match_parent"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_height="160dp"
+                android:textAlignment="textStart"
+                android:inputType="textMultiLine" />
+
+        </LinearLayout>
 
         <!-- Check in button -->
         <Button
             android:id="@+id/btn_checkIn"
-            android:layout_width="128dp"
-            android:layout_height="64dp"
+            android:layout_width="168dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="96dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/atactic_bright_red"
+            android:textColor="@color/White"
             android:text="@string/checkin_button" />
 
-        <!-- User location coordinates -->
-        <TextView
-            android:id="@+id/tv_user_position"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
-            android:layout_gravity="center"
-            android:textSize="14sp"  />
 
-    </LinearLayout>
+            <!-- User location coordinates -->
+            <!--
+            <TextView
+                android:id="@+id/tv_user_position"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="72dp"
+                android:layout_gravity="center"
+                android:textSize="14sp"  />
+                -->
+
+        </LinearLayout>
 
 </LinearLayout>

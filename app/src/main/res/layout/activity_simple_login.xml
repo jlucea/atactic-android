@@ -10,12 +10,29 @@
     android:orientation="vertical"
     android:background="@color/atactic_medium_dark_gray">
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="30dp">
+
+        <ProgressBar
+            android:id="@+id/login_progress_bar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:visibility="gone" />  <!-- Change to visible to show in the design screen -->
+
+    </FrameLayout>
+
     <ImageView
         android:id="@+id/login_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="58dp"
+        android:layout_marginTop="0dp"
         android:layout_marginBottom="26dp"
         android:src="@drawable/img_atactic_logo_dark3" />
 

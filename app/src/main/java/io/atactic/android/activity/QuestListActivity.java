@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -41,22 +42,27 @@ public class QuestListActivity extends AppCompatActivity
 
     private QuestListAdapter adapter;
 
+    private ProgressBar loadingIndicator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest_list);
 
+        loadingIndicator = findViewById(R.id.questlist_loading_indicator);
+        loadingIndicator.setVisibility(View.VISIBLE);
+
         /*
          * Get the reference to the bottom navigation bar and add an ItemSelectedListener
          */
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_quests);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 BottomNavigationBarClickListenerFactory.getClickListener(getBaseContext(),
                         this.getClass()));
 
         // Get reference to the RecyclerView component
-        questListRecyclerView = (RecyclerView) findViewById(R.id.rv_quest_list);
+        questListRecyclerView = findViewById(R.id.rv_quest_list);
 
         // Set the layout manager for the RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -173,6 +179,9 @@ public class QuestListActivity extends AppCompatActivity
             if (questData != null && questData.length() > 0) {
                 adapter.setQuestListData(questData);
             }
+            loadingIndicator.setVisibility(View.GONE);
+            questListRecyclerView.setVisibility(View.VISIBLE);
+
             // TODO else show NO QUESTS WHERE FOUND();
 
             // Say hello
