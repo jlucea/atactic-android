@@ -22,7 +22,7 @@ public class HttpRequestHandler {
     private static final String API_SERVER = "http://api.atactic.io";                           // Jelastic server
     // private static final String API_SERVER = "http://env-6775033.jelastic.cloudhosted.es";   // Jelastic server
     // private static final String API_SERVER = "http://10.0.2.2:8080";                         // Emulating machine IP
-    // private static final String API_SERVER = "http://192.168.1.35:8080";                     // Local server IP within WiFi network
+    // private static final String API_SERVER = "http://192.168.1.37:8080";                     // Local server IP within WiFi network
 
     private static final String API_ROOT = "/mobile/rsc";
 
@@ -236,10 +236,41 @@ public class HttpRequestHandler {
         return null;
     }
 
-    public static String sendRequestForParticipationargets(int userId, int participationId){
+    public static String sendRequestForActiveTargets(int userId, float usrPosLat, float usrPosLon){
+        URL url = buildUrl(RSC_TARGETS
+                + "?uid=" + userId
+                + "&usrLat=" + usrPosLat
+                + "&usrLon=" + usrPosLon);
+
+        Log.d(LOG_TAG,url.toString());
+
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                String responseContent = readStreamContent(urlConnection.getInputStream());
+
+                return responseContent;
+            }
+
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
+        }
+        return null;
+    }
+
+
+
+    public static String sendRequestForParticipationargets(int userId, int participationId,
+                                                   float usrPosLatitude, float usrPosLongitude){
         URL url = buildUrl(RSC_QUEST_TARGETS
                 + "?uid=" + userId
-                + "&pid=" + participationId);
+                + "&pid=" + participationId
+                + "&usrLat=" + usrPosLatitude
+                + "&usrLon=" + usrPosLongitude);
 
         Log.d(LOG_TAG,url.toString());
 

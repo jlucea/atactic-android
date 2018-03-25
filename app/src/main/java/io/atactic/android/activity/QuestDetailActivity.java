@@ -1,6 +1,7 @@
 package io.atactic.android.activity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,7 +88,7 @@ public class QuestDetailActivity extends AppCompatActivity {
         /*
          * Get info to display from intent variables
          */
-        int userId = ((AtacticApplication)QuestDetailActivity.this.getApplication()).getUserId();
+        final int userId = ((AtacticApplication)QuestDetailActivity.this.getApplication()).getUserId();
         readQuestData(getIntent());
 
         /*
@@ -108,9 +113,46 @@ public class QuestDetailActivity extends AppCompatActivity {
 
 
         if ("TARGETED".equals(qTypeStr)) {
+
             fragment3 = new QuestDetailTargetsFragment();
             fragmentAdapter.addFragment(fragment3, "Objetivos");
-            new QuestTargetsHttpRequest().execute(new QuestTargetsRequestParams(userId, participationId));
+
+            // Get user's location (latitude and longitude)
+            FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(this);
+            try {
+                locationProvider.getLastLocation()
+                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    // TODO Work with DOUBLE precision position
+                                    float userLocationLongitude = (float) location.getLongitude();
+                                    float userLocationLatitude = (float) location.getLatitude();
+                                    /*
+                                    userLocationTextView.setText(userLocationLatitude + " , "
+                                        + userLocationLongitude);
+                                    */
+                                    /*
+                                    Log.d(LOG_TAG, "User LATITUDE: " + userLocationLatitude);
+                                    Log.d(LOG_TAG, "User LONGITUDE: " + userLocationLongitude);
+                                    */
+
+                                    new QuestTargetsHttpRequest().execute(new QuestTargetsRequestParams(
+                                            userId, participationId,
+                                            userLocationLatitude, userLocationLongitude));
+                                }
+                            }
+                        });
+            }catch(SecurityException se){
+                Log.w("LOG_TAG", "Security exception caught.·);" +
+                        " Device location will probably be unavailable.");
+                Log.w("LOG_TAG", se);
+
+                Toast.makeText(QuestDetailActivity.this,
+                        R.string.err_no_user_location, Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
 
         viewPager.setAdapter(fragmentAdapter);
@@ -206,10 +248,14 @@ public class QuestDetailActivity extends AppCompatActivity {
     private class QuestTargetsRequestParams {
         int userId;
         int participationId;
+        float userLocationLatitude;
+        float userLocationLongitude;
 
-        public QuestTargetsRequestParams(int uid, int pid){
+        public QuestTargetsRequestParams(int uid, int pid, float lat, float lon){
             this.userId = uid;
             this.participationId = pid;
+            this.userLocationLatitude = lat;
+            this.userLocationLongitude = lon;
         }
 
     }
@@ -223,7 +269,8 @@ public class QuestDetailActivity extends AppCompatActivity {
             int userId = params[0].userId;
             int participationId = params[0].participationId;
 
-            return HttpRequestHandler.sendRequestForParticipationargets(userId, participationId);
+            return HttpRequestHandler.sendRequestForParticipationargets(userId, participationId,
+                    params[0].userLocationLatitude, params[0].userLocationLongitude);
         }
 
         @Override
@@ -234,7 +281,7 @@ public class QuestDetailActivity extends AppCompatActivity {
                 JSONArray targets = new JSONArray(jsonArray);
 
                 fragment3.setContent(targets);
-
+                fragmentAdapter.notifyDataSetChanged();
 
             }catch (JSONException err){
                 Log.e("QuestTargetsHttpRequest","Error while parsing targets array", err);

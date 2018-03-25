@@ -63,6 +63,7 @@ public class QuestDetailTargetsFragment extends Fragment {
 
 
     public void setContent(JSONArray content){
+
         this.questTargetsJSONArray = content;
     }
 

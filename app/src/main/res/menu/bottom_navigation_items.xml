@@ -10,6 +10,13 @@
         android:title="@string/navbar_quests" />
 
     <item
+        android:id="@+id/action_priorities"
+        android:enabled="true"
+        android:checked="false"
+        android:icon="@drawable/icon_target_24"
+        android:title="@string/navbar_targets" />
+
+    <item
         android:id="@+id/action_map"
         android:enabled="true"
         android:checked="false"

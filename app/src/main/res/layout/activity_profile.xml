@@ -40,6 +40,7 @@
 
         <TextView
             android:id="@+id/tv_user_position"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -98,13 +99,14 @@
 
                 <TextView
                     android:id="@+id/tv_ranking"
+                    style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/icon_ranking"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/Black"
-                    android:textSize="16sp"
-                    android:text="Consultar ranking" />
+                    android:layout_toEndOf="@id/icon_ranking"
+                    android:text="Consultar ranking"
+                    android:textColor="@color/atactic_dark_gray"
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 
@@ -143,12 +145,13 @@
 
                 <TextView
                     android:id="@+id/tv_settings"
+                    style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/icon_settings"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/Black"
-                    android:textSize="16sp"
+                    android:textColor="@color/atactic_dark_gray"
+                    android:textSize="15sp"
                     android:text="Cerrar sesión" />
 
             </RelativeLayout>

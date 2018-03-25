@@ -28,10 +28,12 @@ public class TargetListAdapter extends RecyclerView.Adapter<TargetListAdapter.Re
     @Override
     public void onBindViewHolder(RecommendedTargetViewHolder holder, int position) {
         try {
-            String accountName = targetsJSONArray.getJSONObject(position)
-                    .getJSONObject("account").getString("name");
+            JSONObject ptgtJSON = targetsJSONArray.getJSONObject(position);
+            JSONObject ptJSON = null;
+            if (ptgtJSON.has("participation"))
+                ptJSON = ptgtJSON.getJSONObject("participation");
 
-            holder.setTargetData(accountName);
+            holder.setTargetData(ptgtJSON.getJSONObject("account"), ptJSON);
 
         }catch (JSONException jse){
             jse.printStackTrace();
@@ -56,23 +58,59 @@ public class TargetListAdapter extends RecyclerView.Adapter<TargetListAdapter.Re
     }
 
 
+    /**
+     * ViewHolder for a target object
+     */
     public class RecommendedTargetViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView targetIconImageView;
         private TextView targetNameTextView;
-
+        private TextView targetAddressTextView;
+        private TextView targetScoreTextView;
+        private TextView distanceToTargetTextView;
 
         public RecommendedTargetViewHolder(View itemView) {
             super(itemView);
 
             targetIconImageView = itemView.findViewById(R.id.img_target);
             targetNameTextView = itemView.findViewById(R.id.tv_target_name);
+            targetAddressTextView = itemView.findViewById(R.id.tv_target_address);
+            targetScoreTextView = itemView.findViewById(R.id.tv_target_score);
+            distanceToTargetTextView = itemView.findViewById(R.id.tv_distance_to_target);
+
         }
 
-        public void setTargetData(String targetName){
-            targetNameTextView.setText(targetName);
-        }
+        public void setTargetData(JSONObject accountObj, JSONObject participationObj){
+            try {
+                // Parse data to display from JSON object
+                String targetNameStr = accountObj.getString("name");
+                String fullAddressStr = accountObj.getString("address")
+                        + ", " + accountObj.getString("postalCode")
+                        + ", " + accountObj.getString("city");
 
+                Double d = accountObj.getDouble("distance");
+                int dInt = Math.round(d.floatValue());
+                String distanceToTargetStr = Integer.toString(dInt) + " m";
+
+                if (participationObj != null) {
+                    String targetScoreStr = Integer.toString(participationObj.getJSONObject("campaign")
+                            .getInt("visitScore"));
+                    targetScoreTextView.setText(targetScoreStr);
+                    targetScoreTextView.setVisibility(View.VISIBLE);
+                }else{
+                    targetScoreTextView.setVisibility(View.INVISIBLE);
+                }
+
+                // Fill views with data
+                targetNameTextView.setText(targetNameStr);
+                targetAddressTextView.setText(fullAddressStr);
+                distanceToTargetTextView.setText(distanceToTargetStr);
+
+            }catch (JSONException err) {
+                targetNameTextView.setText("- - -");
+                targetAddressTextView.setText("");
+            }
+        }
 
     }
 

@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import io.atactic.android.R;
+import io.atactic.android.activity.PriorityListActivity;
 import io.atactic.android.activity.ProfileActivity;
 import io.atactic.android.activity.QuestListActivity;
 import io.atactic.android.activity.MapActivity;
@@ -14,8 +16,8 @@ import io.atactic.android.activity.MapActivity;
 
 public class BottomNavigationBarClickListener implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    Context context;
-    Class currentActivity;
+    private Context context;
+    private Class currentActivity;
 
     protected BottomNavigationBarClickListener(Context context, Class currentActivity){
         this.context = context;
@@ -49,6 +51,11 @@ public class BottomNavigationBarClickListener implements BottomNavigationView.On
             case R.id.action_profile:
                 // Toast.makeText(context, "Profile icon clicked", Toast.LENGTH_SHORT).show();
                 destination = ProfileActivity.class;
+                break;
+
+            case R.id.action_priorities:
+                // Toast.makeText(context, "Priorities icon clicked", Toast.LENGTH_SHORT).show();
+                destination = PriorityListActivity.class;
                 break;
         }
 

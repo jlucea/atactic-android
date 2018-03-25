@@ -28,8 +28,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private LinearLayout rankingWidgetBar;
     private LinearLayout closeSessionBar;
 
-    private BottomNavigationView bottomNavigationBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
