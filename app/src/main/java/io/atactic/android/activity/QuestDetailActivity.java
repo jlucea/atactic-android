@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.atactic.android.R;
-import io.atactic.android.connect.HttpRequestHandler;
+import io.atactic.android.network.request.ParticipationTargetsRequest;
 import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.QuestDetailDescriptionFragment;
 import io.atactic.android.element.QuestDetailGeneralFragment;
@@ -269,7 +269,7 @@ public class QuestDetailActivity extends AppCompatActivity {
             int userId = params[0].userId;
             int participationId = params[0].participationId;
 
-            return HttpRequestHandler.sendRequestForParticipationargets(userId, participationId,
+            return ParticipationTargetsRequest.send(userId, participationId,
                     params[0].userLocationLatitude, params[0].userLocationLongitude);
         }
 

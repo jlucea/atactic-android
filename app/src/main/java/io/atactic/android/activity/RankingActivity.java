@@ -15,7 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.atactic.android.R;
-import io.atactic.android.connect.HttpRequestHandler;
+import io.atactic.android.network.request.RankingRequest;
 import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.RankingAdapter;
 
@@ -65,7 +65,7 @@ public class RankingActivity extends AppCompatActivity {
             // Retrieve user identification from global variables
             int userId = ((AtacticApplication)RankingActivity.this.getApplication()).getUserId();
 
-            return HttpRequestHandler.sendRankingRequest(userId);
+            return RankingRequest.send(userId);
         }
 
         @Override

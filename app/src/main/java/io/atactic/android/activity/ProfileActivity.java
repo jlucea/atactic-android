@@ -14,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.atactic.android.R;
-import io.atactic.android.connect.HttpRequestHandler;
+import io.atactic.android.network.request.UserProfileRequest;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.element.AtacticApplication;
 
@@ -78,7 +78,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             // Retrieve user identification from global variables
             int userId = ((AtacticApplication)ProfileActivity.this.getApplication()).getUserId();
 
-            JSONObject response = HttpRequestHandler.sendUserProfileRequest(userId);
+            JSONObject response = UserProfileRequest.send(userId);
 
             return response;
         }

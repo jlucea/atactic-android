@@ -9,21 +9,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import io.atactic.android.R;
-import io.atactic.android.connect.HttpRequestHandler;
+import io.atactic.android.network.request.ActiveTargetsRequest;
 import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.element.TargetListAdapter;
@@ -114,7 +110,7 @@ public class PriorityListActivity extends AppCompatActivity {
             float usrLon = (float) params[0].usrPosLon;
 
             // Send Http request and receive JSON response
-            String response = HttpRequestHandler.sendRequestForActiveTargets(userId, usrLat, usrLon);
+            String response = ActiveTargetsRequest.send(userId, usrLat, usrLon);
             Log.d("ActiveTargetsRequest", "JSON Response: " + response);
 
             // Return JSON array containing the data to show in the view

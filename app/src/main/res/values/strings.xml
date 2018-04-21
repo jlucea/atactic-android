@@ -5,6 +5,7 @@
     <!-- Strings related to login -->
     <string name="atactic_claim">Objetivos tácticos para vendedores profesionales</string>
     <string name="atactic_claim2">Objetivos y rutas para vendedores profesionales</string>
+    <string name="account_required">Se requiere una cuenta de ATACTIC para acceder.</string>
     <string name="prompt_email">Correo electrónico</string>
     <string name="prompt_password">Contraseña</string>
     <string name="err_login_credentials">Credenciales incorrectas: revise sus datos y vuelva a intentarlo</string>
@@ -20,6 +21,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="img_content_logo">Atactic Logo</string>
+
+
 
     <!-- Quest detail -->
     <string name="quest_admin">Administrador</string>

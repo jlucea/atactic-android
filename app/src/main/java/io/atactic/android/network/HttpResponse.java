@@ -1,4 +1,4 @@
-package io.atactic.android.connect;
+package io.atactic.android.network;
 
 /**
  * Created by Jaime on 7/7/17.
