@@ -4,107 +4,183 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Header -->
-    <LinearLayout
-        android:id="@+id/header_user_profile"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:background="@color/atactic_medium_dark_gray">
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <!-- Section header -->
-
-        <ImageView
-            android:id="@+id/iv_user_portrait"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/img_userpic_128"
-            android:tint="@color/White"/>
-
-        <TextView
-            android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"
-            android:textColor="@color/White"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/tv_user_position"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/White"
-            android:layout_marginTop="3dp"
-            android:textAlignment="center"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:id="@+id/tv_user_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="invisible"/>
-
-    </LinearLayout> <!-- End of header -->
-
-
-    <!-- Setting options -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_below="@id/header_user_profile">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <!-- Separator -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#B6B6B6" />
-
-        <!-- Bar: ranking -->
+        <!-- Header -->
         <LinearLayout
-            android:id="@+id/ll_ranking"
+            android:id="@+id/header_user_profile"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/header_height_large"
+            android:background="@color/atactic_medium_dark_gray">
+
+            <!-- Section header -->
+            <ImageView
+                android:id="@+id/iv_user_portrait"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/vertical_margin_small"
+                android:src="@drawable/img_userpic_128"
+                android:tint="@color/White"/>
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/amethysta"
+                android:text="Jaime Lucea"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:fontFamily="@font/scope_one" />
+
+            <TextView
+                android:id="@+id/tv_user_position"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"
+                android:text="ATACTIC Founder and CEO"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="14sp"
+                tools:fontFamily="@font/amethysta" />
+
+            <TextView
+                android:id="@+id/tv_user_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+        <!-- End of header -->
+
+        <!-- Setting options block no.1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/vertical_margin_smaller"
+            android:background="@color/White"
+            android:orientation="vertical">
+
+            <!-- Separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/atactic_light_gray"  />
+
+            <!-- Bar: ranking -->
+            <LinearLayout
+                android:id="@+id/ll_ranking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginStart="@dimen/horizontal_margin_normal"
+                android:layout_marginEnd="@dimen/horizontal_margin_normal"
+                android:layout_marginTop="@dimen/vertical_margin_smaller"
+                android:layout_marginBottom="@dimen/vertical_margin_smaller">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/icon_ranking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_centerVertical="true"
+                        android:tint="@color/atactic_dark_gray"
+                        android:src="@drawable/icon_trophy_32" />
+
+                    <TextView
+                        android:id="@+id/tv_ranking"
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/icon_ranking"
+                        android:fontFamily="@font/andada"
+                        android:text="@string/check_ranking"
+                        android:textColor="@color/atactic_dark_gray"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <!-- Separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/atactic_light_gray" />
+
+        </LinearLayout>
+        <!-- End of block 1 -->
+
+        <!-- Setting options block no.2 -->
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_margin_smaller"
+        android:background="@color/White"
+        android:orientation="vertical">
+
+        <!-- Layout for the "Change password" settings menu option -->
+        <LinearLayout
+            android:id="@+id/settings_menu_change_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:clickable="true"
-            android:layout_marginStart="42dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp">
+            android:focusable="true"
+            android:layout_marginStart="@dimen/horizontal_margin_normal"
+            android:layout_marginEnd="@dimen/horizontal_margin_normal"
+            android:layout_marginTop="@dimen/vertical_margin_smaller"
+            android:layout_marginBottom="@dimen/vertical_margin_smaller">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/icon_ranking"
+                    android:id="@+id/icon_change_pwd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
                     android:layout_centerVertical="true"
                     android:tint="@color/atactic_dark_gray"
-                    android:src="@drawable/icon_trophy_32" />
+                    android:src="@drawable/icon_settings_36" />
 
                 <TextView
-                    android:id="@+id/tv_ranking"
+                    android:id="@+id/tv_change_password"
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@id/icon_ranking"
-                    android:text="Consultar ranking"
+                    android:layout_toEndOf="@id/icon_change_pwd"
+                    android:fontFamily="@font/andada"
+                    android:text="Cambiar contraseña"
                     android:textColor="@color/atactic_dark_gray"
                     android:textSize="15sp" />
 
@@ -116,19 +192,20 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#B6B6B6" />
+            android:background="@color/atactic_light_gray" />
 
-        <!-- Bar: settings -->
+        <!-- Layout for the "Close session" settings menu option -->
         <LinearLayout
             android:id="@+id/ll_close_session"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:clickable="true"
-            android:layout_marginStart="42dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp">
+            android:focusable="true"
+            android:layout_marginStart="@dimen/horizontal_margin_normal"
+            android:layout_marginEnd="@dimen/horizontal_margin_normal"
+            android:layout_marginTop="@dimen/vertical_margin_smaller"
+            android:layout_marginBottom="@dimen/vertical_margin_smaller" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -150,9 +227,10 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/icon_settings"
                     android:layout_centerVertical="true"
+                    android:fontFamily="@font/andada"
                     android:textColor="@color/atactic_dark_gray"
                     android:textSize="15sp"
-                    android:text="Cerrar sesión" />
+                    android:text="@string/logout" />
 
             </RelativeLayout>
 
@@ -162,10 +240,14 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#B6B6B6" />
+            android:background="@color/atactic_light_gray"  />
 
     </LinearLayout>
 
+
+    </LinearLayout>
+
+    </ScrollView>
 
     <!-- Bottom navigation view -->
     <android.support.design.widget.BottomNavigationView
@@ -176,7 +258,6 @@
         app:itemBackground="@color/sp_darkgray"
         app:itemIconTint="@color/color_state_selector"
         app:itemTextColor="@color/color_state_selector"
-        app:menu="@menu/bottom_navigation_items"
-        />
+        app:menu="@menu/bottom_navigation_items" />
 
 </RelativeLayout>

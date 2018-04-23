@@ -24,8 +24,6 @@
 
     <string name="img_content_logo">Atactic Logo</string>
 
-
-
     <!-- Quest detail -->
     <string name="quest_admin">Administrador</string>
     <string name="quest_deadline">Fecha límite</string>
@@ -58,6 +56,10 @@
     <string name="ranking_score">Puntuación</string>
     <string name="ranking_rank">Posición</string>
 
+    <!-- Profile section -->
+    <string name="check_ranking">Consultar ranking</string>
+    <string name="logout">Cerrar sesión</string>
+
     <!-- Error messages -->
     <string name="err_no_eligible_accounts">No se encontraron objetivos cercanos para reportar
         una visita</string>
@@ -68,5 +70,11 @@
     <!--
     <string name="err_no_eligible_accounts">No accounts eligible for checkin were found</string>
     -->
+
+
+    <string name="sample_text_short">Lorem Ipsun Dolor</string>
+    <string name="sample_text_medium">Lorem Ipsun Dolor Lorem Ipsun Dolor</string>
+    <string name="sample_text_long">
+        Lorem Ipsun Dolor Lorem Ipsun Dolor Lorem Ipsun Dolor Lorem Ipsun Dolor</string>
 
 </resources>
