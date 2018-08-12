@@ -101,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(i);
 
         }else if (v.getId() == R.id.settings_menu_change_password) {
-            Toast.makeText(this, "Change Password clicked", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Change Password clicked", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
             startActivity(i);
 
