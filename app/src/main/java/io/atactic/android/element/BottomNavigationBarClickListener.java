@@ -60,8 +60,9 @@ public class BottomNavigationBarClickListener implements BottomNavigationView.On
         }
 
         if (destination!=currentActivity) {
-            Intent i = new Intent(context, destination);
-            context.startActivity(i);
+            Intent i = new Intent(this.context, destination);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.context.startActivity(i);
 
             return true;
         }else{

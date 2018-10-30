@@ -19,8 +19,8 @@ import java.util.Scanner;
 
 public class HttpRequestHandler {
 
-    private static final String API_SERVER = "http://api.atactic.io";                           // Jelastic server
-    // private static final String API_SERVER = "http://env-6775033.jelastic.cloudhosted.es";   // Jelastic server
+    // private static final String API_SERVER = "http://api.atactic.io";                           // Jelastic server
+    private static final String API_SERVER = "http://env-6775033.jelastic.cloudhosted.es";   // Jelastic server
     // private static final String API_SERVER = "http://10.0.2.2:8080";                         // Emulating machine IP
     // private static final String API_SERVER = "http://192.168.1.37:8080";                     // Local server IP within WiFi network
 
