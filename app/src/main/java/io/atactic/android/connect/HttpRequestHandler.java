@@ -16,6 +16,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
+import io.atactic.android.network.HttpResponse;
+import io.atactic.android.network.LoginResponse;
+
 
 public class HttpRequestHandler {
 
