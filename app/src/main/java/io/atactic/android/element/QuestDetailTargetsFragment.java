@@ -1,6 +1,5 @@
 package io.atactic.android.element;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,13 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import io.atactic.android.R;
-import io.atactic.android.connect.HttpRequestHandler;
 
 /**
  * Created by Jaime on 28/9/17.

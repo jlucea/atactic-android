@@ -22,8 +22,9 @@ import org.json.JSONException;
 import java.net.HttpURLConnection;
 
 import io.atactic.android.R;
-import io.atactic.android.connect.HttpRequestHandler;
-import io.atactic.android.connect.HttpResponse;
+import io.atactic.android.network.request.CheckInEligibleTargetsRequest;
+import io.atactic.android.network.request.CheckInRequest;
+import io.atactic.android.network.HttpResponse;
 import io.atactic.android.element.AtacticApplication;
 
 public class CheckInActivity extends AppCompatActivity {
@@ -170,7 +171,7 @@ public class CheckInActivity extends AppCompatActivity {
         @Override
         protected HttpResponse doInBackground(CheckInParams... params) {
             // Send Http request and receive response
-            HttpResponse response = HttpRequestHandler.sendCheckInHttpRequest(
+            HttpResponse response = CheckInRequest.send(
                     params[0].userId, params[0].accountId, params[0].comments,
                     params[0].latitude,params[0].longitude);
 
@@ -206,7 +207,7 @@ public class CheckInActivity extends AppCompatActivity {
 
             // Send an Http request to the server asking for accounts eligible for checkin,
             // based on the user's location
-            return HttpRequestHandler.sendEligibleTargetsRequest(userId,
+            return CheckInEligibleTargetsRequest.send(userId,
                     userLocationLatitude, userLocationLongitude);
         }
 

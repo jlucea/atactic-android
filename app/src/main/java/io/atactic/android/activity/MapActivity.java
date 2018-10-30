@@ -33,7 +33,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.atactic.android.R;
-import io.atactic.android.connect.HttpRequestHandler;
+import io.atactic.android.network.request.AccountListRequest;
+import io.atactic.android.network.request.ActiveTargetsRequest;
+import io.atactic.android.network.request.RecommendedRouteRequest;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.element.AtacticApplication;
 
@@ -149,7 +151,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Log.d("ActiveTargetsRequest", "User ID: " + userId);
 
             // Send Http request and receive JSON response
-            String response = HttpRequestHandler.sendRequestForActiveTargets(userId);
+            String response = ActiveTargetsRequest.send(userId);
             Log.d("ActiveTargetsRequest", "JSON Response: " + response);
 
             // Return JSON array containing the data to show in the view
@@ -242,7 +244,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Log.d("OffTgtAccountsRequest", "User ID: " + userId);
 
             // Send Http request and receive JSON response
-            String response = HttpRequestHandler.sendAccountListRequest(userId);
+            String response = AccountListRequest.send(userId);
             Log.d("OffTgtAccountsRequest", "JSON Response: " + response);
 
             // Return JSON array containing the data to show in the view
@@ -308,7 +310,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Log.d("GeneratePathAsync", "User ID: " + userId);
 
             // Send Http request and receive JSON response
-            String response = HttpRequestHandler.sendRequestForRecommendedRoute(userId,
+            String response = RecommendedRouteRequest.send(userId,
                     (float)userLocation.latitude, (float)userLocation.longitude, NUMBER_OF_WAYPOINTS);
 
             Log.d("GeneratePathAsync", "JSON Response: " + response);

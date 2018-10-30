@@ -17,10 +17,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.atactic.android.R;
+import io.atactic.android.network.request.QuestListRequest;
 import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.element.QuestListAdapter;
-import io.atactic.android.connect.HttpRequestHandler;
 
 /**
  * This activity holds a recycler view that displays a scrolling list of active quests.
@@ -162,7 +162,7 @@ public class QuestListActivity extends AppCompatActivity
             int userId = ((AtacticApplication)QuestListActivity.this.getApplication()).getUserId();
 
             // Send Http request and receive JSON response
-            String response = HttpRequestHandler.sendQuestListRequest(userId);
+            String response = QuestListRequest.send(userId);
 
             // Return JSON array containing the data to show in the view
             try {

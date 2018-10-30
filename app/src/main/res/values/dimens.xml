@@ -11,4 +11,20 @@
     <dimen name="design_bottom_navigation_text_size" tools:override="true">12sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
 
+    <!-- ATACTIC APP VALUES -->
+
+    <!-- Margins -->
+    <dimen name="horizontal_margin_normal">30dp</dimen>
+    <dimen name="horizontal_margin_large">40dp</dimen>
+
+    <dimen name="vertical_margin_smaller">12dp</dimen>
+    <dimen name="vertical_margin_small">20dp</dimen>
+    <dimen name="vertical_margin_normal">30dp</dimen>
+    <dimen name="vertical_margin_large">40dp</dimen>
+
+    <!-- Header height -->
+    <dimen name="header_height_large">200dp</dimen>
+
+
+
 </resources>

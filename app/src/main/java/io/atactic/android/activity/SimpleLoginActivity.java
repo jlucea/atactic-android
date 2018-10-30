@@ -14,8 +14,8 @@ import android.widget.Toast;
 import java.net.HttpURLConnection;
 
 import io.atactic.android.R;
-import io.atactic.android.connect.HttpRequestHandler;
-import io.atactic.android.connect.LoginResponse;
+import io.atactic.android.network.request.LoginRequest;
+import io.atactic.android.network.LoginResponse;
 import io.atactic.android.element.AtacticApplication;
 
 public class SimpleLoginActivity extends AppCompatActivity {
@@ -99,12 +99,12 @@ public class SimpleLoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Log.v("UserLoginAsyncTask", "Calling HttpRequestHandler.sendAuthenticationRequest");
+            Log.v("UserLoginAsyncTask", "Calling LoginRequest.send");
 
             /*
              * Send Http request attempting login based on credentials
              */
-            response = HttpRequestHandler.sendAuthenticationRequest(mEmail,mPassword);
+            response = LoginRequest.send(mEmail,mPassword);
 
             if (response !=null ){
                 Log.d("UserLoginAsyncTask", "Http response received");
