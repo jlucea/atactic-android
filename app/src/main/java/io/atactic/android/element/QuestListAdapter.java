@@ -137,16 +137,23 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
         public void setContent(JSONObject participationDescription){
             try {
                 /* Parse progress values from JSON object */
+                /*
                 String currentStepStr = participationDescription.getString("currentStep");
                 String totalStepsStr = participationDescription.getString("totalSteps");
                 int curr = Integer.parseInt(currentStepStr);
                 int tot = Integer.parseInt(totalStepsStr);
-                int progress = curr*100/tot;
+                */
+
+                double progress = participationDescription.getDouble("currentProgress");
+
+                System.out.println("Quest progress = " + progress);
+
+                //int progress = curr*100/tot;
                 // System.out.println(curr + "/" + tot + " ("+progress+"%)");
 
                 /* Set progress values on progress indicator view */
-                progressIndicatorView.setBottomText(currentStepStr+"/"+totalStepsStr);
-                progressIndicatorView.setProgress(progress);
+                // progressIndicatorView.setBottomText(currentStepStr+"/"+totalStepsStr);
+                progressIndicatorView.setProgress((int)(progress*100));
 
                 /* Set progress indicator view properties */
                 // progressIndicatorView.setStrokeWidth(18);
@@ -193,9 +200,9 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
                     questDeadlineTextView.setVisibility(View.INVISIBLE);
                 }
 
-                String pointsPerVisit = participationDescription.getJSONObject("campaign")
-                        .getString("visitScore");
-                questScoreTextView.setText(pointsPerVisit);
+                String score = participationDescription.getJSONObject("campaign")
+                        .getString("completionScore");
+                questScoreTextView.setText(score);
 
             }catch (JSONException jsonEx) {
                 jsonEx.printStackTrace();

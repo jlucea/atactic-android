@@ -1,4 +1,4 @@
-package io.atactic.android.connect;
+package io.atactic.android.network.connect;
 
 import android.net.Uri;
 import android.util.Log;

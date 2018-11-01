@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="io.atactic.android.activity.PriorityListActivity">
+    tools:context="io.atactic.android.activity.AccountListActivity">
 
     <!--
     <android.support.design.widget.AppBarLayout
@@ -37,7 +37,7 @@
             android:id="@+id/rv_target_list"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     </FrameLayout>
 

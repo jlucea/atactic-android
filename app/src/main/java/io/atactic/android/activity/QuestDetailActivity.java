@@ -54,8 +54,10 @@ public class QuestDetailActivity extends AppCompatActivity {
     private String qNameStr;
     private String qTypeStr;
     private String qBriefingStr;
-    private int current;
-    private int goal;
+
+    private double currentProgress;
+    // private int current;
+    // private int goal;
 
     String questOwner;
     String formattedDeadline;
@@ -94,8 +96,9 @@ public class QuestDetailActivity extends AppCompatActivity {
         /*
          * Set values for the views in the header
          */
-        progressIndicatorView.setProgress(current*100/goal);
-        progressIndicatorView.setBottomText(current + " / " + goal);
+        progressIndicatorView.setProgress((int)(currentProgress*100));
+        // progressIndicatorView.setBottomText(String.valueOf(currentProgress));
+
         questNameTextView.setText(qNameStr);
         questBriefingTextView.setText(qBriefingStr);
 
@@ -172,12 +175,13 @@ public class QuestDetailActivity extends AppCompatActivity {
 
         // Header info
         qNameStr = intent.getStringExtra("questName");
-        qTypeStr = intent.getStringExtra("questType");
+        // qTypeStr = intent.getStringExtra("questType");
         qBriefingStr = intent.getStringExtra("questSummary");
 
         // Data to display on ArcProgress view
-        current = intent.getIntExtra("currentStep",0);
-        goal = intent.getIntExtra("totalSteps",10);
+        // current = intent.getIntExtra("currentStep",0);
+        // goal = intent.getIntExtra("totalSteps",10);
+        this.currentProgress = intent.getDoubleExtra("currentProgress", 0);
 
         questOwner = intent.getStringExtra("questOwner");
 
@@ -207,9 +211,9 @@ public class QuestDetailActivity extends AppCompatActivity {
         }
 
         // Get reward details
-        int visitScore = intent.getIntExtra("visitScore",0);
-        // int completionScore = intent.getIntExtra("completionScore",0);
-        rewardText = visitScore + " puntos por visita";
+        // int visitScore = intent.getIntExtra("visitScore",0);
+        int completionScore = intent.getIntExtra("completionScore",0);
+        rewardText = completionScore + " puntos por completar la campaña";
 
         longDescription = intent.getStringExtra("questLongDesc");
     }

@@ -23,7 +23,7 @@ public class QuestDetailTargetsFragment extends Fragment {
     // This variable will hold the data to display
     private JSONArray questTargetsJSONArray;
     private RecyclerView targetListRecyclerView;
-    private TargetListAdapter adapter;
+    private AccountListAdapter adapter;
 
     public QuestDetailTargetsFragment(){}
 
@@ -46,14 +46,15 @@ public class QuestDetailTargetsFragment extends Fragment {
         targetListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         targetListRecyclerView.setHasFixedSize(true);
 
-        adapter = new TargetListAdapter();
+        adapter = new AccountListAdapter();
         targetListRecyclerView.setAdapter(adapter);
 
+        /*
         if (questTargetsJSONArray != null) {
             adapter.setContent(questTargetsJSONArray);
         }else{
             Log.w("QuestTargetsFragment", "Operating fragment with NULL data");
-        }
+        } */
         return view;
     }
 

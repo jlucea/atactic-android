@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -43,6 +44,8 @@ public class QuestListActivity extends AppCompatActivity
     private QuestListAdapter adapter;
 
     private ProgressBar loadingIndicator;
+
+    private static final String LOG_TAG = QuestListActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +106,9 @@ public class QuestListActivity extends AppCompatActivity
         try {
             // Recover and parse quest data, which are held in the fragmentAdapter
             JSONObject quest = adapter.getQuest(clickedItemIdex);
+
             String questName = quest.getJSONObject("campaign").getString("name");
-            String questType = quest.getJSONObject("campaign").getString("type");
+            // String questType = quest.getJSONObject("campaign").getString("type");
             String questSummary = quest.getJSONObject("campaign").getString("summary");
             String questLongDesc = quest.getJSONObject("campaign").getString("description");
             String questDeadline = quest.getJSONObject("campaign").getString("endDate");
@@ -114,25 +118,39 @@ public class QuestListActivity extends AppCompatActivity
                     .getString("lastName");
             String questOwnerPosition = quest.getJSONObject("campaign").getJSONObject("owner")
                     .getString("position");
-            int currentStep = quest.getInt("currentStep");
-            int totalSteps = quest.getInt("totalSteps");
-            int visitScore = quest.getJSONObject("campaign").getInt("visitScore");
+            double currentProgress = quest.getDouble("currentProgress");
+
+
+            System.out.println("current progress = " + currentProgress);
+
+            // int currentStep = quest.getInt("currentStep");
+            // int totalSteps = quest.getInt("totalSteps");
+            // int visitScore = quest.getJSONObject("campaign").getInt("visitScore");
             int completionScore = quest.getJSONObject("campaign").getInt("completionScore");
             int participationId = quest.getInt("participationId");
 
             // Toast.makeText(this, "Quest " + questName + " clicked", Toast.LENGTH_SHORT).show();
 
+            //
             // Create an intent and put the quest information to display in the detail view
+            //
             Intent i = new Intent(QuestListActivity.this, QuestDetailActivity.class);
             i.putExtra("questName", questName);
-            i.putExtra("questType", questType);
+
+            i.putExtra("questType", "Type");
+
             i.putExtra("questSummary", questSummary);
             i.putExtra("questDeadline", questDeadline);
             i.putExtra("questLongDesc", questLongDesc);
-            i.putExtra("currentStep", currentStep);
-            i.putExtra("totalSteps", totalSteps);
-            i.putExtra("visitScore",visitScore);
+
+            // i.putExtra("currentStep", 0);
+            // i.putExtra("totalSteps", 0);
+
+            i.putExtra("currentProgress",currentProgress);
+
+            // i.putExtra("visitScore",visitScore);
             i.putExtra("completionScore",completionScore);
+
             i.putExtra("participationId",participationId);
 
             String questOwner = questOwnerFirstName + " " + questOwnerLastName
@@ -164,12 +182,20 @@ public class QuestListActivity extends AppCompatActivity
             // Send Http request and receive JSON response
             String response = QuestListRequest.send(userId);
 
-            // Return JSON array containing the data to show in the view
-            try {
-                return new JSONArray(response);
+            if (response != null) {
+                Log.v(LOG_TAG,"Response received");
 
-            }catch (JSONException ex){
-                ex.printStackTrace();
+                // Return JSON array containing the data to show in the view
+                try {
+                    return new JSONArray(response);
+
+                }catch (JSONException ex){
+                    ex.printStackTrace();
+                    return null;
+                }
+
+            } else {
+                Log.w(LOG_TAG,"No response from server");
                 return null;
             }
         }

@@ -47,7 +47,7 @@
             android:name=".activity.QuestListActivity"
             android:label="@string/title_activity_quest_list" />
         <activity
-            android:name=".activity.PriorityListActivity"
+            android:name=".activity.AccountListActivity"
             android:label="@string/title_activity_target_list" />
         <activity
             android:name=".activity.MapActivity"

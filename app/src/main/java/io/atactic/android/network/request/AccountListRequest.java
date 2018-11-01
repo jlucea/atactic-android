@@ -14,15 +14,14 @@ public class AccountListRequest {
     private static final String LOG_TAG = "AccountListRequest";
 
     /**
-     * Returns OFF-TARGET accounts only.
+     * Returns the full Map of Accounts and Targets for the user.
      *
-     * @param userId
-     * @return JSON block
+     * @param userId User's ID
+     * @return JSON block containing the Map of Accounts and Targets
      */
     public static String send(int userId){
         URL url = NetworkUtils.buildUrl(NetworkConstants.RSC_ACCOUNTS
-                + "?uid=" + userId
-                + "&offtgtonly=true" );
+                + "?uid=" + userId);
 
         Log.d(LOG_TAG,url.toString());
 
@@ -31,15 +30,13 @@ public class AccountListRequest {
             urlConnection = (HttpURLConnection) url.openConnection();
 
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
-                String responseContent = NetworkUtils.readStreamContent(urlConnection.getInputStream());
-
-                return responseContent;
+                return NetworkUtils.readStreamContent(urlConnection.getInputStream());
             }
 
         } catch(IOException ioe) {
             ioe.printStackTrace();
         } finally {
-            urlConnection.disconnect();
+            if (urlConnection != null) urlConnection.disconnect();
         }
         return null;
     }
