@@ -67,9 +67,22 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
             accountNameTextView.setText(account.getName());
             String fullAddress = account.getAddress() + ", " + account.getCity();
             accountAddressTextView.setText(fullAddress);
-            targetScoreTextView.setText("-");
-            distanceToTargetTextView.setText("-");
+            targetScoreTextView.setText("");
+
+            String distanceText = formatDistanceText(account.getDistanceTo());
+            distanceToTargetTextView.setText(distanceText);
         }
+
+        private String formatDistanceText(double distance){
+            String distanceText;
+            if (distance < 1000){
+                distanceText = Math.round(distance) + " m";
+            } else {
+                distanceText = String.format("%.1f Km", distance/100);
+            }
+            return distanceText;
+        }
+
     }
 
 }

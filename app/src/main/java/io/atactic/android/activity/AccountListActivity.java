@@ -12,6 +12,7 @@ import io.atactic.android.R;
 import io.atactic.android.element.AccountListAdapter;
 import io.atactic.android.manager.AccountListDataHandler;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
+import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;
 
 public class AccountListActivity extends AppCompatActivity {
@@ -43,6 +44,9 @@ public class AccountListActivity extends AppCompatActivity {
         // Instantiate Adapter and assign it to the RecyclerView
         this.adapter = new AccountListAdapter();
         accountListRecyclerView.setAdapter(adapter);
+
+        // Activate LocationManager to update the current location
+        LocationManager.getInstance().updateLocation(this);
 
         /*
          * Instantiate Data Handler and request data to display.

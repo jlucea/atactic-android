@@ -2,11 +2,8 @@ package io.atactic.android.manager;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
@@ -18,7 +15,22 @@ import java.security.Permission;
 
 public final class LocationManager implements OnSuccessListener<Location> {
 
+    private static final String LOG_TAG = "LocationManager";
+
+    // Single instance
+    private static LocationManager globalInstance = new LocationManager();
+
     private Location lastKnownLocation;
+
+    /**
+     * Private constructor to restrict instantiation of the class from other classes
+     */
+    private LocationManager(){
+    }
+
+    public static LocationManager getInstance(){
+        return globalInstance;
+    }
 
     /**
      *
@@ -49,23 +61,33 @@ public final class LocationManager implements OnSuccessListener<Location> {
             ActivityCompat.requestPermissions(activity, requiredPermissions, requestCode);
 
         } else {
-            locationProvider.getLastLocation().addOnSuccessListener(this);
+            System.out.println("LocationManager - Permissions OK. Adding onSuccessListener");
+            locationProvider.getLastLocation().addOnSuccessListener(globalInstance);
         }
     }
 
 
-
     public Location getLastKnownLocation(){
+        Log.d(LOG_TAG,"Last known location is "
+                + "Lat = " + lastKnownLocation.getLatitude()
+                + " | Lng = " + lastKnownLocation.getLongitude());
+
         return lastKnownLocation;
     }
 
-    public void requestLocationPermission() {
+    private void requestLocationPermission() {
 
     }
 
 
     @Override
     public void onSuccess(Location location) {
+
+        Log.d(LOG_TAG,"Location updated "
+                + "Lat = " + location.getLatitude()
+                + " | Lng = " + location.getLongitude());
+
         this.lastKnownLocation = location;
     }
+
 }

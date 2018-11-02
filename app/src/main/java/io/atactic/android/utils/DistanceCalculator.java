@@ -1,5 +1,7 @@
 package io.atactic.android.utils;
 
+import android.util.Log;
+
 public class DistanceCalculator {
 
 
@@ -22,5 +24,8 @@ public class DistanceCalculator {
         return dist;
     }
 
+    public static double disfFrom(double lat1, double lng1, double lat2, double lng2) {
+        return distFrom((float)lat1, (float)lng1, (float)lat2, (float)lng2);
+    }
 
 }

@@ -1,17 +1,20 @@
 package io.atactic.android.manager;
 
+import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Comparator;
 import java.util.List;
 
 import io.atactic.android.activity.AccountListActivity;
 import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.model.Account;
 import io.atactic.android.network.request.AccountListRequest;
+import io.atactic.android.utils.DistanceCalculator;
 
 import static io.atactic.android.json.JsonDecoder.decodeAccountList;
 
@@ -20,7 +23,9 @@ import static io.atactic.android.json.JsonDecoder.decodeAccountList;
  */
 public class AccountListDataHandler {
 
+    private static String LOG_TAG = "AccountListDataHandler";
     private AccountListActivity activity;
+
 
     public AccountListDataHandler(AccountListActivity activity){
         this.activity = activity;
@@ -34,7 +39,7 @@ public class AccountListDataHandler {
 
         // Retrieve user id from application variables
         int userId = ((AtacticApplication) this.activity.getApplication()).getUserId();
-        Log.d("ActiveTargetsRequest", "User ID: " + userId);
+        Log.d(LOG_TAG, "User ID: " + userId);
 
         // Instantiate and execute asynchronous Http request task
         new AccountListAsyncHttpRequest(this).execute(userId);
@@ -42,11 +47,38 @@ public class AccountListDataHandler {
 
     private void sendDataToActivity(List<Account> accounts){
         // System.out.println("AccountListDataHandler - Sending data for the Activity to display (" + sublist.size() + " accounts)");
+
+        Location currentLocation = LocationManager.getInstance().getLastKnownLocation();
+        if (currentLocation != null) {
+            accounts = calculateDistances(accounts, currentLocation);
+        }
+
         activity.displayData(accounts);
     }
 
     private void returnErrorMessage(String message){
         activity.displayMessage(message);
+    }
+
+    private List<Account> calculateDistances(List<Account> accounts, Location userLocation){
+
+        for(Account acc: accounts) {
+            double distanceTo = DistanceCalculator.disfFrom(
+                    acc.getLatitude(), acc.getLongitude(),
+                    userLocation.getLatitude(), userLocation.getLongitude());
+
+            acc.setDistanceTo(distanceTo);
+        }
+
+        // Sort by distance
+        accounts.sort(new Comparator<Account>() {
+            @Override
+            public int compare(Account o1, Account o2) {
+                return Double.compare(o1.getDistanceTo(), o2.getDistanceTo());
+            }
+        });
+
+        return accounts;
     }
 
 
@@ -80,7 +112,6 @@ public class AccountListDataHandler {
 
         @Override
         protected void onPostExecute(JSONObject accountAndTargetsMapJSON) {
-            System.out.println("AccountListAsyncHttpRequest - OnPostExecute");
             try {
                 // Decode JSON response into an Account List object
                 List<Account> accountList = decodeAccountList(accountAndTargetsMapJSON);

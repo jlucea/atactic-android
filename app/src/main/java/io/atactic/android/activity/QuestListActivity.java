@@ -121,7 +121,7 @@ public class QuestListActivity extends AppCompatActivity
             double currentProgress = quest.getDouble("currentProgress");
 
 
-            System.out.println("current progress = " + currentProgress);
+            //System.out.println("current progress = " + currentProgress);
 
             // int currentStep = quest.getInt("currentStep");
             // int totalSteps = quest.getInt("totalSteps");
