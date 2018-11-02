@@ -10,23 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.json.JSONArray;
+import java.util.List;
 
 import io.atactic.android.R;
+import io.atactic.android.model.Account;
 
 /**
  * Created by Jaime on 28/9/17.
  */
+public class CampaignTargetsFragment extends Fragment {
 
-public class QuestDetailTargetsFragment extends Fragment {
+    private static final String LOG_TAG = "CampaignTargetsFragment";
 
     // This variable will hold the data to display
-    private JSONArray questTargetsJSONArray;
-    private RecyclerView targetListRecyclerView;
-    private AccountListAdapter adapter;
+    private List<Account> targetList;
 
-    public QuestDetailTargetsFragment(){}
-
+    public CampaignTargetsFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,31 +39,29 @@ public class QuestDetailTargetsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        Log.v("QuestTargetsFragment", "Fragment OnCreateView");
+        Log.v(LOG_TAG, "Fragment OnCreateView");
 
         View view = inflater.inflate(R.layout.fragment_quest_detail_3,container, false);
-        targetListRecyclerView = view.findViewById(R.id.rv_target_list);
+
+        RecyclerView targetListRecyclerView = view.findViewById(R.id.rv_target_list);
         targetListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         targetListRecyclerView.setHasFixedSize(true);
 
-        adapter = new AccountListAdapter();
+        // Link Adapter to RecyclerView
+        AccountListAdapter adapter = new AccountListAdapter();
         targetListRecyclerView.setAdapter(adapter);
 
-        /*
-        if (questTargetsJSONArray != null) {
-            adapter.setContent(questTargetsJSONArray);
+        if (targetList != null) {
+            adapter.setContent(targetList);
         }else{
-            Log.w("QuestTargetsFragment", "Operating fragment with NULL data");
-        } */
+            Log.w(LOG_TAG, "Operating fragment with NULL data");
+        }
         return view;
     }
 
 
-    public void setContent(JSONArray content){
-
-        this.questTargetsJSONArray = content;
+    public void setContent(List<Account> content){
+        this.targetList = content;
     }
-
-
 
 }

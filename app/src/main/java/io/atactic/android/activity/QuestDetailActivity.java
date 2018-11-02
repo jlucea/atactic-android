@@ -1,8 +1,6 @@
 package io.atactic.android.activity;
 
 import android.content.Intent;
-import android.location.Location;
-import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,19 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -33,26 +22,17 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.atactic.android.R;
-import io.atactic.android.network.request.ParticipationTargetsRequest;
-import io.atactic.android.element.AtacticApplication;
+import io.atactic.android.manager.CampaignDataHandler;
+import io.atactic.android.model.Account;
 import io.atactic.android.element.QuestDetailDescriptionFragment;
 import io.atactic.android.element.QuestDetailGeneralFragment;
-import io.atactic.android.element.QuestDetailTargetsFragment;
+import io.atactic.android.element.CampaignTargetsFragment;
 
 public class QuestDetailActivity extends AppCompatActivity {
 
-    private ImageView backImg;
-
-    private ArcProgress progressIndicatorView;
-    private TextView questNameTextView;
-    private TextView questBriefingTextView;
-
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
     private int participationId;
     private String qNameStr;
-    private String qTypeStr;
+    // private String qTypeStr;
     private String qBriefingStr;
 
     private double currentProgress;
@@ -62,10 +42,9 @@ public class QuestDetailActivity extends AppCompatActivity {
     String questOwner;
     String formattedDeadline;
     String rewardText;
-
     String longDescription;
 
-    QuestDetailTargetsFragment fragment3;
+    CampaignTargetsFragment fragment3;
     ViewPagerAdapter fragmentAdapter;
 
     @Override
@@ -76,100 +55,66 @@ public class QuestDetailActivity extends AppCompatActivity {
         /*
          * Get references to the views in the header
          */
-        progressIndicatorView = findViewById(R.id.arc_questdetail_arcprogress);
-        questNameTextView = findViewById(R.id.tv_questdetail_name);
-        questBriefingTextView = findViewById(R.id.tv_questdetail_briefing);
-        backImg = findViewById(R.id.img_back);
+        ArcProgress progressIndicatorView = findViewById(R.id.arc_questdetail_arcprogress);
+        TextView questNameTextView = findViewById(R.id.tv_questdetail_name);
+        TextView questBriefingTextView = findViewById(R.id.tv_questdetail_briefing);
 
-        backImg.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        ImageView backImgButton = findViewById(R.id.img_back);
+        backImgButton.setOnClickListener(v -> finish());
 
         /*
          * Get info to display from intent variables
          */
-        final int userId = ((AtacticApplication)QuestDetailActivity.this.getApplication()).getUserId();
-        readQuestData(getIntent());
+        getCampaignDataFromIntent(getIntent());
 
         /*
          * Set values for the views in the header
          */
         progressIndicatorView.setProgress((int)(currentProgress*100));
-        // progressIndicatorView.setBottomText(String.valueOf(currentProgress));
-
         questNameTextView.setText(qNameStr);
         questBriefingTextView.setText(qBriefingStr);
 
         // Set up multi-tab panel
-        viewPager = findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(R.id.viewpager);
         fragmentAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         QuestDetailGeneralFragment fragment1 = new QuestDetailGeneralFragment(
                 questOwner, formattedDeadline, rewardText);
+
         QuestDetailDescriptionFragment fragment2 = new QuestDetailDescriptionFragment(
                 longDescription);
 
+        fragment3 = new CampaignTargetsFragment();
+
         fragmentAdapter.addFragment(fragment1, "General");
         fragmentAdapter.addFragment(fragment2, "Descripción");
-
-
-        if ("TARGETED".equals(qTypeStr)) {
-
-            fragment3 = new QuestDetailTargetsFragment();
-            fragmentAdapter.addFragment(fragment3, "Objetivos");
-
-            // Get user's location (latitude and longitude)
-            FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(this);
-            try {
-                locationProvider.getLastLocation()
-                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                // Got last known location. In some rare situations this can be null.
-                                if (location != null) {
-                                    // TODO Work with DOUBLE precision position
-                                    float userLocationLongitude = (float) location.getLongitude();
-                                    float userLocationLatitude = (float) location.getLatitude();
-                                    /*
-                                    userLocationTextView.setText(userLocationLatitude + " , "
-                                        + userLocationLongitude);
-                                    */
-                                    /*
-                                    Log.d(LOG_TAG, "User LATITUDE: " + userLocationLatitude);
-                                    Log.d(LOG_TAG, "User LONGITUDE: " + userLocationLongitude);
-                                    */
-
-                                    new QuestTargetsHttpRequest().execute(new QuestTargetsRequestParams(
-                                            userId, participationId,
-                                            userLocationLatitude, userLocationLongitude));
-                                }
-                            }
-                        });
-            }catch(SecurityException se){
-                Log.w("LOG_TAG", "Security exception caught.·);" +
-                        " Device location will probably be unavailable.");
-                Log.w("LOG_TAG", se);
-
-                Toast.makeText(QuestDetailActivity.this,
-                        R.string.err_no_user_location, Toast.LENGTH_LONG).show();
-                finish();
-            }
-        }
+        fragmentAdapter.addFragment(fragment3, "Objetivos");
 
         viewPager.setAdapter(fragmentAdapter);
-        tabLayout = findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        /*
+         * Call CampaignDataHandler to request campaign targets in order to fill the fragment.
+         * Once finished, the DataHandler is supposed to call the displayCampaignTargets method
+         */
+        new CampaignDataHandler(this).getCampaignTargets(participationId);
     }
 
+
+    public void displayCampaignTargets(List<Account> targets){
+        fragment3.setContent(targets);
+        fragmentAdapter.notifyDataSetChanged();
+    }
+
+
     /**
-     * Reads the quest data to display from the Intent and stores it
-     * in the local String variable
+     * Reads the campaign data to display from the Intent and stores them
+     * in the local properties
      *
-     * @param intent
+     * @param intent Intent containing the campaign data to display
      */
-    private void readQuestData(Intent intent){
+    private void getCampaignDataFromIntent(Intent intent){
 
         participationId = intent.getIntExtra("participationId",0);
 
@@ -223,7 +168,7 @@ public class QuestDetailActivity extends AppCompatActivity {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -237,7 +182,7 @@ public class QuestDetailActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
@@ -247,53 +192,6 @@ public class QuestDetailActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-
-
-    private class QuestTargetsRequestParams {
-        int userId;
-        int participationId;
-        float userLocationLatitude;
-        float userLocationLongitude;
-
-        public QuestTargetsRequestParams(int uid, int pid, float lat, float lon){
-            this.userId = uid;
-            this.participationId = pid;
-            this.userLocationLatitude = lat;
-            this.userLocationLongitude = lon;
-        }
-
-    }
-
-    public class QuestTargetsHttpRequest extends AsyncTask<QuestTargetsRequestParams, Void, String> {
-
-        @Override
-        protected String doInBackground(QuestTargetsRequestParams... params) {
-
-            // Retrieve user identification from global variables
-            int userId = params[0].userId;
-            int participationId = params[0].participationId;
-
-            return ParticipationTargetsRequest.send(userId, participationId,
-                    params[0].userLocationLatitude, params[0].userLocationLongitude);
-        }
-
-        @Override
-        protected void onPostExecute(String jsonArray) {
-            Log.d("QuestTargetsHttpRequest", "JSON array received: " + jsonArray);
-
-            try {
-                JSONArray targets = new JSONArray(jsonArray);
-
-                fragment3.setContent(targets);
-                fragmentAdapter.notifyDataSetChanged();
-
-            }catch (JSONException err){
-                Log.e("QuestTargetsHttpRequest","Error while parsing targets array", err);
-            }
-
-        }
-    }
-
 
 
 }

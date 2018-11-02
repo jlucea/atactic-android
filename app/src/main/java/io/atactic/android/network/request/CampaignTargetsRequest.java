@@ -9,27 +9,22 @@ import java.net.URL;
 import io.atactic.android.network.NetworkConstants;
 import io.atactic.android.network.NetworkUtils;
 
-public class ParticipationTargetsRequest {
+public class CampaignTargetsRequest {
 
-    private static final String LOG_TAG = "QuestTargetsRequest";
+    private static final String LOG_TAG = "CampaignTargetsRequest";
 
     /**
      * Get the recommended targets for a given participation id
      *
      * @param userId User's id
      * @param participationId Participation for which targets are requested
-     * @param usrPosLatitude User's latitude
-     * @param usrPosLongitude User's longitude
      * @return JSON block containing the list of targets for the participation
      */
-    public static String send(int userId, int participationId,
-                                float usrPosLatitude, float usrPosLongitude){
+    public static String send(int userId, int participationId){
 
         URL url = NetworkUtils.buildUrl(NetworkConstants.RSC_QUEST_TARGETS
                 + "?uid=" + userId
-                + "&pid=" + participationId
-                + "&usrLat=" + usrPosLatitude
-                + "&usrLon=" + usrPosLongitude);
+                + "&pid=" + participationId);
 
         Log.d(LOG_TAG,url.toString());
 
@@ -38,15 +33,14 @@ public class ParticipationTargetsRequest {
             urlConnection = (HttpURLConnection) url.openConnection();
 
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
-                String responseContent = NetworkUtils.readStreamContent(urlConnection.getInputStream());
-
-                return responseContent;
+                return NetworkUtils.readStreamContent(urlConnection.getInputStream());
             }
 
         } catch(IOException ioe) {
             ioe.printStackTrace();
         } finally {
-            urlConnection.disconnect();
+            if (urlConnection != null)
+                urlConnection.disconnect();
         }
         return null;
     }

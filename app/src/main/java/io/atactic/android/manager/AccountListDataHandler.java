@@ -71,12 +71,7 @@ public class AccountListDataHandler {
         }
 
         // Sort by distance
-        accounts.sort(new Comparator<Account>() {
-            @Override
-            public int compare(Account o1, Account o2) {
-                return Double.compare(o1.getDistanceTo(), o2.getDistanceTo());
-            }
-        });
+        accounts.sort(Comparator.comparingDouble(Account::getDistanceTo));
 
         return accounts;
     }
