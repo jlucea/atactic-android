@@ -37,7 +37,7 @@ public class NetworkConstants {
     public static final String RSC_QUEST_TARGETS= "/account/targets/campaign";
 
     // Check-in resource
-    public static final String RSC_CHECKIN = "/checkin";
+    public static final String RSC_CHECKIN = "/activity/checkin";
 
     // User profile resource
     public static final String RSC_PROFILE = "/user/profile";
