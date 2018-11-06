@@ -32,7 +32,8 @@
     <!-- Section header titles -->
     <string name="title_activity_quest_list">Campañas</string>
     <string name="title_activity_quest_detail">Campaña</string>
-    <string name="title_activity_target_list">Prioridades</string>
+    <string name="title_activity_account_detail">Cliente</string>
+    <string name="title_activity_target_list">Clientes</string>
     <string name="title_activity_map">Mapa</string>
     <string name="title_activity_profile">Perfil</string>
     <string name="title_activity_checkin">Registro de visita</string>
@@ -40,7 +41,7 @@
 
     <!-- Bottom navigation bar strings -->
     <string name="navbar_quests">Campañas</string>
-    <string name="navbar_targets">Prioridades</string>
+    <string name="navbar_targets">Clientes</string>
     <string name="navbar_map">Mapa</string>
     <string name="navbar_profile">Perfil</string>
 

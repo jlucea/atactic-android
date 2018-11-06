@@ -14,7 +14,7 @@ public class ChangePasswordRequest {
 
     private static final String LOG_TAG = "ChangePasswordRequest";
 
-    private static final String CHANGE_PASSWORD_RESOURCE = "/profile/pwd";
+    private static final String CHANGE_PASSWORD_RESOURCE = "/user/pwd";
 
     public static HttpResponse send(int userId, String newPassword) {
 

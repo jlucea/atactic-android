@@ -50,6 +50,9 @@
             android:name=".activity.AccountListActivity"
             android:label="@string/title_activity_target_list" />
         <activity
+            android:name=".activity.AccountDetailActivity"
+            android:label="@string/title_activity_account_detail" />/>
+        <activity
             android:name=".activity.MapActivity"
             android:label="@string/title_activity_map" />
         <activity

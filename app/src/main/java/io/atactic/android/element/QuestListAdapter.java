@@ -32,6 +32,10 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
 
     private ListItemClickListener clickListener;
 
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIdex);
+    }
+
     /**
      * This constructor takes a click listener as a parameter, allowing to use the adapter
      * as a component with an external click handler, such as one from an activity.
@@ -217,9 +221,7 @@ public class QuestListAdapter extends RecyclerView.Adapter<QuestListAdapter.Ques
 
     }
 
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIdex);
-    }
+
 
 
 }

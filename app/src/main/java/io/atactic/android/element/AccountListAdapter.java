@@ -1,5 +1,6 @@
 package io.atactic.android.element;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,29 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.atactic.android.R;
+import io.atactic.android.activity.AccountDetailActivity;
+import io.atactic.android.activity.AccountListActivity;
 import io.atactic.android.model.Account;
 
 public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.AccountViewHolder>{
 
     private List<Account> accountList;
+
+    private ListItemClickListener clickListener;
+
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIdex);
+    }
+
+    /**
+     * Constructor with no click listener
+     */
+    public AccountListAdapter(){ }
+
+    public AccountListAdapter(ListItemClickListener listener){
+        System.out.println("Instancing Account List Adapter with a click listener");
+        this.clickListener = listener;
+    }
 
     @Override
     public AccountViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,10 +61,14 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
         notifyDataSetChanged();
     }
 
+    public Account getAccount(int index){
+        return this.accountList.get(index);
+    }
+
     /**
      * ViewHolder for an Account
      */
-    public class AccountViewHolder extends RecyclerView.ViewHolder{
+    public class AccountViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // private ImageView accountImageView;
         private TextView accountNameTextView;
@@ -61,6 +84,8 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
             accountAddressTextView = itemView.findViewById(R.id.tv_target_address);
             targetScoreTextView = itemView.findViewById(R.id.tv_target_score);
             distanceToTargetTextView = itemView.findViewById(R.id.tv_distance_to_target);
+
+            if (clickListener != null) itemView.setOnClickListener(this);
         }
 
         public void setData(Account account){
@@ -83,6 +108,14 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
             return distanceText;
         }
 
+        @Override
+        public void onClick(View v) {
+            System.out.println("Account View Holder onClick");
+            int clickedPosition = getAdapterPosition();
+            if (clickListener != null) clickListener.onListItemClick(clickedPosition);
+        }
+
     }
+
 
 }
