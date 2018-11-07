@@ -19,14 +19,14 @@ import io.atactic.android.network.request.LoginRequest;
 import io.atactic.android.network.LoginResponse;
 import io.atactic.android.element.AtacticApplication;
 
-public class SimpleLoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private Button loginButton;
     private EditText emailTextField;
     private EditText passwordTextField;
     private ProgressBar progressIndicator;
 
-    private static final String LOG_TAG = SimpleLoginActivity.class.getSimpleName();
+    private static final String LOG_TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,14 +131,14 @@ public class SimpleLoginActivity extends AppCompatActivity {
                 Log.v("UserLoginAsyncTask", "OnPostExecute login success");
                 Log.d("UserLoginAsyncTask", "User ID = " + userId);
 
-                ((AtacticApplication)SimpleLoginActivity.this.getApplication()).setUserId(userId);
-                ((AtacticApplication)SimpleLoginActivity.this.getApplication()).setUserName(mEmail);
-                ((AtacticApplication)SimpleLoginActivity.this.getApplication()).setPassword(mPassword);
+                ((AtacticApplication)LoginActivity.this.getApplication()).setUserId(userId);
+                ((AtacticApplication)LoginActivity.this.getApplication()).setUserName(mEmail);
+                ((AtacticApplication)LoginActivity.this.getApplication()).setPassword(mPassword);
 
                 ConfigurationManager.getInstance().requestUpdatedConfiguration(userId);
 
                 Log.v("UserLoginAsyncTask", "Launching next activity...");
-                Intent i = new Intent(SimpleLoginActivity.this, QuestListActivity.class);
+                Intent i = new Intent(LoginActivity.this, QuestListActivity.class);
                 startActivity(i);
 
                 loginButton.setEnabled(true);
@@ -153,17 +153,17 @@ public class SimpleLoginActivity extends AppCompatActivity {
 
                 if (response == null){
                     Log.e("UserLoginAsyncTask", "Null response");
-                    Toast.makeText(SimpleLoginActivity.this,
+                    Toast.makeText(LoginActivity.this,
                             getString(R.string.err_login_connection),
                             Toast.LENGTH_LONG).show();
                 }else{
                     Log.d("UserLoginAsyncTask", "Response Code = " + response.getResponseCode());
                     if(response.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED){
-                        Toast.makeText(SimpleLoginActivity.this,
+                        Toast.makeText(LoginActivity.this,
                                 getString(R.string.err_login_credentials),
                                 Toast.LENGTH_LONG).show();
                     }else{
-                        Toast.makeText(SimpleLoginActivity.this,
+                        Toast.makeText(LoginActivity.this,
                                 getString(R.string.err_login_unknown)
                                         + " (Error " + response.getResponseCode() + ")",
                                 Toast.LENGTH_SHORT).show();

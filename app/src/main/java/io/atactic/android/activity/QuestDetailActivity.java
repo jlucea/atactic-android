@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.atactic.android.R;
-import io.atactic.android.manager.CampaignDataHandler;
+import io.atactic.android.datahandler.CampaignDataHandler;
 import io.atactic.android.model.Account;
 import io.atactic.android.element.QuestDetailDescriptionFragment;
 import io.atactic.android.element.QuestDetailGeneralFragment;

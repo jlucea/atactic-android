@@ -1,4 +1,4 @@
-package io.atactic.android.manager;
+package io.atactic.android.datahandler;
 
 import android.os.AsyncTask;
 

@@ -9,14 +9,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.atactic.android.R;
 import io.atactic.android.manager.ConfigurationManager;
-import io.atactic.android.manager.ProfileManager;
+import io.atactic.android.datahandler.ProfileManager;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.model.TenantConfiguration;
 
@@ -117,7 +116,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(i);
 
         }else if (v.getId() == R.id.ll_close_session){
-            Intent i = new Intent(ProfileActivity.this, SimpleLoginActivity.class);
+            Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(i);
         }
     }

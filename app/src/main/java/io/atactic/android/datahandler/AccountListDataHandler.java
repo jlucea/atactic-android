@@ -1,4 +1,4 @@
-package io.atactic.android.manager;
+package io.atactic.android.datahandler;
 
 import android.location.Location;
 import android.os.AsyncTask;
@@ -12,6 +12,7 @@ import java.util.List;
 
 import io.atactic.android.activity.AccountListActivity;
 import io.atactic.android.element.AtacticApplication;
+import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;
 import io.atactic.android.network.request.AccountListRequest;
 import io.atactic.android.utils.DistanceCalculator;

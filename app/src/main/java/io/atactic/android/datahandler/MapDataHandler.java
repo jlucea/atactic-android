@@ -1,4 +1,4 @@
-package io.atactic.android.manager;
+package io.atactic.android.datahandler;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -6,7 +6,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 

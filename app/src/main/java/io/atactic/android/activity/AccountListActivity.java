@@ -11,7 +11,7 @@ import java.util.List;
 
 import io.atactic.android.R;
 import io.atactic.android.element.AccountListAdapter;
-import io.atactic.android.manager.AccountListDataHandler;
+import io.atactic.android.datahandler.AccountListDataHandler;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;

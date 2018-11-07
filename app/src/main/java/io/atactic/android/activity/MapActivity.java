@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.Telephony;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
@@ -31,18 +30,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
 import io.atactic.android.R;
-import io.atactic.android.manager.MapDataHandler;
+import io.atactic.android.datahandler.MapDataHandler;
 import io.atactic.android.model.Account;
-import io.atactic.android.model.AccountMap;
 import io.atactic.android.model.Participation;
 import io.atactic.android.model.TargetAccount;
-import io.atactic.android.network.request.AccountListRequest;
-import io.atactic.android.network.request.ActiveTargetsRequest;
 import io.atactic.android.network.request.RecommendedRouteRequest;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.element.AtacticApplication;

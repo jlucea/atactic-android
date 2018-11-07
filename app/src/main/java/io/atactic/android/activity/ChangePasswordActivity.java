@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import io.atactic.android.R;
-import io.atactic.android.manager.PasswordManager;
+import io.atactic.android.datahandler.PasswordManager;
 
 public class ChangePasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
