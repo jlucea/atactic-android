@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.net.HttpURLConnection;
 
 import io.atactic.android.R;
+import io.atactic.android.manager.ConfigurationManager;
 import io.atactic.android.network.request.LoginRequest;
 import io.atactic.android.network.LoginResponse;
 import io.atactic.android.element.AtacticApplication;
@@ -47,11 +48,7 @@ public class SimpleLoginActivity extends AppCompatActivity {
 
         progressIndicator = findViewById(R.id.login_progress_bar);
 
-        loginButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                attemptLogin();
-            }
-        });
+        loginButton.setOnClickListener(v -> attemptLogin());
     }
 
     /*
@@ -137,6 +134,8 @@ public class SimpleLoginActivity extends AppCompatActivity {
                 ((AtacticApplication)SimpleLoginActivity.this.getApplication()).setUserId(userId);
                 ((AtacticApplication)SimpleLoginActivity.this.getApplication()).setUserName(mEmail);
                 ((AtacticApplication)SimpleLoginActivity.this.getApplication()).setPassword(mPassword);
+
+                ConfigurationManager.getInstance().requestUpdatedConfiguration(userId);
 
                 Log.v("UserLoginAsyncTask", "Launching next activity...");
                 Intent i = new Intent(SimpleLoginActivity.this, QuestListActivity.class);

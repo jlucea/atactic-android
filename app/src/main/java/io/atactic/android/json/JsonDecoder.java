@@ -10,11 +10,32 @@ import java.util.List;
 import io.atactic.android.model.Account;
 import io.atactic.android.model.AccountMap;
 import io.atactic.android.model.AccountTargetingParticipation;
-import io.atactic.android.model.TargetAccount;
+import io.atactic.android.model.TenantConfiguration;
 
 public class JsonDecoder {
 
 
+    public static TenantConfiguration decodeConfiguration(JSONObject tenantConfigJSON) throws JSONException {
+
+        String accountsLiteral = tenantConfigJSON.getString("accountsLiteral");
+        boolean checkInEnabled = tenantConfigJSON.getBoolean("checkInEnabled");
+        String defaultLang = tenantConfigJSON.getString("defaultLanguage");
+        int maxCheckInDistance = tenantConfigJSON.getInt("maxCheckInDistance");
+        int numberOfWaypoints = tenantConfigJSON.getInt("numberOfRouteWaypoints");
+        boolean requireProximityCheckIn = tenantConfigJSON.getBoolean("requireProximityCheckIn");
+        boolean showRanking = tenantConfigJSON.getBoolean("showRanking");
+
+        TenantConfiguration config = new TenantConfiguration();
+        config.setAccountsLiteral(accountsLiteral);
+        config.setCheckInEnabled(checkInEnabled);
+        config.setDefaultLanguage(defaultLang);
+        config.setMaxCheckInDistance(maxCheckInDistance);
+        config.setRouteWaypoints(numberOfWaypoints);
+        config.setProximityCheckinRequired(requireProximityCheckIn);
+        config.setDisplayRanking(showRanking);
+
+        return config;
+    }
 
     public static List<Account> decodeAccountList(JSONObject accountAndTargetsMapJSON) throws JSONException {
 
@@ -114,6 +135,8 @@ public class JsonDecoder {
         acc.setLatitude(accountJSON.getDouble("latitude"));
         return acc;
     }
+
+
 
 
 

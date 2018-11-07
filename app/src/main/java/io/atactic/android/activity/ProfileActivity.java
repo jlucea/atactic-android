@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,8 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.atactic.android.R;
+import io.atactic.android.manager.ConfigurationManager;
 import io.atactic.android.manager.ProfileManager;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
+import io.atactic.android.model.TenantConfiguration;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -56,6 +59,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         // Get Data
         new ProfileManager(this).getData();
+
+        TenantConfiguration config = ConfigurationManager.getInstance().getConfiguration();
+        if (config != null ){
+            System.out.println("Configuration Data recovered");
+            Log.d("ProfileActivity", "CheckInEnabled: " + config.isCheckInEnabled());
+        } else {
+            Log.w("ProfileActivity", "Configuration is null");
+        }
     }
 
 
