@@ -8,8 +8,8 @@ import android.view.MenuItem;
 
 import io.atactic.android.R;
 import io.atactic.android.activity.AccountListActivity;
+import io.atactic.android.activity.CampaignListActivity;
 import io.atactic.android.activity.ProfileActivity;
-import io.atactic.android.activity.QuestListActivity;
 import io.atactic.android.activity.MapActivity;
 
 
@@ -44,7 +44,7 @@ public class BottomNavigationBarClickListener implements BottomNavigationView.On
 
             case R.id.action_quests:
                 // Toast.makeText(context, "Quests icon clicked", Toast.LENGTH_SHORT).show();
-                destination = QuestListActivity.class;
+                destination = CampaignListActivity.class;
                 break;
 
             case R.id.action_profile:

@@ -79,8 +79,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             String fullName = profileData.getString("firstName") + " "
                     + profileData.getString("lastName");
 
-            String pointsLiteral = getResources().getString(R.string.points);
-            String scoreStr = profileData.getString("score") + " " + pointsLiteral;
+            String scoreStr = profileData.getString("score");
 
             // Set user name label
             userNameTextView.setText(fullName);

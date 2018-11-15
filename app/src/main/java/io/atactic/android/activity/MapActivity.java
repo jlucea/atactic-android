@@ -35,9 +35,11 @@ import java.util.List;
 
 import io.atactic.android.R;
 import io.atactic.android.datahandler.MapDataHandler;
+import io.atactic.android.manager.ConfigurationManager;
 import io.atactic.android.model.Account;
-import io.atactic.android.model.Participation;
+import io.atactic.android.model.ParticipationSummary;
 import io.atactic.android.model.TargetAccount;
+import io.atactic.android.model.TenantConfiguration;
 import io.atactic.android.network.request.RecommendedRouteRequest;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.element.AtacticApplication;
@@ -76,14 +78,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // Get user location provider
         locationProvider = LocationServices.getFusedLocationProviderClient(this);
 
-        // Activate the check-in floating button
+        TenantConfiguration configuration = ConfigurationManager.getInstance().getConfiguration();
+
         FloatingActionButton myFab = findViewById(R.id.fab_checkin);
-        myFab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        if (configuration.isCheckInEnabled()) {
+            // Activate the check-in floating button
+            myFab.setOnClickListener(v -> {
                 Intent i = new Intent(MapActivity.this, CheckInActivity.class);
                 startActivity(i);
-            }
-        });
+            });
+        } else {
+            myFab.setVisibility(View.GONE);
+        }
 
     }
 
@@ -161,7 +167,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void drawTargetMarker(TargetAccount tgt){
 
         String snippetText = "";
-        for (Participation p : tgt.getParticipations()){
+        for (ParticipationSummary p : tgt.getParticipations()){
             snippetText = snippetText.concat(p.getCampaignName() + " ");
         }
 
@@ -248,7 +254,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
                 }
             }
-
         }
 
         // Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=18.519513,73.868315&destination=18.518496,73.879259&waypoints=18.520561,73.872435|18.519254,73.876614|18.52152,73.877327|18.52019,73.879935&travelmode=driving");

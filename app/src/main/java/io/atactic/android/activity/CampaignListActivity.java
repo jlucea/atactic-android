@@ -1,9 +1,8 @@
 package io.atactic.android.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,15 +12,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
 
 import io.atactic.android.R;
-import io.atactic.android.network.request.QuestListRequest;
+import io.atactic.android.datahandler.ParticipationListDataHandler;
+import io.atactic.android.datahandler.ParticipationListPresenter;
 import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
-import io.atactic.android.element.QuestListAdapter;
+import io.atactic.android.element.ParticipationListAdapter;
+import io.atactic.android.model.Participation;
 
 /**
  * This activity holds a recycler view that displays a scrolling list of active quests.
@@ -33,19 +32,19 @@ import io.atactic.android.element.QuestListAdapter;
  * that is also clickable.
  *
  * @author Jaime Lucea
- * @date May 2017
  */
-public class QuestListActivity extends AppCompatActivity
-        implements QuestListAdapter.ListItemClickListener {
+public class CampaignListActivity extends AppCompatActivity
+        implements ParticipationListAdapter.ListItemClickListener, ParticipationListPresenter {
 
-    private RecyclerView questListRecyclerView;
-    private BottomNavigationView bottomNavigationView;
 
-    private QuestListAdapter adapter;
+    private ParticipationListDataHandler dataHandler;
 
+    private RecyclerView recyclerView;
+    private ParticipationListAdapter adapter;
+    private SwipeRefreshLayout refreshLayout;
     private ProgressBar loadingIndicator;
 
-    private static final String LOG_TAG = QuestListActivity.class.getSimpleName();
+    private static final String LOG_TAG = CampaignListActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,49 +57,97 @@ public class QuestListActivity extends AppCompatActivity
         /*
          * Get the reference to the bottom navigation bar and add an ItemSelectedListener
          */
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_quests);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 BottomNavigationBarClickListenerFactory.getClickListener(getBaseContext(),
                         this.getClass()));
 
+        refreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        refreshLayout.setOnRefreshListener(() -> reloadData());
+
         // Get reference to the RecyclerView component
-        questListRecyclerView = findViewById(R.id.rv_quest_list);
+        recyclerView = findViewById(R.id.rv_quest_list);
 
         // Set the layout manager for the RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        questListRecyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
 
         /*
          * This setting improves performance if changes in content
          * do not change the child layout size in the RecyclerView
          */
-        questListRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
         /*
          * Instantiate fragmentAdapter. The fragmentAdapter is responsible for linking the quest data
          * with the Views that will display quest data.
          */
-        adapter = new QuestListAdapter(this);
-        questListRecyclerView.setAdapter(adapter);
+        adapter = new ParticipationListAdapter(this);
+        recyclerView.setAdapter(adapter);
+
+        // Retrieve user identification from global variables
+        int userId = ((AtacticApplication)getApplication()).getUserId();
+        Log.v(LOG_TAG, "Requesting campaign list for user... " + userId);
 
         /*
          * Asynchronous request gets the list of quests for the current user
          * and prints them on the UI
          */
-        new QuestListAsyncHttpRequest().execute();
-
-        // Activate the check-in floating button
-        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab_checkin);
-        myFab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(QuestListActivity.this,CheckInActivity.class);
-                startActivity(i);
-            }
-        });
-
+        dataHandler = new ParticipationListDataHandler(this);
+        dataHandler.getData(userId);
     }
 
+
+    void reloadData(){
+        // Retrieve user identification from global variables
+        int userId = ((AtacticApplication)getApplication()).getUserId();
+        Log.v(LOG_TAG, "Reloading campaign list...");
+
+        /*
+         * Asynchronous request gets the list of quests for the current user
+         * and prints them on the UI
+         */
+        dataHandler.getData(userId);
+    }
+
+
+    @Override
+    public void onListItemClick(int clickedItemIdex) {
+
+        Participation participation = adapter.getItem(clickedItemIdex);
+        // Toast.makeText(CampaignListActivity.this,"Participation " + participation.getId() + " clicked", Toast.LENGTH_SHORT).show();
+        goToCampaignDetail(participation);
+    }
+
+    private void goToCampaignDetail(Participation participation){
+        //
+        // Create an intent and put the quest information to display in the detail view
+        //
+        Intent i = new Intent(CampaignListActivity.this, CampaignDetailActivity.class);
+
+        i.putExtra("participationId",participation.getId());
+
+        i.putExtra("questName", participation.getCampaign().getName());
+        i.putExtra("questType", participation.getCampaign().getType());
+        i.putExtra("questSummary", participation.getCampaign().getBriefing());
+        i.putExtra("questLongDesc", participation.getCampaign().getDescription());
+
+        i.putExtra("questDeadline", participation.getCampaign().getEndDate().getTime());
+
+        i.putExtra("completionScore", participation.getCampaign().getCompletionScore());
+        i.putExtra("currentProgress",participation.getCurrentProgress());
+
+        String questOwnerStr = participation.getCampaign().getOwner().getFirstName() + " "
+                + participation.getCampaign().getOwner().getLastName()
+                + "\n" + participation.getCampaign().getOwner().getPosition();
+        i.putExtra("questOwner", questOwnerStr);
+
+        startActivity(i);
+    }
+
+    /*
     @Override
     public void onListItemClick(int clickedItemIdex) {
         try {
@@ -134,7 +181,7 @@ public class QuestListActivity extends AppCompatActivity
             //
             // Create an intent and put the quest information to display in the detail view
             //
-            Intent i = new Intent(QuestListActivity.this, QuestDetailActivity.class);
+            Intent i = new Intent(CampaignListActivity.this, CampaignDetailActivity.class);
             i.putExtra("questName", questName);
 
             i.putExtra("questType", "Type");
@@ -165,59 +212,31 @@ public class QuestListActivity extends AppCompatActivity
             jsonex.printStackTrace();
         }
     }
+    */
 
-    /**
-     * This class' execute method sends an asynchronous http request to the server
-     * and sends the returning JSON Array to the QuestListAdapter.
-     *
-     */
-    public class QuestListAsyncHttpRequest extends AsyncTask<Void, Void, JSONArray> {
 
-        @Override
-        protected JSONArray doInBackground(Void... params) {
+    public void displayCampaignList(List<Participation> participationList) {
+        adapter.setData(participationList);
 
-            // Retrieve user identification from global variables
-            int userId = ((AtacticApplication)QuestListActivity.this.getApplication()).getUserId();
-
-            // Send Http request and receive JSON response
-            String response = QuestListRequest.send(userId);
-
-            if (response != null) {
-                Log.v(LOG_TAG,"Response received");
-
-                // Return JSON array containing the data to show in the view
-                try {
-                    return new JSONArray(response);
-
-                }catch (JSONException ex){
-                    ex.printStackTrace();
-                    return null;
-                }
-
-            } else {
-                Log.w(LOG_TAG,"No response from server");
-                return null;
-            }
+        loadingIndicator.setVisibility(View.GONE);
+        refreshLayout.setRefreshing(false);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+    /*
+    public void displayCampaignList(JSONArray data){
+        if (data != null && data.length() > 0) {
+            adapter.setData(data);
         }
+        loadingIndicator.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }*/
 
-        @Override
-        protected void onPostExecute(JSONArray questData) {
-            if (questData != null && questData.length() > 0) {
-                adapter.setQuestListData(questData);
-            }
-            loadingIndicator.setVisibility(View.GONE);
-            questListRecyclerView.setVisibility(View.VISIBLE);
-
-            // TODO else show NO QUESTS WHERE FOUND();
-
-            // Say hello
-            // String username = ((AtacticApplication)QuestListActivity.this.getApplication()).getUserName();
-            // Toast.makeText(QuestListActivity.this, "Hello "+username, Toast.LENGTH_LONG).show();
-        }
-
+    @Override
+    public void displayMessage(String message) {
+        Toast.makeText(CampaignListActivity.this, message, Toast.LENGTH_SHORT);
     }
 
-/*
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Use AppCompatActivity's method getMenuInflater to get a handle on the top_menu_items inflater
@@ -233,7 +252,7 @@ public class QuestListActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.profile_button) {
-            Intent i = new Intent(QuestListActivity.this, ProfileActivity.class);
+            Intent i = new Intent(CampaignListActivity.this, ProfileActivity.class);
             startActivity(i);
             return true;
         }

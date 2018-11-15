@@ -15,7 +15,7 @@ import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.model.Account;
 import io.atactic.android.model.AccountMap;
 import io.atactic.android.model.AccountTargetingParticipation;
-import io.atactic.android.model.Participation;
+import io.atactic.android.model.ParticipationSummary;
 import io.atactic.android.model.TargetAccount;
 import io.atactic.android.network.request.AccountListRequest;
 
@@ -95,11 +95,11 @@ public class MapDataHandler {
                     // If it's a new target, add the account to the target list as such
                     TargetAccount newTarget = new TargetAccount(acc);
 
-                    // Create a new Participation list
-                    List<Participation> tgtPts = new ArrayList<>();
+                    // Create a new ParticipationSummary list
+                    List<ParticipationSummary> tgtPts = new ArrayList<>();
 
-                    // Add a new Participation object
-                    Participation p = new Participation();
+                    // Add a new ParticipationSummary object
+                    ParticipationSummary p = new ParticipationSummary();
                     p.setId(participation.getId());
                     p.setCampaignName(participation.getCampaignName());
                     p.setCurrentProgress(participation.getCurrentProgress());

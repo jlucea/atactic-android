@@ -12,14 +12,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_navigation"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="0dp">
 
-        <!-- RecyclerView will show the list of individual elements representing quests -->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_quest_list"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
+        <!-- Status message -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Status message here"
             android:visibility="gone"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- RecyclerView will show the list of individual elements representing quests -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_quest_list"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:visibility="gone"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -37,6 +52,7 @@
 
         </FrameLayout>
 
+        <!--
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_checkin"
             android:layout_width="match_parent"
@@ -47,7 +63,7 @@
             android:src="@drawable/icon_fab_checkin_48"
             android:tint="@color/White"
             app:borderWidth="0dp"
-            app:elevation="6dp"/>
+            app:elevation="6dp"/> -->
             <!-- FAB's background color is taken from the accent color constant in styles.xml -->
             <!-- This also works but generates an exception:
                     android:backgroundTint="@color/atactic_space_cadet_blue" -->

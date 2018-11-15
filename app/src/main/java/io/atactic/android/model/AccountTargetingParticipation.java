@@ -2,7 +2,7 @@ package io.atactic.android.model;
 
 import java.util.List;
 
-public class AccountTargetingParticipation extends Participation {
+public class AccountTargetingParticipation extends ParticipationSummary {
 
     private List<Account> targetAccounts;
 

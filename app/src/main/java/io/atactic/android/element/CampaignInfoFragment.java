@@ -8,10 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import io.atactic.android.R;
+import io.atactic.android.model.Participation;
 
 
-public class QuestDetailGeneralFragment extends Fragment {
+public class CampaignInfoFragment extends Fragment {
 
     private String ownerStr;
     private String deadlineStr;
@@ -22,14 +28,23 @@ public class QuestDetailGeneralFragment extends Fragment {
     private TextView rewardTextView;
 
 
-    public QuestDetailGeneralFragment() { }
+    public CampaignInfoFragment() {
 
-    public QuestDetailGeneralFragment(String ownerInfo, String deadlineInfo,
-                                      String rewardDescription) {
-        this.ownerStr = ownerInfo;
-        this.deadlineStr = deadlineInfo;
-        this.rewardStr = rewardDescription;
     }
+
+    public CampaignInfoFragment(Participation participation) {
+
+        ownerStr = participation.getCampaign().getOwner().getFirstName();
+
+        Date now = Calendar.getInstance().getTime();
+        long timeDiff = participation.getCampaign().getEndDate().getTime() - now.getTime();
+        long daysDiff = TimeUnit.MILLISECONDS.toDays(timeDiff);
+        SimpleDateFormat writingDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        deadlineStr = writingDateFormat.format(participation.getCampaign().getEndDate()) + "\n" + "Quedan " + daysDiff + " días";
+        rewardStr = participation.getCampaign().getCompletionScore() + " puntos por completar la campaña";
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,9 +59,11 @@ public class QuestDetailGeneralFragment extends Fragment {
         ownerInfoTextView = view.findViewById(R.id.tv_questdetail_owner);
         deadlineTextView = view.findViewById(R.id.tv_questdetail_deadline);
         rewardTextView = view.findViewById(R.id.tv_questdetail_reward);
+
         ownerInfoTextView.setText(ownerStr);
         deadlineTextView.setText(deadlineStr);
         rewardTextView.setText(rewardStr);
+
         return view;
     }
 }

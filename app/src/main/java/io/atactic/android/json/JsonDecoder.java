@@ -4,15 +4,120 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.atactic.android.model.Account;
 import io.atactic.android.model.AccountMap;
 import io.atactic.android.model.AccountTargetingParticipation;
+import io.atactic.android.model.Campaign;
+import io.atactic.android.model.Participation;
 import io.atactic.android.model.TenantConfiguration;
+import io.atactic.android.model.User;
+import io.atactic.android.utils.DateUtils;
 
 public class JsonDecoder {
+
+
+    public static Campaign decodeCampaign(JSONObject campaignJSON) throws JSONException, ParseException {
+
+        int campaignId = campaignJSON.getInt("id");
+        String campaignName = campaignJSON.getString("name");
+
+        String type = campaignJSON.getString("campaignClass");
+        String status = campaignJSON.getString("status");
+        int priority = campaignJSON.getInt("priority");
+        int completionScore = campaignJSON.getInt("completionScore");
+
+        String briefing = campaignJSON.getString("summary");
+        String description = campaignJSON.getString("description");
+
+        String startDateStr = campaignJSON.getString("startDate");
+        String endDateStr = campaignJSON.getString("endDate");
+
+        // Parse Dates
+        Date startDate = DateUtils.parseDate(startDateStr);
+        Date endDate = DateUtils.parseDate(endDateStr);
+
+        User owner = decodeUser(campaignJSON.getJSONObject("owner"));
+
+        Campaign campaign = new Campaign();
+        campaign.setId(campaignId);
+        campaign.setName(campaignName);
+        campaign.setType(type);
+        campaign.setStatus(status);
+        campaign.setPriority(priority);
+        campaign.setCompletionScore(completionScore);
+        campaign.setBriefing(briefing);
+        campaign.setDescription(description);
+        campaign.setStartDate(startDate);
+        campaign.setEndDate(endDate);
+        campaign.setOwner(owner);
+
+        return campaign;
+    }
+
+
+    public static User decodeUser(JSONObject userJSON) throws JSONException {
+
+        // Decode required data
+        int id = userJSON.getInt("userId");
+        String email = userJSON.getString("email");
+        String firstName = userJSON.getString("firstName");
+        String lastName = userJSON.getString("lastName");
+        String position = userJSON.getString("position");
+        int score = userJSON.getInt("score");
+
+        User user = new User();
+        user.setId(id);
+        user.setEmail(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPosition(position);
+        user.setCurrentScore(score);
+
+        // Decode and set optional data
+        try {
+            String extId = userJSON.getString("externalId");
+            user.setExternalId(extId);
+        } catch (JSONException ex){
+            // No external ID - That's OK
+        }
+        return user;
+    }
+
+
+    public static Participation decodeParticipation(JSONObject participationJSON) throws JSONException, ParseException {
+
+        int participationId = participationJSON.getInt("participationId");
+        Campaign campaign = decodeCampaign(participationJSON.getJSONObject("campaign"));
+        User participant = decodeUser(participationJSON.getJSONObject("participant"));
+        double currentProgress = participationJSON.getDouble("currentProgress");
+
+        Participation participation = new Participation();
+        participation.setId(participationId);
+        participation.setCampaign(campaign);
+        participation.setParticipant(participant);
+        participation.setCurrentProgress(currentProgress);
+
+        return participation;
+    }
+
+    public static List<Participation> decodeParticipationList(JSONArray participationArrayJSON) throws JSONException, ParseException {
+        if ((participationArrayJSON != null) && participationArrayJSON.length() > 0) {
+            List<Participation> participationList = new ArrayList<>(participationArrayJSON.length());
+            for (int p = 0; p < participationArrayJSON.length(); p++) {
+                JSONObject pjson = participationArrayJSON.getJSONObject(p);
+                Participation participation = decodeParticipation(pjson);
+                participationList.add(participation);
+            }
+            return participationList;
+        }else{
+            return null;
+        }
+    }
 
 
     public static TenantConfiguration decodeConfiguration(JSONObject tenantConfigJSON) throws JSONException {

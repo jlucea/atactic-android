@@ -10,7 +10,7 @@ import org.json.JSONException;
 import java.util.Comparator;
 import java.util.List;
 
-import io.atactic.android.activity.QuestDetailActivity;
+import io.atactic.android.activity.CampaignDetailActivity;
 import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.manager.LocationManager;
@@ -18,32 +18,34 @@ import io.atactic.android.model.Account;
 import io.atactic.android.network.request.CampaignTargetsRequest;
 import io.atactic.android.utils.DistanceCalculator;
 
-public class CampaignDataHandler {
+public class ParticipationTargetsDataHandler {
 
-    private QuestDetailActivity activity;
+    private final static String LOG_TAG = "ParticipationTargetsDataHandler";
 
-    public CampaignDataHandler(QuestDetailActivity activity){
+    private CampaignDetailActivity activity;
+
+    public ParticipationTargetsDataHandler(CampaignDetailActivity activity){
         this.activity = activity;
     }
 
-    public void getCampaignTargets(int participationId){
+    public void getData(int participationId){
 
         LocationManager.getInstance().updateLocation(activity);
-
         final int userId = ((AtacticApplication)activity.getApplication()).getUserId();
 
-        QuestTargetsRequestParams params = new QuestTargetsRequestParams(userId, participationId);
-
-        new QuestTargetsHttpRequest(this).execute(params);
+        Log.v(LOG_TAG,"Requesting targets for participation " + participationId);
+        new ParticipationTargetsRequestTask(this).execute(new QuestTargetsRequestParams(userId, participationId));
     }
 
     private void returnData(List<Account> data){
+
+        Log.d(LOG_TAG,"Returning " + data.size() + " accounts to activity");
 
         Location location = LocationManager.getInstance().getLastKnownLocation();
         if (location != null)
             data = calculateDistances(data, location);
 
-        activity.displayCampaignTargets(data);
+        activity.displayTargets(data);
     }
 
     private List<Account> calculateDistances(List<Account> accounts, Location userLocation){
@@ -73,11 +75,11 @@ public class CampaignDataHandler {
         }
     }
 
-    static class QuestTargetsHttpRequest extends AsyncTask<QuestTargetsRequestParams, Void, String> {
+    static class ParticipationTargetsRequestTask extends AsyncTask<QuestTargetsRequestParams, Void, String> {
 
-        private CampaignDataHandler handler;
+        private ParticipationTargetsDataHandler handler;
 
-        QuestTargetsHttpRequest(CampaignDataHandler dataHandler){
+        ParticipationTargetsRequestTask(ParticipationTargetsDataHandler dataHandler){
             this.handler = dataHandler;
         }
 
@@ -93,20 +95,17 @@ public class CampaignDataHandler {
 
         @Override
         protected void onPostExecute(String jsonArrayString) {
-            Log.d("QuestTargetsHttpRequest", "JSON array received: " + jsonArrayString);
+            // Log.d("ParticipationTargetsRequestTask", "JSON array received: " + jsonArrayString);
 
             if (jsonArrayString != null) {
                 try {
                     JSONArray targetsJSON = new JSONArray(jsonArrayString);
 
-                    // TODO Decode data here
                     List<Account> targets = JsonDecoder.decodeAccountList(targetsJSON);
-
-
                     handler.returnData(targets);
 
                 } catch (JSONException err) {
-                    Log.e("QuestTargetsHttpRequest", "Error while parsing targets array", err);
+                    Log.e("ParticipationTargetsRequestTask", "Error while decoding targets JSON array", err);
                     // TODO Return message to Activity
                 }
             }

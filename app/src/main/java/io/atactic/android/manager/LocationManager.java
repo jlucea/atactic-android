@@ -81,11 +81,16 @@ public final class LocationManager implements OnSuccessListener<Location> {
     @Override
     public void onSuccess(Location location) {
 
-        Log.d(LOG_TAG,"Location updated "
-                + "Lat = " + location.getLatitude()
-                + " | Lng = " + location.getLongitude());
+        if (location != null) {
+            Log.d(LOG_TAG, "Location updated "
+                    + "Lat = " + location.getLatitude()
+                    + " | Lng = " + location.getLongitude());
 
-        this.lastKnownLocation = location;
+            this.lastKnownLocation = location;
+
+        } else {
+            Log.w(LOG_TAG, "Location is null");
+        }
     }
 
 }

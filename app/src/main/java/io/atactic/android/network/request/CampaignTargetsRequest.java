@@ -17,7 +17,7 @@ public class CampaignTargetsRequest {
      * Get the recommended targets for a given participation id
      *
      * @param userId User's id
-     * @param participationId Participation for which targets are requested
+     * @param participationId ParticipationSummary for which targets are requested
      * @return JSON block containing the list of targets for the participation
      */
     public static String send(int userId, int participationId){

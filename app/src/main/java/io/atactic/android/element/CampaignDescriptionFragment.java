@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import io.atactic.android.R;
 
-public class QuestDetailDescriptionFragment extends Fragment {
+public class CampaignDescriptionFragment extends Fragment {
 
     private TextView questDescriptionTextView;
     private String content;
 
-    public QuestDetailDescriptionFragment(){}
+    public CampaignDescriptionFragment(){}
 
-    public QuestDetailDescriptionFragment(String longDescriptionText) {
+    public CampaignDescriptionFragment(String longDescriptionText) {
         this.content = longDescriptionText;
     }
 

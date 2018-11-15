@@ -3,8 +3,10 @@ package io.atactic.android.model;
 public class Participation {
 
     private int id;
-    private String campaignName;
-    private int completionScore;
+
+    private User participant;
+    private Campaign campaign;
+
     private double currentProgress;
 
 
@@ -16,20 +18,20 @@ public class Participation {
         this.id = id;
     }
 
-    public String getCampaignName() {
-        return campaignName;
+    public User getParticipant() {
+        return participant;
     }
 
-    public void setCampaignName(String campaignName) {
-        this.campaignName = campaignName;
+    public void setParticipant(User participant) {
+        this.participant = participant;
     }
 
-    public int getCompletionScore() {
-        return completionScore;
+    public Campaign getCampaign() {
+        return campaign;
     }
 
-    public void setCompletionScore(int completionScore) {
-        this.completionScore = completionScore;
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
     }
 
     public double getCurrentProgress() {

@@ -15,18 +15,15 @@ import java.util.List;
 import io.atactic.android.R;
 import io.atactic.android.model.Account;
 
-/**
- * Created by Jaime on 28/9/17.
- */
 public class CampaignTargetsFragment extends Fragment {
 
     private static final String LOG_TAG = "CampaignTargetsFragment";
 
-    // This variable will hold the data to display
+    private RecyclerView recyclerView;
+
     private List<Account> targetList;
 
-    public CampaignTargetsFragment() {
-    }
+    public CampaignTargetsFragment() {  }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,16 +40,17 @@ public class CampaignTargetsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_quest_detail_3,container, false);
 
-        RecyclerView targetListRecyclerView = view.findViewById(R.id.rv_target_list);
-        targetListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        targetListRecyclerView.setHasFixedSize(true);
+        recyclerView = view.findViewById(R.id.rv_target_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setHasFixedSize(true);
 
         // Link Adapter to RecyclerView
         AccountListAdapter adapter = new AccountListAdapter();
-        targetListRecyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         if (targetList != null) {
             adapter.setContent(targetList);
+            // adapter.notifyDataSetChanged();
         }else{
             Log.w(LOG_TAG, "Operating fragment with NULL data");
         }

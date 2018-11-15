@@ -1,7 +1,5 @@
 package io.atactic.android.activity;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,13 +9,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.net.HttpURLConnection;
-
 import io.atactic.android.R;
-import io.atactic.android.manager.ConfigurationManager;
-import io.atactic.android.network.request.LoginRequest;
-import io.atactic.android.network.LoginResponse;
-import io.atactic.android.element.AtacticApplication;
+import io.atactic.android.datahandler.AuthenticationHandler;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -48,13 +41,13 @@ public class LoginActivity extends AppCompatActivity {
 
         progressIndicator = findViewById(R.id.login_progress_bar);
 
-        loginButton.setOnClickListener(v -> attemptLogin());
+        loginButton.setOnClickListener(v -> loginButtonPressed());
     }
 
     /*
      * Action performed when pressing the login button
      */
-    public void attemptLogin(){
+    public void loginButtonPressed(){
 
         // Disable button to prevent multiple clicks
         loginButton.setEnabled(false);
@@ -69,111 +62,17 @@ public class LoginActivity extends AppCompatActivity {
         Log.v(LOG_TAG,"Login button pressed: " + emailStr + ", " + pwdStr);
         Log.v(LOG_TAG,"Starting asynchronous execution of UserLoginAsyncTask");
 
-        new UserLoginAsyncTask(emailStr,pwdStr).execute();
+        new AuthenticationHandler(this).attemptLogin(emailStr,pwdStr);
     }
 
-
-    /**
-     * An asynchronous login/registration task used to authenticate the user.
-     */
-    private class UserLoginAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        // private final String userToken;
-        private int userId;
-
-        /*
-         * Contains response code and content
-         */
-        private LoginResponse response;
-
-        UserLoginAsyncTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            Log.v("UserLoginAsyncTask", "Calling LoginRequest.send");
-
-            /*
-             * Send Http request attempting login based on credentials
-             */
-            response = LoginRequest.send(mEmail,mPassword);
-
-            if (response !=null ){
-                Log.d("UserLoginAsyncTask", "Http response received");
-
-                if (response.isOk()){
-                    Log.d("UserLoginAsyncTask", "Http response received and OK");
-                    try{
-                        userId = Integer.parseInt(response.getContent());
-                        Log.d("UserLoginAsyncTask", "User ID = " + userId);
-                        return true;
-
-                    }catch(NumberFormatException nfe){
-                        Log.e("UserLoginAsyncTask","Error parsing user id from response", nfe);
-                    }
-                }else{
-                    Log.w("UserLoginAsyncTask", "Http response received NOT ok");
-                }
-            }else{
-                Log.e(LOG_TAG,"NULL response from authentication service");
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            if (success) {
-                Log.v("UserLoginAsyncTask", "OnPostExecute login success");
-                Log.d("UserLoginAsyncTask", "User ID = " + userId);
-
-                ((AtacticApplication)LoginActivity.this.getApplication()).setUserId(userId);
-                ((AtacticApplication)LoginActivity.this.getApplication()).setUserName(mEmail);
-                ((AtacticApplication)LoginActivity.this.getApplication()).setPassword(mPassword);
-
-                ConfigurationManager.getInstance().requestUpdatedConfiguration(userId);
-
-                Log.v("UserLoginAsyncTask", "Launching next activity...");
-                Intent i = new Intent(LoginActivity.this, QuestListActivity.class);
-                startActivity(i);
-
-                loginButton.setEnabled(true);
-                loginButton.setBackgroundColor(getResources().getColor(R.color.atactic_bright_red, null));
-                progressIndicator.setVisibility(View.GONE);
-
-            }else{
-                Log.v("UserLoginAsyncTask", "OnPostExecute login failure");
-                loginButton.setEnabled(true);
-                loginButton.setBackgroundColor(getResources().getColor(R.color.atactic_bright_red, null));
-                progressIndicator.setVisibility(View.GONE);
-
-                if (response == null){
-                    Log.e("UserLoginAsyncTask", "Null response");
-                    Toast.makeText(LoginActivity.this,
-                            getString(R.string.err_login_connection),
-                            Toast.LENGTH_LONG).show();
-                }else{
-                    Log.d("UserLoginAsyncTask", "Response Code = " + response.getResponseCode());
-                    if(response.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED){
-                        Toast.makeText(LoginActivity.this,
-                                getString(R.string.err_login_credentials),
-                                Toast.LENGTH_LONG).show();
-                    }else{
-                        Toast.makeText(LoginActivity.this,
-                                getString(R.string.err_login_unknown)
-                                        + " (Error " + response.getResponseCode() + ")",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-            }
-        }
-
+    public void displayErrorMessage(String message){
+        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
+    public void resetViews(){
+        loginButton.setEnabled(true);
+        loginButton.setBackgroundColor(getResources().getColor(R.color.atactic_bright_red, null));
+        progressIndicator.setVisibility(View.GONE);
+    }
 
 }

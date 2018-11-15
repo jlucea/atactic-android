@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.QuestListActivity"
+            android:name=".activity.CampaignListActivity"
             android:label="@string/title_activity_quest_list" />
         <activity
             android:name=".activity.AccountListActivity"
@@ -56,7 +56,7 @@
             android:name=".activity.MapActivity"
             android:label="@string/title_activity_map" />
         <activity
-            android:name=".activity.QuestDetailActivity"
+            android:name=".activity.CampaignDetailActivity"
             android:label="@string/title_activity_quest_detail" />
         <activity
             android:name=".activity.CheckInActivity"

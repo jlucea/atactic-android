@@ -4,7 +4,7 @@ import java.util.List;
 
 public class TargetAccount extends Account {
 
-    private List<Participation> participations;
+    private List<ParticipationSummary> participations;
 
     public TargetAccount(Account acc) {
         this.setId(acc.getId());
@@ -20,11 +20,11 @@ public class TargetAccount extends Account {
         this.setDistanceTo(acc.getDistanceTo());
     }
 
-    public List<Participation> getParticipations() {
+    public List<ParticipationSummary> getParticipations() {
         return participations;
     }
 
-    public void setParticipations(List<Participation> participations) {
+    public void setParticipations(List<ParticipationSummary> participations) {
         this.participations = participations;
     }
 }
