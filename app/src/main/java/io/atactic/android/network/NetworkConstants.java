@@ -26,6 +26,8 @@ public class NetworkConstants {
 
     // Campaing resource
     public static final String RSC_QUESTS = "/campaign";
+    // Account campaigns
+    public static final String RSC_ACCOUNT_CAMPAIGNS = "/campaign/acc";
 
     // Account resource
     public static final String RSC_ACCOUNTS = "/account/map";       // TODO Use a different service

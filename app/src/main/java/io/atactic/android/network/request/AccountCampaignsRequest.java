@@ -6,24 +6,23 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import io.atactic.android.network.HttpResponse;
 import io.atactic.android.network.NetworkConstants;
 import io.atactic.android.network.NetworkUtils;
 
-public class AccountListRequest {
+public class AccountCampaignsRequest {
 
-    private static final String LOG_TAG = "AccountListRequest";
+
+    private static final String LOG_TAG = "AccountCampaignsRequest";
 
     private static final String PARAM_USERID = "uid";
+    private static final String PARAM_ACCOUNTID = "accid";
 
-    /**
-     * Returns the full Map of Accounts and Targets for the user.
-     *
-     * @param userId User's ID
-     * @return JSON block containing the Map of Accounts and Targets
-     */
-    public static String send(int userId){
-        URL url = NetworkUtils.buildUrl(NetworkConstants.RSC_ACCOUNTS
-                + "?" + PARAM_USERID + "=" + userId);
+    public static HttpResponse send (int userId, int accountId){
+
+        URL url = NetworkUtils.buildUrl(NetworkConstants.RSC_ACCOUNT_CAMPAIGNS
+                + "?" + PARAM_USERID + "=" + userId
+                + "&" + PARAM_ACCOUNTID + "=" + accountId);
 
         Log.d(LOG_TAG,url.toString());
 
@@ -31,9 +30,15 @@ public class AccountListRequest {
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
 
+            HttpResponse response = new HttpResponse();
+            response.setCode(urlConnection.getResponseCode());
+
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
-                return NetworkUtils.readStreamContent(urlConnection.getInputStream());
+                String content = NetworkUtils.readStreamContent(urlConnection.getInputStream());
+                response.setMessage(content);
             }
+
+            return response;
 
         } catch(IOException ioe) {
             ioe.printStackTrace();
@@ -42,5 +47,7 @@ public class AccountListRequest {
         }
         return null;
     }
+
+
 
 }

@@ -66,11 +66,17 @@ public final class LocationManager implements OnSuccessListener<Location> {
 
 
     public Location getLastKnownLocation(){
-        Log.d(LOG_TAG,"Last known location is "
-                + "Lat = " + lastKnownLocation.getLatitude()
-                + " | Lng = " + lastKnownLocation.getLongitude());
 
-        return lastKnownLocation;
+        if (lastKnownLocation != null) {
+            Log.d(LOG_TAG, "Last known location is "
+                    + "Lat = " + lastKnownLocation.getLatitude()
+                    + " | Lng = " + lastKnownLocation.getLongitude());
+
+            return lastKnownLocation;
+        }else{
+            Log.w(LOG_TAG, "Last known location is NULL");
+            return null;
+        }
     }
 
     private void requestLocationPermission() {

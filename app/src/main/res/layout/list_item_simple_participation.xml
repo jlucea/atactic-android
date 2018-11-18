@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+
+    android:layout_marginEnd="12dp"
+    android:layout_marginStart="12dp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.7">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_campaign_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Campaign name goes here"
+                android:textColor="@color/atactic_dark_gray"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_campaign_deadline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="De 01/11/2018 a 30/11/2018"
+                android:textColor="@color/atactic_medium_gray"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="4dp"
+        android:layout_weight="0.2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_campaign_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="29 %"
+                android:textAlignment="textEnd"
+                android:textColor="@color/atactic_dark_gray"
+                android:textSize="14sp" />
+
+            <!--
+        <TextView
+            android:id="@+id/tv_distance_to_target"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="0.000 m"
+            android:textAlignment="textEnd"
+            android:textColor="@color/atactic_medium_gray"
+            android:textSize="12sp" />
+            -->
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
