@@ -7,6 +7,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class DateUtils {
@@ -50,7 +51,7 @@ public class DateUtils {
 
 */
 
-    public final static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+
 
     /*
      * Removes 'Z' and [Timezone/Country] from a date in a format like
@@ -67,10 +68,36 @@ public class DateUtils {
         return cleanDateString;
     }
 
+
+    final static String ZONED_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    final static String BASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+
+    /**
+     * Will try to parse the string into a date, trying with different formats:
+     *  "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", then "yyyy-MM-dd'T'HH:mm:ss.SSS"
+     *
+     * If the original String contains 'Z' and/or [TimeZone], these elements will be filtered.
+     *
+     * @param dateString String describing a date
+     * @return Date object
+     * @throws ParseException In case it's unable to parse the date
+     */
     public static Date parseDate(String dateString) throws ParseException {
         String parseThis = filterDateString(dateString);
-        SimpleDateFormat sdf  = new SimpleDateFormat(DATE_FORMAT);
-        return sdf.parse(parseThis);
+
+        SimpleDateFormat sdf;
+        Date parsed;
+
+        try {
+            sdf = new SimpleDateFormat(ZONED_DATE_FORMAT, Locale.getDefault());
+            parsed = sdf.parse(parseThis);
+
+        }catch (ParseException err){
+            sdf = new SimpleDateFormat(BASE_DATE_FORMAT, Locale.getDefault());
+            parsed = sdf.parse(parseThis);
+        }
+
+        return parsed;
     }
 
 

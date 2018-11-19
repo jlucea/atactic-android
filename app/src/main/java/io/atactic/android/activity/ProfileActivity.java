@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +20,8 @@ import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.model.TenantConfiguration;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String LOG_TAG = "ProfileActivity";
 
     private ImageView userPortraitImageView;
     private TextView userNameTextView;
@@ -38,14 +40,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         userScoreTextView = findViewById(R.id.tv_user_score);
 
         // Get references to menu options and set this class as click listener
-        LinearLayout rankingMenuOptionBar = findViewById(R.id.ll_ranking);
-        rankingMenuOptionBar.setOnClickListener(this);
 
-        LinearLayout closeSessionMenuOptionBar = findViewById(R.id.ll_close_session);
-        closeSessionMenuOptionBar.setOnClickListener(this);
+        TextView activityRegisterMenuOption = findViewById(R.id.tv_activity_register);
+        activityRegisterMenuOption.setOnClickListener(this);
 
-        LinearLayout changePasswordMenuOptionBar = findViewById(R.id.settings_menu_change_password);
-        changePasswordMenuOptionBar.setOnClickListener(this);
+        TextView changePasswordMenuOption = findViewById(R.id.tv_change_password);
+        changePasswordMenuOption.setOnClickListener(this);
+
+        TextView exitMenuOption = findViewById(R.id.tv_exit);
+        exitMenuOption.setOnClickListener(this);
 
         /*
          * Get the reference to the bottom navigation bar. Update click listener and selected item
@@ -61,10 +64,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         TenantConfiguration config = ConfigurationManager.getInstance().getConfiguration();
         if (config != null ){
-            System.out.println("Configuration Data recovered");
-            Log.d("ProfileActivity", "CheckInEnabled: " + config.isCheckInEnabled());
+            Log.v(LOG_TAG, "Configuration Data recovered");
+            Log.d(LOG_TAG, "CheckInEnabled: " + config.isCheckInEnabled());
         } else {
-            Log.w("ProfileActivity", "Configuration is null");
+            Log.w(LOG_TAG, "Configuration is null");
         }
     }
 
@@ -104,17 +107,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.ll_ranking) {
-            // Toast.makeText(this, "Ranking clicked", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(ProfileActivity.this, RankingActivity.class);
+        if (v.getId() == R.id.tv_activity_register) {
+            // Toast.makeText(this, "Activity history clicked", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(ProfileActivity.this, HistoryActivity.class);
             startActivity(i);
 
-        }else if (v.getId() == R.id.settings_menu_change_password) {
-            // Toast.makeText(this, "Change Password clicked", Toast.LENGTH_SHORT).show();
+        }else if (v.getId() == R.id.tv_change_password) {
+            /// Toast.makeText(this, "Change Password clicked", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
             startActivity(i);
 
-        }else if (v.getId() == R.id.ll_close_session){
+        }else if (v.getId() == R.id.tv_exit){
             Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(i);
         }

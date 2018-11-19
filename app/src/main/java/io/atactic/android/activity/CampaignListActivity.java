@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -36,13 +37,15 @@ import io.atactic.android.model.Participation;
 public class CampaignListActivity extends AppCompatActivity
         implements ParticipationListAdapter.ListItemClickListener, ParticipationListPresenter {
 
-
     private ParticipationListDataHandler dataHandler;
 
     private RecyclerView recyclerView;
     private ParticipationListAdapter adapter;
+
     private SwipeRefreshLayout refreshLayout;
     private ProgressBar loadingIndicator;
+
+    private TextView statusMessageTextView;
 
     private static final String LOG_TAG = CampaignListActivity.class.getSimpleName();
 
@@ -63,8 +66,9 @@ public class CampaignListActivity extends AppCompatActivity
                 BottomNavigationBarClickListenerFactory.getClickListener(getBaseContext(),
                         this.getClass()));
 
-        refreshLayout = findViewById(R.id.swipeRefreshLayout);
+        statusMessageTextView = findViewById(R.id.tv_campaign_list_status_message);
 
+        refreshLayout = findViewById(R.id.swipeRefreshLayout);
         refreshLayout.setOnRefreshListener(() -> reloadData());
 
         // Get reference to the RecyclerView component
@@ -147,93 +151,27 @@ public class CampaignListActivity extends AppCompatActivity
         startActivity(i);
     }
 
-    /*
-    @Override
-    public void onListItemClick(int clickedItemIdex) {
-        try {
-            // Recover and parse quest data, which are held in the fragmentAdapter
-            JSONObject quest = adapter.getQuest(clickedItemIdex);
-
-            String questName = quest.getJSONObject("campaign").getString("name");
-            // String questType = quest.getJSONObject("campaign").getString("type");
-            String questSummary = quest.getJSONObject("campaign").getString("summary");
-            String questLongDesc = quest.getJSONObject("campaign").getString("description");
-            String questDeadline = quest.getJSONObject("campaign").getString("endDate");
-            String questOwnerFirstName = quest.getJSONObject("campaign").getJSONObject("owner")
-                    .getString("firstName");
-            String questOwnerLastName = quest.getJSONObject("campaign").getJSONObject("owner")
-                    .getString("lastName");
-            String questOwnerPosition = quest.getJSONObject("campaign").getJSONObject("owner")
-                    .getString("position");
-            double currentProgress = quest.getDouble("currentProgress");
-
-
-            //System.out.println("current progress = " + currentProgress);
-
-            // int currentStep = quest.getInt("currentStep");
-            // int totalSteps = quest.getInt("totalSteps");
-            // int visitScore = quest.getJSONObject("campaign").getInt("visitScore");
-            int completionScore = quest.getJSONObject("campaign").getInt("completionScore");
-            int participationId = quest.getInt("participationId");
-
-            // Toast.makeText(this, "Quest " + questName + " clicked", Toast.LENGTH_SHORT).show();
-
-            //
-            // Create an intent and put the quest information to display in the detail view
-            //
-            Intent i = new Intent(CampaignListActivity.this, CampaignDetailActivity.class);
-            i.putExtra("questName", questName);
-
-            i.putExtra("questType", "Type");
-
-            i.putExtra("questSummary", questSummary);
-            i.putExtra("questDeadline", questDeadline);
-            i.putExtra("questLongDesc", questLongDesc);
-
-            // i.putExtra("currentStep", 0);
-            // i.putExtra("totalSteps", 0);
-
-            i.putExtra("currentProgress",currentProgress);
-
-            // i.putExtra("visitScore",visitScore);
-            i.putExtra("completionScore",completionScore);
-
-            i.putExtra("participationId",participationId);
-
-            String questOwner = questOwnerFirstName + " " + questOwnerLastName
-                    + "\n" + questOwnerPosition;
-
-            i.putExtra("questOwner", questOwner);
-
-            startActivity(i);
-
-        }catch (JSONException jsonex){
-            Toast.makeText(this, "Error: " + jsonex.getMessage(), Toast.LENGTH_SHORT).show();
-            jsonex.printStackTrace();
-        }
-    }
-    */
-
 
     public void displayCampaignList(List<Participation> participationList) {
         adapter.setData(participationList);
 
         loadingIndicator.setVisibility(View.GONE);
         refreshLayout.setRefreshing(false);
+        statusMessageTextView.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
-    /*
-    public void displayCampaignList(JSONArray data){
-        if (data != null && data.length() > 0) {
-            adapter.setData(data);
-        }
-        loadingIndicator.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
-    }*/
 
     @Override
     public void displayMessage(String message) {
-        Toast.makeText(CampaignListActivity.this, message, Toast.LENGTH_SHORT);
+
+        statusMessageTextView.setText(message);
+
+        refreshLayout.setRefreshing(false);
+        loadingIndicator.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        statusMessageTextView.setVisibility(View.VISIBLE);
+
+        // Toast.makeText(CampaignListActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
     /*

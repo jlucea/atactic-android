@@ -35,9 +35,12 @@
     <string name="title_activity_account_detail">Cliente</string>
     <string name="title_activity_target_list">Clientes</string>
     <string name="title_activity_map">Mapa</string>
-    <string name="title_activity_profile">Perfil</string>
     <string name="title_activity_checkin">Registro de visita</string>
+    <string name="title_activity_profile">Perfil</string>
+    <string name="title_activity_change_password">Cambio de contraseña</string>
+    <string name="title_activity_history">Registro de actividad</string>
     <string name="title_activity_ranking">Ranking</string>
+
 
     <!-- Bottom navigation bar strings -->
     <string name="navbar_quests">Campañas</string>
@@ -58,7 +61,10 @@
     <string name="ranking_rank">Posición</string>
 
     <!-- Profile section -->
+    <string name="score">Puntuación</string>
+    <string name="activity_reg">Registro de actividad</string>
     <string name="check_ranking">Consultar ranking</string>
+    <string name="change_password">Cambiar contraseña</string>
     <string name="logout">Cerrar sesión</string>
 
     <!-- Error messages -->

@@ -1,5 +1,7 @@
 package io.atactic.android.json;
 
+import android.app.Activity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,9 +18,38 @@ import io.atactic.android.model.Campaign;
 import io.atactic.android.model.Participation;
 import io.atactic.android.model.TenantConfiguration;
 import io.atactic.android.model.User;
+import io.atactic.android.model.Visit;
 import io.atactic.android.utils.DateUtils;
 
 public class JsonDecoder {
+
+
+    public static List<Visit> decodeActivityList(JSONArray activitiesJSONArray) throws JSONException, ParseException {
+
+        List<Visit> activities = new ArrayList<>(activitiesJSONArray.length());
+        for (int i = 0; i < activitiesJSONArray.length(); i++) {
+            Visit v = decodeVisit(activitiesJSONArray.getJSONObject(i));
+            activities.add(v);
+        }
+        return activities;
+    }
+
+
+    public static Visit decodeVisit(JSONObject visitJSON) throws JSONException, ParseException {
+
+        Visit v = new Visit();
+        Account account = parseAccount(visitJSON.getJSONObject("account"));
+        v.setAccount(account);
+
+        v.setComments(visitJSON.getString("comments"));
+
+        String dateStr = visitJSON.getString("timeReported");
+        Date date = DateUtils.parseDate(dateStr);
+        v.setDate(date);
+
+        return v;
+    }
+
 
 
     public static Campaign decodeCampaign(JSONObject campaignJSON) throws JSONException, ParseException {
