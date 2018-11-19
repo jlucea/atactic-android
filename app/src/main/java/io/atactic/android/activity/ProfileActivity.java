@@ -18,6 +18,7 @@ import io.atactic.android.manager.ConfigurationManager;
 import io.atactic.android.datahandler.ProfileManager;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.model.TenantConfiguration;
+import io.atactic.android.utils.CredentialsCache;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -118,6 +119,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(i);
 
         }else if (v.getId() == R.id.tv_exit){
+            CredentialsCache.removeCredentials(ProfileActivity.this);
             Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(i);
         }

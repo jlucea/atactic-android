@@ -45,4 +45,11 @@ public class AtacticApplication extends Application {
         this.token = token;
     }
 
+    public void storeUserCredentialsInAppCache(int userId, String email, String password){
+        this.setUserId(userId);
+        this.setUserName(email);
+        this.setPassword(password);
+    }
+
+
 }
