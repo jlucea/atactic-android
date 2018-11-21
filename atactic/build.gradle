@@ -1,19 +1,28 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'AndroidSigningKey'
+            keyPassword '.atacticC0de!'
+            storePassword '.atacticC0de!'
+            storeFile file('/Users/jaime/Google Drive/Atactic/Producto/Distribución/Android/keystore')
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "io.atactic.android"
         minSdkVersion 24
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName '1.0.2'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         debug {
             debuggable true

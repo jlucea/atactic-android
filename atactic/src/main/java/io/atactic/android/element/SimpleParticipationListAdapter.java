@@ -8,9 +8,11 @@ import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.atactic.android.R;
@@ -107,9 +109,17 @@ public class SimpleParticipationListAdapter extends RecyclerView.Adapter<SimpleP
         }
 
         public void setContent(Participation participation) {
+
             campaignNameTextView.setText(participation.getCampaign().getName());
-            campaignDeadlineTextView.setText(participation.getCampaign().getEndDate().toString());
-            campaignProgressTextView.setText(String.valueOf((int)(participation.getCurrentProgress()*100)) + " %");
+            // campaignDeadlineTextView.setText(participation.getCampaign().getEndDate().toString());
+            // campaignProgressTextView.setText(String.valueOf((int)(participation.getCurrentProgress()*100)) + " %");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            String dateStr = sdf.format(participation.getCampaign().getEndDate());
+            campaignDeadlineTextView.setText(dateStr);
+
+            String progressStr = String.format(Locale.getDefault(), "%.1f", participation.getCurrentProgress()*100) + "%";
+            campaignProgressTextView.setText(progressStr);
         }
 
         @Override

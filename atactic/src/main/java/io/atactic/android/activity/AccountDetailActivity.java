@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
+import java.util.Locale;
 
 import io.atactic.android.R;
 import io.atactic.android.datahandler.AccountParticipationsDataHandler;
@@ -143,7 +144,7 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         if (distance < 1000){
             distanceText = Math.round(distance) + " m";
         } else {
-            distanceText = String.format("%.1f Km", distance/100);
+            distanceText = String.format(Locale.getDefault(), "%.1f Km", distance/100);
         }
         return distanceText;
     }

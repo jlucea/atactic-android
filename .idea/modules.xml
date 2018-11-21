@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ATACTIC Android.iml" filepath="$PROJECT_DIR$/ATACTIC Android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/atactic/atactic.iml" filepath="$PROJECT_DIR$/atactic/atactic.iml" />
     </modules>
   </component>
 </project>
