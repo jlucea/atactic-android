@@ -111,6 +111,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void loginButtonPressed(){
 
+        usingRecoveredCredentials = false;
+
         // Disable button to prevent multiple clicks
         loginButton.setEnabled(false);
         loginButton.setBackgroundColor(getResources().getColor(R.color.atactic_medium_gray, null));

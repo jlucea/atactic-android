@@ -1,57 +1,12 @@
 package io.atactic.android.utils;
 
-import android.view.View;
 
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class DateUtils {
-
-/*
-    public void foo(String ){
-
-
-        // Display remaining days
-        String qDeadlineStr = participationDescription.getJSONObject("campaign")
-                .getString("endDate");
-
-        String endDateStr = qDeadlineStr.split("T")[0];
-        // System.out.println("String to parse as date: "+ endDateStr);
-
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat();
-            sdf.applyLocalizedPattern("yyyy-MM-dd");
-
-            Date endDate = sdf.parse(endDateStr, new ParsePosition(0));
-
-
-
-            Date now = Calendar.getInstance().getTime();
-
-            long timeDiff = endDate.getTime() - now.getTime();
-            long daysDiff = TimeUnit.MILLISECONDS.toDays(timeDiff);
-
-            // System.out.println("daysDiff: "+daysDiff);
-            questDeadlineTextView.setText("Quedan "+daysDiff+" días");
-
-        }catch (Exception e){
-
-            e.printStackTrace();
-            questDeadlineTextView.setVisibility(View.INVISIBLE);
-        }
-
-
-
-    }
-
-*/
-
-
 
     /*
      * Removes 'Z' and [Timezone/Country] from a date in a format like
@@ -68,9 +23,9 @@ public class DateUtils {
         return cleanDateString;
     }
 
-
-    final static String ZONED_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
-    final static String BASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    private final static String BASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    private final static String ZONED_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    private final static String ZONED_DATE_FORMAT2 = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
     /**
      * Will try to parse the string into a date, trying with different formats:
@@ -93,10 +48,15 @@ public class DateUtils {
             parsed = sdf.parse(parseThis);
 
         }catch (ParseException err){
-            sdf = new SimpleDateFormat(BASE_DATE_FORMAT, Locale.getDefault());
-            parsed = sdf.parse(parseThis);
-        }
+            try {
+                sdf = new SimpleDateFormat(BASE_DATE_FORMAT, Locale.getDefault());
+                parsed = sdf.parse(parseThis);
 
+            }catch (ParseException pe){
+                sdf = new SimpleDateFormat(ZONED_DATE_FORMAT2, Locale.getDefault());
+                parsed = sdf.parse(parseThis);
+            }
+        }
         return parsed;
     }
 
