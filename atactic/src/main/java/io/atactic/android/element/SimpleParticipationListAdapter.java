@@ -114,7 +114,7 @@ public class SimpleParticipationListAdapter extends RecyclerView.Adapter<SimpleP
             // campaignDeadlineTextView.setText(participation.getCampaign().getEndDate().toString());
             // campaignProgressTextView.setText(String.valueOf((int)(participation.getCurrentProgress()*100)) + " %");
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             String dateStr = sdf.format(participation.getCampaign().getEndDate());
             campaignDeadlineTextView.setText(dateStr);
 

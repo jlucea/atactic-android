@@ -4,6 +4,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +16,7 @@ import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;
 import io.atactic.android.network.request.AccountListRequest;
-import io.atactic.android.utils.DistanceCalculator;
+import io.atactic.android.utils.DistanceUtils;
 
 import static io.atactic.android.json.JsonDecoder.decodeAccountList;
 
@@ -24,7 +25,7 @@ import static io.atactic.android.json.JsonDecoder.decodeAccountList;
  */
 public class AccountListDataHandler {
 
-    private static String LOG_TAG = "AccountListDataHandler";
+    private static final String LOG_TAG = "AccountListDataHandler";
     private AccountListActivity activity;
 
 
@@ -53,7 +54,6 @@ public class AccountListDataHandler {
         if (currentLocation != null) {
             accounts = calculateDistances(accounts, currentLocation);
         }
-
         activity.displayData(accounts);
     }
 
@@ -64,7 +64,7 @@ public class AccountListDataHandler {
     private List<Account> calculateDistances(List<Account> accounts, Location userLocation){
 
         for(Account acc: accounts) {
-            double distanceTo = DistanceCalculator.disfFrom(
+            double distanceTo = DistanceUtils.disfFrom(
                     acc.getLatitude(), acc.getLongitude(),
                     userLocation.getLatitude(), userLocation.getLongitude());
 
@@ -72,7 +72,7 @@ public class AccountListDataHandler {
         }
 
         // Sort by distance
-        accounts.sort(Comparator.comparingDouble(Account::getDistanceTo));
+        // accounts.sort(Comparator.comparingDouble(Account::getDistanceTo));
 
         return accounts;
     }
@@ -81,7 +81,7 @@ public class AccountListDataHandler {
     /**
      * Asynchronous task that performs an AccountListRequest
      */
-    static class AccountListAsyncHttpRequest extends AsyncTask<Integer, Void, JSONObject> {
+    static class AccountListAsyncHttpRequest extends AsyncTask<Integer, Void, JSONArray> {
 
        private final AccountListDataHandler handler;
 
@@ -90,7 +90,7 @@ public class AccountListDataHandler {
         }
 
         @Override
-        protected JSONObject doInBackground(Integer... params) {
+        protected JSONArray doInBackground(Integer... params) {
 
             // Send Http request and receive JSON response
             String response = AccountListRequest.send(params[0]);
@@ -98,7 +98,7 @@ public class AccountListDataHandler {
 
             // Return JSON array containing the data to show in the view
             try {
-                return new JSONObject(response);
+                return new JSONArray(response);
 
             } catch (JSONException ex) {
                 ex.printStackTrace();
@@ -107,10 +107,10 @@ public class AccountListDataHandler {
         }
 
         @Override
-        protected void onPostExecute(JSONObject accountAndTargetsMapJSON) {
+        protected void onPostExecute(JSONArray accountsJsonArray) {
             try {
                 // Decode JSON response into an Account List object
-                List<Account> accountList = decodeAccountList(accountAndTargetsMapJSON);
+                List<Account> accountList = decodeAccountList(accountsJsonArray);
                 if (accountList != null) System.out.println(accountList.size() + " accounts decoded");
 
                 // Return data to Handler

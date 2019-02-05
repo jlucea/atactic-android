@@ -16,12 +16,13 @@ import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;
 import io.atactic.android.network.request.CampaignTargetsRequest;
-import io.atactic.android.utils.DistanceCalculator;
+import io.atactic.android.utils.DistanceUtils;
 
 public class ParticipationTargetsDataHandler {
 
     private final static String LOG_TAG = "ParticipationTargetsDataHandler";
 
+    // TODO Ideally, this Data Handler would contain an Account List Fragment instead
     private CampaignDetailActivity activity;
 
     public ParticipationTargetsDataHandler(CampaignDetailActivity activity){
@@ -51,7 +52,7 @@ public class ParticipationTargetsDataHandler {
     private List<Account> calculateDistances(List<Account> accounts, Location userLocation){
 
         for(Account acc: accounts) {
-            double distanceTo = DistanceCalculator.disfFrom(
+            double distanceTo = DistanceUtils.disfFrom(
                     acc.getLatitude(), acc.getLongitude(),
                     userLocation.getLatitude(), userLocation.getLongitude());
 

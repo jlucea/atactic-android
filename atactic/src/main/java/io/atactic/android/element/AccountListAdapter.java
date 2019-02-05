@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 import io.atactic.android.R;
 import io.atactic.android.activity.AccountDetailActivity;
 import io.atactic.android.activity.AccountListActivity;
 import io.atactic.android.model.Account;
+import io.atactic.android.utils.DistanceUtils;
 
 public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.AccountViewHolder>{
 
@@ -92,21 +94,12 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
             accountNameTextView.setText(account.getName());
             String fullAddress = account.getAddress() + ", " + account.getCity();
             accountAddressTextView.setText(fullAddress);
-            targetScoreTextView.setText("");
+            targetScoreTextView.setText(String.valueOf(account.getRelevanceScore()));
 
-            String distanceText = formatDistanceText(account.getDistanceTo());
+            String distanceText = DistanceUtils.formatDistanceText(account.getDistanceTo());
             distanceToTargetTextView.setText(distanceText);
         }
 
-        private String formatDistanceText(double distance){
-            String distanceText;
-            if (distance < 1000){
-                distanceText = Math.round(distance) + " m";
-            } else {
-                distanceText = String.format("%.1f Km", distance/100);
-            }
-            return distanceText;
-        }
 
         @Override
         public void onClick(View v) {

@@ -2,7 +2,9 @@ package io.atactic.android.utils;
 
 import android.util.Log;
 
-public class DistanceCalculator {
+import java.util.Locale;
+
+public class DistanceUtils {
 
 
     public static float distFrom(float lat1, float lng1, float lat2, float lng2) {
@@ -26,6 +28,20 @@ public class DistanceCalculator {
 
     public static double disfFrom(double lat1, double lng1, double lat2, double lng2) {
         return distFrom((float)lat1, (float)lng1, (float)lat2, (float)lng2);
+    }
+
+
+    public static String formatDistanceText(double distance){
+        // System.out.println("AccountListAdapter - Distance Value: " + distance);
+        String distanceText;
+        if (distance <= 1000){
+            distanceText = Math.round(distance) + " m";
+        } else if ((distance < 10000)&(distance > 1000)){
+            distanceText = String.format(Locale.getDefault(), "%.1f Km", distance/1000);
+        } else {
+            distanceText = Math.round(distance/1000) + " Km";
+        }
+        return distanceText;
     }
 
 }

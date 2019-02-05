@@ -18,7 +18,12 @@ import io.atactic.android.network.request.ActivityHistoryRequest;
 
 public class ActivityHistoryDataHandler {
 
-    private String LOG_TAG = "ActivityHistoryDataHandler";
+    private static final String LOG_TAG = "ActivityHistoryDataHandler";
+
+    private static final String MSG_EMPTY = "No se han encontrado actividades";
+    private static final String JSON_ERR = "Se ha producido un error al decodificar los datos";
+    private static final String SERVER_ERR = "Se ha producido un error en el servidor";
+    private static final String CONNECTION_ERR = "No se ha podido conectar con el servidor";
 
     private HistoryActivity activity;
 
@@ -65,19 +70,23 @@ public class ActivityHistoryDataHandler {
                         JSONArray jsonArray = new JSONArray(response.getMessage());
                         List<Visit> visits = JsonDecoder.decodeActivityList(jsonArray);
 
-                        handler.returnData(visits);
+                        if (visits.size() > 0) {
+                            handler.returnData(visits);
+                        }else{
+                            handler.returnMessage(MSG_EMPTY);
+                        }
 
                     } catch (JSONException | ParseException err) {
-                        Log.e(handler.LOG_TAG, "Error decoding activity list JSON Array", err);
-                        handler.returnMessage("Se ha producido un error al decodificar los datos");
+                        Log.e(LOG_TAG, "Error decoding activity list JSON Array", err);
+                        handler.returnMessage(JSON_ERR);
                     }
                 } else {
-                    Log.e(handler.LOG_TAG, "Server error - " + response.getCode());
-                    handler.returnMessage("Se ha producido un error en el servidor (" + response.getCode() + ")");
+                    Log.e(LOG_TAG, "Server error - " + response.getCode());
+                    handler.returnMessage(SERVER_ERR + " (" + response.getCode() + ")");
                 }
             }else{
-                Log.e(handler.LOG_TAG, "NULL Http response");
-                handler.returnMessage("No se ha podido conectar con el servidor");
+                Log.e(LOG_TAG, "NULL Http response");
+                handler.returnMessage(CONNECTION_ERR);
             }
         }
 

@@ -73,52 +73,71 @@
                 android:text="This is the quest briefing offering some indications and recommended actions to the user"
                 android:textSize="12sp" />
 
-            <!-- Quest deadline -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="6dp"
-                android:orientation="horizontal"
-                android:paddingEnd="14dp"
-                android:paddingStart="14dp"
-                android:paddingTop="10dp">
+                android:orientation="horizontal">
 
-                <!-- Clock icon -->
-                <ImageView
+                <!-- Quest deadline -->
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_sandclock_20"
-                    android:tint="@color/atactic_medium_gray" />
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="6dp"
+                    android:orientation="horizontal"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="14dp"
+                    android:paddingTop="10dp">
 
-                <!-- TextView indicating remaining time until deadline -->
-                <TextView
-                    android:id="@+id/tv_quest_deadline"
-                    style="@style/TextAppearance.AppCompat.Body2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:padding="2dp"
-                    android:textColor="@color/atactic_medium_gray"
-                    android:textSize="12sp" />
+                    <!-- Clock icon -->
+                    <!--
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_sandclock_20"
+                        android:tint="@color/atactic_medium_gray" />
+                    -->
 
-                <!-- Coins icon -->
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:src="@drawable/icon_coins_20"
-                    android:tint="@color/atactic_medium_gray" />
+                    <!-- TextView indicating remaining time until deadline -->
+                    <TextView
+                        android:id="@+id/tv_quest_deadline"
+                        style="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:width="100sp"
+                        android:textColor="@color/atactic_medium_gray"
+                        android:textSize="12sp" />
 
-                <!-- TextView indicating remaining time until deadline -->
-                <TextView
-                    android:id="@+id/tv_quest_score"
-                    style="@style/TextAppearance.AppCompat.Body2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:padding="2dp"
-                    android:textColor="@color/atactic_medium_gray"
-                    android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="end"
+                    android:layout_marginStart="6dp"
+                    android:orientation="horizontal"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="14dp"
+                    android:paddingTop="10dp">
+
+                    <!-- Score icon -->
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="6dp"
+                        android:src="@drawable/icon_trophy_32"
+                        android:tint="@color/atactic_dark_gray" />
+
+                    <!-- TextView indicating remaining time until deadline -->
+                    <TextView
+                        android:id="@+id/tv_quest_score"
+                        style="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:textColor="@color/atactic_medium_gray"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -30,11 +30,11 @@ public class NetworkConstants {
     public static final String RSC_ACCOUNT_CAMPAIGNS = "/campaign/acc";
 
     // Account resource
-    public static final String RSC_ACCOUNTS = "/account/map";       // TODO Use a different service
+    public static final String RSC_ACCOUNTS = "/account";
+    public static final String RSC_ACCOUNT_MAP = "/account/map";
+    public static final String RSC_TARGETS= "/account/targets";
     public static final String RSC_NEARBY_ACCOUNTS= "/account/nearby";
 
-    // Target account resource
-    public static final String RSC_TARGETS= "/account/targets";
     // Campaign targets
     public static final String RSC_QUEST_TARGETS= "/account/targets/campaign";
 

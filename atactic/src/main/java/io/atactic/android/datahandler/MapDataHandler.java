@@ -18,6 +18,7 @@ import io.atactic.android.model.AccountTargetingParticipation;
 import io.atactic.android.model.ParticipationSummary;
 import io.atactic.android.model.TargetAccount;
 import io.atactic.android.network.request.AccountListRequest;
+import io.atactic.android.network.request.AccountMapRequest;
 
 public class MapDataHandler {
 
@@ -159,7 +160,7 @@ public class MapDataHandler {
         protected JSONObject doInBackground(Integer... params) {
 
             // Send Http request and receive JSON response
-            String response = AccountListRequest.send(params[0]);
+            String response = AccountMapRequest.send(params[0]);
             Log.d("AccountMapRequestTask", "JSON Response: " + response);
 
             // Return JSON array containing the data to show in the view

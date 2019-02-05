@@ -24,6 +24,8 @@ public class DateUtils {
     }
 
     private final static String BASE_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    private final static String NOMILIS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    private final static String NOSECS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm";
     private final static String ZONED_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
     private final static String ZONED_DATE_FORMAT2 = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
@@ -46,15 +48,26 @@ public class DateUtils {
         try {
             sdf = new SimpleDateFormat(ZONED_DATE_FORMAT, Locale.getDefault());
             parsed = sdf.parse(parseThis);
-
-        }catch (ParseException err){
+        } catch (ParseException ex1) {
             try {
-                sdf = new SimpleDateFormat(BASE_DATE_FORMAT, Locale.getDefault());
+                sdf = new SimpleDateFormat(NOMILIS_DATE_FORMAT, Locale.getDefault());
                 parsed = sdf.parse(parseThis);
 
-            }catch (ParseException pe){
-                sdf = new SimpleDateFormat(ZONED_DATE_FORMAT2, Locale.getDefault());
-                parsed = sdf.parse(parseThis);
+            } catch (ParseException ex2) {
+                try {
+                    sdf = new SimpleDateFormat(BASE_DATE_FORMAT, Locale.getDefault());
+                    parsed = sdf.parse(parseThis);
+
+                } catch (ParseException ex3) {
+                    try {
+                        sdf = new SimpleDateFormat(ZONED_DATE_FORMAT2, Locale.getDefault());
+                        parsed = sdf.parse(parseThis);
+
+                    }catch (ParseException ex4){
+                        sdf = new SimpleDateFormat(NOSECS_DATE_FORMAT, Locale.getDefault());
+                        parsed = sdf.parse(parseThis);
+                    }
+                }
             }
         }
         return parsed;

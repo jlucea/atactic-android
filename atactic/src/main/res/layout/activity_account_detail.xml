@@ -8,9 +8,10 @@
     android:background="@color/White"
     android:orientation="vertical">
 
+    <!-- HEADER -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="150dp"
         android:orientation="vertical"
         android:background="@color/atactic_medium_dark_gray">
 
@@ -37,8 +38,67 @@
             android:textColor="@color/LightGrey"
             />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_height="70dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="80dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_account_address_line1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/LightGrey"
+                    android:text="Gran Vía 123, 7º"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_account_address_line2"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="20dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/LightGrey"
+                    android:text="50812, Zaragoza"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end|bottom">
+
+                <TextView
+                    android:id="@+id/tv_distance_to_account"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="13sp"
+                    android:text="55 m"
+                    android:textColor="@color/LightGrey"
+                    android:layout_marginEnd="12dp"
+                    android:layout_gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
     </LinearLayout>
 
+    <!-- MAP -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,105 +114,75 @@
 
     </LinearLayout>
 
+    <!-- CAMPAIGNS -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="280dp"
-            android:layout_height="80dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_account_address_line1"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:textSize="13sp"
-                android:text="Gran Vía 123, 7º"
-                />
-
-            <TextView
-                android:id="@+id/tv_account_address_line2"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="20dp"
-                android:textSize="13sp"
-                android:text="50812, Zaragoza"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="end|bottom">
-
-            <TextView
-                android:id="@+id/tv_distance_to_account"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="13sp"
-                android:text="55 m"
-                android:layout_marginEnd="12dp"
-                android:layout_gravity="center_vertical"
-                />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/tv_campaigns_label"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="14dp"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        android:text="CAMPAÑAS"
-        android:layout_gravity="center"
-        />
-
-    <View
-        android:layout_width="40dp"
-        android:layout_height="4dp"
-        android:layout_marginTop="12dp"
-        android:layout_gravity="center"
-        android:background="@color/atactic_bright_red" />
-
-    <LinearLayout
-        android:id="@+id/status_message_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_status_message"
+            android:id="@+id/tv_campaigns_label"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_marginTop="15dp"
             android:textSize="13sp"
-            android:layout_marginTop="0dp"
-            android:text="Status message goes here"
-            android:layout_gravity="center|center_horizontal"
+            android:textStyle="bold"
+            android:text="CAMPAÑAS"
+            android:layout_gravity="center"
             />
 
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center"
+            android:background="@color/atactic_bright_red" />
+
+        <FrameLayout
+            android:id="@+id/status_message_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_status_message"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="13sp"
+                android:layout_marginTop="0dp"
+                android:text="Status message goes here"
+                android:layout_gravity="center|center_horizontal"
+                />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/account_campaigns_loading_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"> <!-- Change to visible to show in the design screen -->
+
+            <ProgressBar
+                android:id="@+id/account_list_loading_indicator"
+                style="?android:attr/progressBarStyle"
+                android:indeterminate="true"
+                android:layout_marginTop="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+        </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_account_campaigns"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:background="@color/White"
+            android:alpha="1"/>
+
     </LinearLayout>
-
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_account_campaigns"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:visibility="visible"
-        android:background="@color/White"
-        android:alpha="1"/>
-
 
 </LinearLayout>

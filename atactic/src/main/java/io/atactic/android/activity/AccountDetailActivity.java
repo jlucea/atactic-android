@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,7 +21,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
-import java.util.Locale;
 
 import io.atactic.android.R;
 import io.atactic.android.datahandler.AccountParticipationsDataHandler;
@@ -29,6 +28,7 @@ import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.SimpleParticipationListAdapter;
 import io.atactic.android.model.Account;
 import io.atactic.android.model.Participation;
+import io.atactic.android.utils.DistanceUtils;
 
 public class AccountDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -37,13 +37,17 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
     private SimpleParticipationListAdapter adapter;
     private RecyclerView participationListRecyclerView;
 
-    private LinearLayout statusMessageLayout;
+    private FrameLayout loadingIndicatorLayout;
+    private FrameLayout statusMessageLayout;
     private TextView statusMessageTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_detail);
+
+        loadingIndicatorLayout = findViewById(R.id.account_campaigns_loading_indicator);
+        loadingIndicatorLayout.setVisibility(View.VISIBLE);
 
         // Initialize Map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -75,7 +79,7 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         accountTypeTextView.setText(account.getType());
         accountAddressLine1TextView.setText(account.getAddress());
         accountAddressLine2TextView.setText(account.getPostalCode() + ", " + account.getCity());
-        distanceToAccountTextView.setText(formatDistanceText(account.getDistanceTo()));
+        distanceToAccountTextView.setText(DistanceUtils.formatDistanceText(account.getDistanceTo()));
 
         int userId = ((AtacticApplication)getApplication()).getUserId();
 
@@ -139,19 +143,9 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
     }
 
 
-    private String formatDistanceText(double distance){
-        String distanceText;
-        if (distance < 1000){
-            distanceText = Math.round(distance) + " m";
-        } else {
-            distanceText = String.format(Locale.getDefault(), "%.1f Km", distance/100);
-        }
-        return distanceText;
-    }
-
-
     public void displayParticipations(List<Participation> participationList){
         statusMessageLayout.setVisibility(View.GONE);
+        this.loadingIndicatorLayout.setVisibility(View.GONE);
         this.participationListRecyclerView.setAlpha(1);
         this.adapter.setData(participationList);
     }
@@ -161,6 +155,7 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         this.participationListRecyclerView.setAlpha(0);
         statusMessageTextView.setText(message);
         statusMessageLayout.setVisibility(View.VISIBLE);
+        this.loadingIndicatorLayout.setVisibility(View.GONE);
     }
 
 }

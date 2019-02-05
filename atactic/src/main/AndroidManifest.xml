@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-
     package="io.atactic.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -25,7 +22,6 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <!-- android:roundIcon="@mipmap/ic_launcher_round" -->
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -70,7 +66,6 @@
         <activity
             android:name=".activity.RankingActivity"
             android:label="@string/title_activity_ranking" />
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -85,7 +80,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

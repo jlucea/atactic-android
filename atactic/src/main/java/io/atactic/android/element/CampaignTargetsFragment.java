@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class CampaignTargetsFragment extends Fragment {
     private static final String LOG_TAG = "CampaignTargetsFragment";
 
     private RecyclerView recyclerView;
-
-    private List<Account> targetList;
+    private List<Account> accounts;
+    private FrameLayout loadingIndicatorFrame;
 
     public CampaignTargetsFragment() {  }
 
@@ -40,6 +41,10 @@ public class CampaignTargetsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_quest_detail_3,container, false);
 
+        // Show loading indicator
+        loadingIndicatorFrame = view.findViewById(R.id.targets_loading_indicator_layout);
+        loadingIndicatorFrame.setVisibility(View.VISIBLE);
+
         recyclerView = view.findViewById(R.id.rv_target_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
@@ -48,8 +53,8 @@ public class CampaignTargetsFragment extends Fragment {
         AccountListAdapter adapter = new AccountListAdapter();
         recyclerView.setAdapter(adapter);
 
-        if (targetList != null) {
-            adapter.setContent(targetList);
+        if (accounts != null) {
+            adapter.setContent(accounts);
             // adapter.notifyDataSetChanged();
         }else{
             Log.w(LOG_TAG, "Operating fragment with NULL data");
@@ -59,7 +64,23 @@ public class CampaignTargetsFragment extends Fragment {
 
 
     public void setContent(List<Account> content){
-        this.targetList = content;
+
+        loadingIndicatorFrame.setVisibility(View.GONE);
+
+        Log.v(LOG_TAG, "Updating fragment content");
+        this.accounts = content;
+        if (recyclerView != null) {
+            if (recyclerView.getAdapter() != null) {
+                Log.v(LOG_TAG, "Notify data set changed");
+                AccountListAdapter adapter = (AccountListAdapter)this.recyclerView.getAdapter();
+                adapter.setContent(content);
+                adapter.notifyDataSetChanged();
+            }else {
+                Log.w(LOG_TAG, "Adapter is null");
+            }
+        }else{
+            Log.w(LOG_TAG, "RecyclerView is null");
+        }
     }
 
 }

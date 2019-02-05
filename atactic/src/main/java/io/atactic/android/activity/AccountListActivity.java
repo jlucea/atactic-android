@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -20,10 +22,11 @@ import io.atactic.android.model.Account;
 
 public class AccountListActivity extends AppCompatActivity implements AccountListAdapter.ListItemClickListener {
 
+    private AccountListDataHandler dataHandler;
+
     private AccountListAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
-
-    private AccountListDataHandler dataHandler;
+    private ProgressBar loadingIndicator;
 
     private final static String LOG_TAG = "AccountListActivity";
 
@@ -31,6 +34,9 @@ public class AccountListActivity extends AppCompatActivity implements AccountLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_priority_list);
+
+        loadingIndicator = findViewById(R.id.account_list_loading_indicator);
+        loadingIndicator.setVisibility(View.VISIBLE);
 
         /*
          * Initialize bottom navigation bar. Update click listener and mark selected item
@@ -83,6 +89,7 @@ public class AccountListActivity extends AppCompatActivity implements AccountLis
         this.adapter.setContent(accountList);
 
         refreshLayout.setRefreshing(false);
+        loadingIndicator.setVisibility(View.GONE);
     }
 
 

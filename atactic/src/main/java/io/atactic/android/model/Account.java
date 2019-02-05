@@ -11,6 +11,7 @@ public class Account {
     private String city;
     private String province;
     private String country;
+    private int relevanceScore;
     private double longitude;
     private double latitude;
     private double distanceTo;
@@ -110,6 +111,14 @@ public class Account {
 
     public void setDistanceTo(double distanceTo) {
         this.distanceTo = distanceTo;
+    }
+
+    public int getRelevanceScore() {
+        return relevanceScore;
+    }
+
+    public void setRelevanceScore(int relevanceScore) {
+        this.relevanceScore = relevanceScore;
     }
 
     @Override

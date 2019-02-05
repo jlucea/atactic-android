@@ -269,11 +269,8 @@ public class JsonDecoder {
         acc.setProvince(accountJSON.getString("province"));
         acc.setLongitude(accountJSON.getDouble("longitude"));
         acc.setLatitude(accountJSON.getDouble("latitude"));
+        acc.setRelevanceScore(accountJSON.getInt("relevance"));
         return acc;
     }
-
-
-
-
 
 }
