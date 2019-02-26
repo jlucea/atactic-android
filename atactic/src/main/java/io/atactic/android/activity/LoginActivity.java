@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         ((AtacticApplication)getApplication()).storeUserCredentialsInAppCache(userId, username, password);
 
         // Store in Preferences for future authentication
-        CredentialsCache.storeCredentials(this, username, password, userId, token);
+        CredentialsCache.storeCredentials(this, username, password, userId);
 
         // Start configuration manager and request configuration
         Log.v(LOG_TAG, "Requesting configuration");

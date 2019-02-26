@@ -7,14 +7,14 @@
         android:enabled="true"
         android:checked="false"
         android:icon="@drawable/icon_navbar_flag_24"
-        android:title="@string/navbar_quests" />
+        android:title="@string/navbar_campaigns" />
 
     <item
         android:id="@+id/action_priorities"
         android:enabled="true"
         android:checked="false"
         android:icon="@drawable/icon_target_24"
-        android:title="@string/navbar_targets" />
+        android:title="@string/navbar_accounts" />
 
     <item
         android:id="@+id/action_map"

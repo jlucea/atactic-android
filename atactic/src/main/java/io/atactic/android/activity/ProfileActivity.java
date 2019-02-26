@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(i);
 
         }else if (v.getId() == R.id.tv_exit){
-            CredentialsCache.removeCredentials(ProfileActivity.this);
+            CredentialsCache.crearAll(ProfileActivity.this);
             Intent i = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(i);
         }

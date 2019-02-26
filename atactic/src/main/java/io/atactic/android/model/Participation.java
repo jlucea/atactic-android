@@ -1,6 +1,8 @@
 package io.atactic.android.model;
 
-public class Participation {
+import java.io.Serializable;
+
+public class Participation implements Serializable {
 
     private int id;
 

@@ -10,11 +10,11 @@ public class CredentialsCache {
         String userName;
         String password;
         int userId;
-        String authToken;
 
-        UserCredentials(String usr, String pwd){
+        public UserCredentials(String usr, String pwd, int uid){
             userName = usr;
             password = pwd;
+            userId = uid;
         }
 
         public String getUserName() {
@@ -32,21 +32,36 @@ public class CredentialsCache {
 
     private static final String USERNAME_KEY = "usrname";
     private static final String PASSWORD_KEY = "usrpwd";
+    private static final String USERID_KEY = "usrid";
+    private static final String TOKEN_KEY = "authtoken";
 
-    public static void storeCredentials(Context context, String username, String password, int userId, String token){
+
+
+    public static void storeCredentials(Context context, String username, String password, int userId){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
                 .putString(USERNAME_KEY, username)
                 .putString(PASSWORD_KEY,password)
+                .putInt(USERID_KEY, userId)
                 .apply();
     }
 
-    public static void removeCredentials(Context context){
+    public static void storeToken(Context context, String token){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit()
+                .putString(TOKEN_KEY, token)
+                .apply();
+
+    }
+
+    public static void crearAll(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
                 .remove(USERNAME_KEY)
                 .remove(PASSWORD_KEY)
-                .commit();
+                .remove(USERID_KEY)
+                .remove(TOKEN_KEY)
+                .apply();
     }
 
 
@@ -55,9 +70,10 @@ public class CredentialsCache {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String username = prefs.getString(USERNAME_KEY, null);
         String password = prefs.getString(PASSWORD_KEY, null);
+        int userId = prefs.getInt(USERID_KEY, 0);
 
         if ((username != null) && (password!=null)) {
-            return new UserCredentials(username, password);
+            return new UserCredentials(username, password, userId);
         } else {
             return null;
         }
