@@ -111,7 +111,12 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
         }
 
         public void setContent(Participation participation) {
-            progressIndicatorView.setProgress((int)(participation.getCurrentProgress()*100));
+            int roundedProgressValue = (int)(participation.getCurrentProgress()*100);
+            if (roundedProgressValue > 100) {
+                progressIndicatorView.setProgress(100);
+            }else{
+                progressIndicatorView.setProgress(roundedProgressValue);
+            }
             questNameTextView.setText(participation.getCampaign().getName());
             questBriefingTextView.setText(participation.getCampaign().getBriefing());
 
