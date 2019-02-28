@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         this.getClass()));
 
         // Get Data
-        new ProfileManager(this).getData();
+        // new ProfileManager(this).getData();
 
         TenantConfiguration config = ConfigurationManager.getInstance().getConfiguration();
         if (config != null ){

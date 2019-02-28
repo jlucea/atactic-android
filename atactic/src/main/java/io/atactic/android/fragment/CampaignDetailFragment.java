@@ -58,10 +58,6 @@ public class CampaignDetailFragment extends Fragment {
         cnNameTextView = view.findViewById(R.id.tv_questdetail_name);
         cBriefingTextView = view.findViewById(R.id.tv_questdetail_briefing);
 
-        ImageView backImgButton = view.findViewById(R.id.img_back);
-        backImgButton.setOnClickListener(v ->
-                Log.v(LOG_TAG,"backButtonClicked"));
-
         super.onViewCreated(view, savedInstanceState);
     }
 

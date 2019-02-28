@@ -7,11 +7,8 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.Comparator;
 import java.util.List;
 
-import io.atactic.android.activity.CampaignDetailActivity;
-import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;
@@ -22,18 +19,14 @@ public class ParticipationTargetsDataHandler {
 
     private final static String LOG_TAG = "ParticipationTargetsDataHandler";
 
-    // TODO Ideally, this Data Handler would contain an Account List Fragment instead
-    private CampaignDetailActivity activity;
+    private AccountListPresenter presenter;
 
-    public ParticipationTargetsDataHandler(CampaignDetailActivity activity){
-        this.activity = activity;
+    public ParticipationTargetsDataHandler(AccountListPresenter accountListPresenter){
+        this.presenter = accountListPresenter;
     }
 
-    public void getData(int participationId){
-
-        LocationManager.getInstance().updateLocation(activity);
-        final int userId = ((AtacticApplication)activity.getApplication()).getUserId();
-
+    public void getData(int userId, int participationId){
+        Log.v(LOG_TAG, "getData");
         Log.v(LOG_TAG,"Requesting targets for participation " + participationId);
         new ParticipationTargetsRequestTask(this).execute(new QuestTargetsRequestParams(userId, participationId));
     }
@@ -46,8 +39,14 @@ public class ParticipationTargetsDataHandler {
         if (location != null)
             data = calculateDistances(data, location);
 
-        activity.displayTargets(data);
+        presenter.displayAccounts(data);
     }
+
+
+    private void returnMessage(String message){
+        presenter.displayMessage(message);
+    }
+
 
     private List<Account> calculateDistances(List<Account> accounts, Location userLocation){
 
@@ -60,7 +59,7 @@ public class ParticipationTargetsDataHandler {
         }
 
         // Sort by distance
-        accounts.sort(Comparator.comparingDouble(Account::getDistanceTo));
+        // accounts.sort(Comparator.comparingDouble(Account::getDistanceTo));
 
         return accounts;
     }
@@ -107,10 +106,15 @@ public class ParticipationTargetsDataHandler {
 
                 } catch (JSONException err) {
                     Log.e("ParticipationTargetsRequestTask", "Error while decoding targets JSON array", err);
-                    // TODO Return message to Activity
+                    handler.returnMessage("Se ha producido un error al leer la lista de clientes");
                 }
             }
         }
+    }
+
+    public interface AccountListPresenter {
+        void displayAccounts(List<Account> accountList);
+        void displayMessage(String message);
     }
 
 

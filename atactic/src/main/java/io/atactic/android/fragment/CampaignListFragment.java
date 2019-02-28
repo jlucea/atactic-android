@@ -1,7 +1,7 @@
 package io.atactic.android.fragment;
 
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.atactic.android.R;
+import io.atactic.android.activity.CampaignDetailActivity;
 import io.atactic.android.datahandler.ParticipationListDataHandler;
 import io.atactic.android.datahandler.ParticipationListPresenter;
 import io.atactic.android.element.ParticipationListAdapter;
@@ -24,7 +25,10 @@ import io.atactic.android.model.Participation;
 import io.atactic.android.utils.CredentialsCache;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment managing the Campaign List section
+ *
+ * @author Jaime Lucea
+ * @author ATACTIC
  */
 public class CampaignListFragment extends Fragment
         implements ParticipationListAdapter.ListItemClickListener, ParticipationListPresenter {
@@ -37,17 +41,14 @@ public class CampaignListFragment extends Fragment
     private ProgressBar loadingIndicator;
     private TextView statusMessageTextView;
 
-    private InteractionListener interactionListener;
-
     private ParticipationListDataHandler dataHandler;
 
     private List<Participation> campaigns;
 
-    /**
+    /*
      *  Required empty public constructor
      */
-    public CampaignListFragment() {
-    }
+    public CampaignListFragment() { }
 
 
     @Override
@@ -94,7 +95,6 @@ public class CampaignListFragment extends Fragment
         return view;
     }
 
-
     /**
      * Asynchronous request gets the list of campaigns for the current user
      *  and displays them on the UI
@@ -108,7 +108,6 @@ public class CampaignListFragment extends Fragment
             dataHandler.getData(credentials.getUserId());
         }
     }
-
 
     @Override
     public void displayCampaignList(List<Participation> data) {
@@ -134,24 +133,28 @@ public class CampaignListFragment extends Fragment
 
     @Override
     public void onListItemClick(int clickedItemIdex) {
-        // Log.d(LOG_TAG, "Campaign clicked. Index = " + clickedItemIdex);
-        this.interactionListener.onFragmentInteraction(campaigns.get(clickedItemIdex));
-    }
+        Log.d(LOG_TAG, "Campaign clicked. Index = " + clickedItemIdex);
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.interactionListener = (InteractionListener)context;
-    }
+        Participation p = campaigns.get(clickedItemIdex);
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        this.interactionListener = null;
-    }
+        // Create an intent and put the quest information to display
+        Intent i = new Intent(this.getContext(), CampaignDetailActivity.class);
 
-    public interface InteractionListener {
-        void onFragmentInteraction(Participation p);
+        i.putExtra("participationId",p.getId());
+        i.putExtra("questName", p.getCampaign().getName());
+        i.putExtra("questType", p.getCampaign().getType());
+        i.putExtra("questSummary", p.getCampaign().getBriefing());
+        i.putExtra("questLongDesc", p.getCampaign().getDescription());
+        i.putExtra("questDeadline", p.getCampaign().getEndDate().getTime());
+        i.putExtra("completionScore", p.getCampaign().getCompletionScore());
+        i.putExtra("currentProgress",p.getCurrentProgress());
+        String questOwnerStr = p.getCampaign().getOwner().getFirstName() + " "
+                + p.getCampaign().getOwner().getLastName()
+                + "\n" + p.getCampaign().getOwner().getPosition();
+        i.putExtra("questOwner", questOwnerStr);
+
+        // Launch CampaignDetailActivity
+        startActivity(i);
     }
 
 }

@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    
     private void initialize(){
 
         // Here we could remove the notification bar for a spectacular, full-screen login
@@ -89,8 +90,11 @@ public class LoginActivity extends AppCompatActivity {
         ConfigurationManager.getInstance().requestUpdatedConfiguration(userId);
 
         Log.v(LOG_TAG, "Entering app ...");
-        Intent i = new Intent(LoginActivity.this, CampaignListActivity.class);
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(i);
+
+        // End this activity
+        finish();
     }
 
     public void onAuthenticationFail(String message){

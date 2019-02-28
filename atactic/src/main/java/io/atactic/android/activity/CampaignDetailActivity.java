@@ -6,8 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,16 +21,16 @@ import java.util.Date;
 import java.util.List;
 
 import io.atactic.android.R;
-import io.atactic.android.datahandler.ParticipationTargetsDataHandler;
 import io.atactic.android.element.CampaignDescriptionFragment;
 import io.atactic.android.element.CampaignInfoFragment;
 import io.atactic.android.element.CampaignTargetsFragment;
-import io.atactic.android.model.Account;
 import io.atactic.android.model.Campaign;
 import io.atactic.android.model.Participation;
 import io.atactic.android.model.User;
 
 public class CampaignDetailActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = "CampaignDetailActivity";
 
     private Participation participation;
 
@@ -45,15 +48,15 @@ public class CampaignDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest_detail);
 
+        // Display back button in action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         /*
          * Get references to the views in the header
          */
         progressIndicatorView = findViewById(R.id.arc_questdetail_arcprogress);
         questNameTextView = findViewById(R.id.tv_questdetail_name);
         questBriefingTextView = findViewById(R.id.tv_questdetail_briefing);
-
-        ImageView backImgButton = findViewById(R.id.img_back);
-        backImgButton.setOnClickListener(v -> finish());
 
         /*
          * Get info to display from intent variables
@@ -75,27 +78,32 @@ public class CampaignDetailActivity extends AppCompatActivity {
 
         if ("SEGMENT_COVERAGE".equals(participation.getCampaign().getType())) {
 
+            // Add targets segment
             targetListFragment = new CampaignTargetsFragment();
+            Bundle args = new Bundle();
+            args.putInt("pid",participation.getId());
+            targetListFragment.setArguments(args);
             fragmentAdapter.addFragment(targetListFragment, "Objetivos");
         }
 
         viewPager.setAdapter(fragmentAdapter);
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
 
-        if ("SEGMENT_COVERAGE".equals(participation.getCampaign().getType())) {
-            /*
-             * Call ParticipationTargetsDataHandler to request campaign targets in order to fill the fragment.
-             * Once finished, the DataHandler is supposed to call the displayTargets method
-             */
-            new ParticipationTargetsDataHandler(this).getData(participation.getId());
-        }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.v(LOG_TAG, "Options item selected");
+        this.finish();
+        return super.onOptionsItemSelected(item);
     }
 
 
+/*
     public void displayTargets(List<Account> data){
         targetListFragment.setContent(data);
     }
+    */
 
     private void displayParticipationData(Participation participation){
         int roundedProgressValue = (int)(participation.getCurrentProgress()*100);

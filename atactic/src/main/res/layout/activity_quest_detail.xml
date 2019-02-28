@@ -19,8 +19,8 @@
         <com.github.lzyzsd.circleprogress.ArcProgress
             android:id="@+id/arc_questdetail_arcprogress"
             android:layout_marginTop="24dp"
-            android:layout_width="102dp"
-            android:layout_height="102dp"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
             android:paddingTop="4dp"
             android:layout_gravity="center"
             auto:arc_finished_color="@color/atactic_brighter_red"
@@ -35,14 +35,13 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="30dp"
             android:text="Quest name goes here"
-            android:textSize="18sp"
             android:textAlignment="center"
             android:textColor="@color/White"
-            />
+            android:textSize="18sp" />
 
         <!-- Quest briefing text -->
         <TextView
@@ -50,33 +49,17 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="25dp"
+            android:padding="6dp"
             android:text="This is the quest briefing / instructions"
-            android:textSize="14sp"
             android:textAlignment="center"
             android:textColor="@color/White"
-            android:padding="6dp"/>
+            android:textSize="14sp" />
 
     </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/img_back"
-            android:src="@drawable/icon_back_32"
-            android:tint="@color/White"
-            android:layout_margin="24dp"
-            android:visibility="visible"
-            />
-
-    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/layout_tabs"

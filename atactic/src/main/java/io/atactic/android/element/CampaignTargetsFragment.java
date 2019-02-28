@@ -14,9 +14,11 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import io.atactic.android.R;
+import io.atactic.android.datahandler.ParticipationTargetsDataHandler;
 import io.atactic.android.model.Account;
+import io.atactic.android.utils.CredentialsCache;
 
-public class CampaignTargetsFragment extends Fragment {
+public class CampaignTargetsFragment extends Fragment implements ParticipationTargetsDataHandler.AccountListPresenter{
 
     private static final String LOG_TAG = "CampaignTargetsFragment";
 
@@ -29,6 +31,19 @@ public class CampaignTargetsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.v(LOG_TAG, "Fragment on create - recovering credentials");
+        int userId = CredentialsCache.recoverCredentials(this.getContext()).getUserId();
+        int participationId = getArguments().getInt("pid");
+
+        Log.d(LOG_TAG, "UserId = " + userId);
+        Log.d(LOG_TAG, "ParticipationId = " + participationId);
+
+        /*
+         * Call ParticipationTargetsDataHandler to request campaign targets in order to fill the fragment.
+         * Once finished, the DataHandler is supposed to call the displayTargets method
+         */
+        new ParticipationTargetsDataHandler(this).getData(userId, participationId);
     }
 
     @Nullable
@@ -43,7 +58,6 @@ public class CampaignTargetsFragment extends Fragment {
 
         // Show loading indicator
         loadingIndicatorFrame = view.findViewById(R.id.targets_loading_indicator_layout);
-        loadingIndicatorFrame.setVisibility(View.VISIBLE);
 
         recyclerView = view.findViewById(R.id.rv_target_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -57,23 +71,25 @@ public class CampaignTargetsFragment extends Fragment {
             adapter.setContent(accounts);
             // adapter.notifyDataSetChanged();
         }else{
+            loadingIndicatorFrame.setVisibility(View.VISIBLE);
             Log.w(LOG_TAG, "Operating fragment with NULL data");
         }
         return view;
     }
 
 
-    public void setContent(List<Account> content){
 
+    @Override
+    public void displayAccounts(List<Account> accountList) {
         loadingIndicatorFrame.setVisibility(View.GONE);
 
         Log.v(LOG_TAG, "Updating fragment content");
-        this.accounts = content;
+        this.accounts = accountList;
         if (recyclerView != null) {
             if (recyclerView.getAdapter() != null) {
                 Log.v(LOG_TAG, "Notify data set changed");
                 AccountListAdapter adapter = (AccountListAdapter)this.recyclerView.getAdapter();
-                adapter.setContent(content);
+                adapter.setContent(accountList);
                 adapter.notifyDataSetChanged();
             }else {
                 Log.w(LOG_TAG, "Adapter is null");
@@ -83,4 +99,8 @@ public class CampaignTargetsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void displayMessage(String message) {
+        // TODO
+    }
 }
