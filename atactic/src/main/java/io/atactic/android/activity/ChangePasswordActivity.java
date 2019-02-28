@@ -2,6 +2,7 @@ package io.atactic.android.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,9 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+
+        // Display back button in action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         newPassWordTextField = findViewById(R.id.et_new_pwd);
         verificationTextField = findViewById(R.id.et_new_pwd2);
@@ -40,6 +44,12 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         }else{
             Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        this.finish();
+        return super.onOptionsItemSelected(item);
     }
 
 
