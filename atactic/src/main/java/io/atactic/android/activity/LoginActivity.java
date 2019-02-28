@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    
+
     private void initialize(){
 
         // Here we could remove the notification bar for a spectacular, full-screen login
