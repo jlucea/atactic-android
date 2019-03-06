@@ -2,14 +2,13 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:auto="http://schemas.android.com/apk/res-auto"
-
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
@@ -21,14 +20,14 @@
     <!-- This view holds the data for one particular quest participation -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="136dp"
+        android:layout_height="132dp"
         android:orientation="horizontal" >
 
         <!-- Circular progress indicator -->
         <com.github.lzyzsd.circleprogress.ArcProgress
             android:id="@+id/arc_progress"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="14dp"
             android:layout_width="92dp"
             android:layout_height="92dp"
             auto:arc_finished_color="@color/atactic_brighter_red"
@@ -40,22 +39,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="12dp"
             android:orientation="vertical" >
 
             <!-- Quest name text view -->
             <TextView
                 android:id="@+id/tv_quest_name"
                 style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="18dp"
-                android:autoSizeMinTextSize="12sp"
-                android:maxLength="30"
-                android:padding="0dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="14dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="Quest Name Goes Here"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -64,82 +61,27 @@
             <TextView
                 android:id="@+id/tv_quest_briefing"
                 style="@style/TextAppearance.AppCompat.Body1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_marginStart="6dp"
                 android:layout_marginTop="4dp"
-                android:paddingEnd="14dp"
-                android:paddingStart="14dp"
+                android:fontFamily="@font/roboto"
+                android:maxLines="3"
+                android:ellipsize="end"
                 android:text="This is the quest briefing offering some indications and recommended actions to the user"
                 android:textSize="12sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <!-- Quest deadline -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="6dp"
-                    android:orientation="horizontal"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="14dp"
-                    android:paddingTop="10dp">
-
-                    <!-- Clock icon -->
-                    <!--
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_sandclock_20"
-                        android:tint="@color/atactic_medium_gray" />
-                    -->
-
-                    <!-- TextView indicating remaining time until deadline -->
-                    <TextView
-                        android:id="@+id/tv_quest_deadline"
-                        style="@style/TextAppearance.AppCompat.Body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:width="100sp"
-                        android:textColor="@color/atactic_medium_gray"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="end"
-                    android:layout_marginStart="6dp"
-                    android:orientation="horizontal"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="14dp"
-                    android:paddingTop="10dp">
-
-                    <!-- Score icon -->
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginEnd="6dp"
-                        android:src="@drawable/icon_trophy_32"
-                        android:tint="@color/atactic_dark_gray" />
-
-                    <!-- TextView indicating remaining time until deadline -->
-                    <TextView
-                        android:id="@+id/tv_quest_score"
-                        style="@style/TextAppearance.AppCompat.Body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:textColor="@color/atactic_medium_gray"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+            <!-- TextView indicating remaining time until deadline -->
+            <TextView
+                android:id="@+id/tv_quest_deadline"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:width="100sp"
+                android:fontFamily="@font/roboto"
+                android:text="19 days left"
+                android:textColor="@color/atactic_medium_gray"
+                android:textSize="12sp" />
 
         </LinearLayout>
 

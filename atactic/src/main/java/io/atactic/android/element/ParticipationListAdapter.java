@@ -93,7 +93,7 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
         private final TextView questNameTextView;
         private final TextView questBriefingTextView;
         private final TextView questDeadlineTextView;
-        private final TextView questScoreTextView;
+        // private final TextView questScoreTextView;
 
         ParticipationViewHolder(View itemView){
             super(itemView);
@@ -104,7 +104,7 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
             questBriefingTextView = itemView.findViewById(R.id.tv_quest_briefing);
             progressIndicatorView = itemView.findViewById(R.id.arc_progress);
             questDeadlineTextView = itemView.findViewById(R.id.tv_quest_deadline);
-            questScoreTextView = itemView.findViewById(R.id.tv_quest_score);
+            // questScoreTextView = itemView.findViewById(R.id.tv_quest_score);
 
             /* Add a click listener to the view holder */
             itemView.setOnClickListener(this);
@@ -126,7 +126,7 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
             String deadlineText = "Quedan "+ daysDiff + " días";
             questDeadlineTextView.setText(deadlineText);
 
-            questScoreTextView.setText(String.valueOf(participation.getCampaign().getCompletionScore()));
+            // questScoreTextView.setText(String.valueOf(participation.getCampaign().getCompletionScore()));
         }
 
         @Override
@@ -136,6 +136,5 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
         }
 
     }
-
 
 }

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -52,6 +53,9 @@ public class CheckInActivity extends AppCompatActivity {
         accountSpinnerView = findViewById(R.id.spinner_account);
         commentsTextField = findViewById(R.id.et_comments);
         // userLocationTextView = findViewById(R.id.tv_user_position);
+
+        // Display back button in action bar
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /*
          * Add a click listener to the button that will call the checkIn method,
@@ -276,5 +280,11 @@ public class CheckInActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.v(LOG_TAG, "Options item selected");
+        this.finish();
+        return super.onOptionsItemSelected(item);
+    }
 
 }

@@ -14,6 +14,7 @@
         android:layout_height="match_parent"
         tools:context="io.atactic.android.activity.MainActivity" />
 
+    <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_checkin"
         android:layout_width="match_parent"
@@ -25,6 +26,8 @@
         android:tint="@color/White"
         app:borderWidth="0dp"
         app:elevation="6dp"/>
+
+    -->
     <!-- FAB's background color is taken from the accent color constant in styles.xml -->
     <!-- This also works but generates an exception:
         android:backgroundTint="@color/atactic_space_cadet_blue" -->

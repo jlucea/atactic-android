@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,16 +35,20 @@ import org.json.JSONException;
 import java.util.List;
 
 import io.atactic.android.R;
+import io.atactic.android.activity.CheckInActivity;
 import io.atactic.android.datahandler.MapDataHandler;
 import io.atactic.android.datahandler.RouteGenerationHandler;
+import io.atactic.android.manager.ConfigurationManager;
 import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;
 import io.atactic.android.model.ParticipationSummary;
 import io.atactic.android.model.TargetAccount;
+import io.atactic.android.model.TenantConfiguration;
 import io.atactic.android.utils.CredentialsCache;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, OnSuccessListener<Location>,
-        MapDataHandler.MapDataPresenter, RouteGenerationHandler.RoutePresenter {
+public class MapFragment extends Fragment implements
+        OnMapReadyCallback, OnSuccessListener<Location>, MapDataHandler.MapDataPresenter,
+        RouteGenerationHandler.RoutePresenter {
 
     private static final String LOG_TAG = MapFragment.class.getSimpleName();
 
@@ -75,7 +80,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnSucce
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment!= null) mapFragment.getMapAsync(this);
 
+        // Enable options menu (tob bar buttons)
         setHasOptionsMenu(true);
+
+        // Check tenant configuration
+        // TenantConfiguration configuration = ConfigurationManager.getInstance().getConfiguration();
+        /*
+        FloatingActionButton myFab = view.findViewById(R.id.fab_checkin);
+        if (configuration.isCheckInEnabled()) {
+            // Activate the check-in floating button
+            myFab.setVisibility(View.VISIBLE);
+            myFab.setOnClickListener(this);
+        } else {
+            myFab.setVisibility(View.GONE);
+        } */
 
         return view;
     }
@@ -123,9 +141,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnSucce
 
         Log.v(LOG_TAG,"OnLocationSuccess - Center camera");
 
-        // Center camera to the user position using a specific zoom level
-        LatLng coords = new LatLng(location.getLatitude(), location.getLongitude());
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(coords, 15));
+        if (location != null) {
+            // Center camera to the user position using a specific zoom level
+            LatLng coords = new LatLng(location.getLatitude(), location.getLongitude());
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coords, 15));
+        }
     }
 
     private void drawAccountMarker(Account acc){
@@ -202,6 +222,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnSucce
                     (float)location.getLatitude(), (float)location.getLongitude(),
                     5);
 
+        } else if (item.getItemId() == R.id.btn_checkIn) {
+            Log.v(LOG_TAG,"Check-in button pressed");
+            openCheckIn();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -278,6 +301,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnSucce
             gmmIntentUri = null;
         }
         return gmmIntentUri;
+    }
+
+    private void openCheckIn(){
+        Intent i = new Intent(getContext(), CheckInActivity.class);
+        startActivity(i);
     }
 
 }

@@ -8,10 +8,17 @@
 
     <item
         android:id="@+id/btn_daily_route"
-        android:icon="@drawable/icon_highway_white_36"
-        auto:showAsAction="always"
+        android:icon="@drawable/ic_highway"
+        auto:showAsAction="ifRoom"
         android:orderInCategory="0"
         android:title="Ruta" />
+
+    <item
+        android:id="@+id/btn_checkIn"
+        android:icon="@drawable/ic_checkin"
+        auto:showAsAction="ifRoom"
+        android:orderInCategory="1"
+        android:title="Check-in" />
 
     <!--
     <item
