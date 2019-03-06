@@ -70,12 +70,12 @@ public class AccountListActivity extends AppCompatActivity implements AccountLis
          * Instantiate Data Handler and request data to display.
          * The Handler is expected to call the displayData or displayMessage functions from this class.
          */
-        dataHandler = new AccountListDataHandler(this);
-        dataHandler.getData();
+        // dataHandler = new AccountListDataHandler(this);
+        // dataHandler.getData();
     }
 
     void reloadData() {
-        dataHandler.getData();
+        dataHandler.getData(0);
     }
 
     /**

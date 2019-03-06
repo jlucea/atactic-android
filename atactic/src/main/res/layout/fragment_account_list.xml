@@ -5,9 +5,45 @@
     android:layout_height="match_parent"
     tools:context=".fragment.AccountListFragment">
 
+    <!-- Status message -->
     <TextView
+        android:id="@+id/tv_account_list_status_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Status message here"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:visibility="gone"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/account_list_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="ACCOUNT LIST FRAGMENT" />
+        android:layout_height="match_parent">
+
+        <!-- RecyclerView will show the list of individual elements representing targets -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_target_list"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="visible"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="center">
+
+        <ProgressBar
+            android:id="@+id/account_list_loading_indicator"
+            style="?android:attr/progressBarStyle"
+            android:indeterminate="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
 </FrameLayout>

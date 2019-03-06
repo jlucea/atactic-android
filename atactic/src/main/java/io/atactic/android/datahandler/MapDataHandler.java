@@ -9,40 +9,37 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.atactic.android.activity.MapActivity;
-import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.model.Account;
 import io.atactic.android.model.AccountMap;
 import io.atactic.android.model.AccountTargetingParticipation;
 import io.atactic.android.model.ParticipationSummary;
 import io.atactic.android.model.TargetAccount;
-import io.atactic.android.network.request.AccountListRequest;
 import io.atactic.android.network.request.AccountMapRequest;
 
 public class MapDataHandler {
 
-    private String LOG_TAG = "MapDataHandler";
+    private final String LOG_TAG = "MapDataHandler";
 
-    private MapActivity activity;
+    private MapDataPresenter presenter;
 
-    public MapDataHandler(MapActivity activity){
-        this.activity = activity;
+    public interface MapDataPresenter{
+        void displayMarkers(List<Account> accounts, List<TargetAccount> targets);
     }
 
 
-    public void getData(){
+    public MapDataHandler(MapDataPresenter dataPresenter){
+        this.presenter = dataPresenter;
+    }
 
-        // Retrieve user id from application variables
-        int userId = ((AtacticApplication) this.activity.getApplication()).getUserId();
-        Log.d("MapActivity", "User ID: " + userId);
+
+    public void getData(int userId){
 
         // Instantiate and execute asynchronous Http request task
         new AccountMapAsyncHttpRequest(this).execute(userId);
     }
 
-
-    private void sendDataToActivity(AccountMap accountMap){
+    private void sendDataToMapPresenter(AccountMap accountMap){
 
         Log.d(LOG_TAG, "Map contains " + accountMap.getAccounts().size() + " accounts" +
                 " and " + accountMap.getTargetingParticipations().size() + " targeting participations");
@@ -53,8 +50,8 @@ public class MapDataHandler {
                 + data.accounts.size() + " accounts | " +
                 + data.targets.size() + " targets");
 
-        Log.v(LOG_TAG, "Returning data to MapActivity");
-        this.activity.drawMarkers(data.accounts, data.targets);
+        Log.v(LOG_TAG, "Returning data to MapDataPresenter");
+        this.presenter.displayMarkers(data.accounts, data.targets);
     }
 
 
@@ -143,8 +140,6 @@ public class MapDataHandler {
         return null;
     }
 
-
-
     /**
      * Asynchronous task that performs an AccountListRequest
      */
@@ -161,7 +156,7 @@ public class MapDataHandler {
 
             // Send Http request and receive JSON response
             String response = AccountMapRequest.send(params[0]);
-            Log.d("AccountMapRequestTask", "JSON Response: " + response);
+            // Log.d("AccountMapRequestTask", "JSON Response: " + response);
 
             // Return JSON array containing the data to show in the view
             try {
@@ -182,11 +177,10 @@ public class MapDataHandler {
                     Log.v("AccountMapRequestTask", "Account Map decoded");
                     Log.d("AccountMapRequestTask", accountMap.getAccounts().size() + " accounts decoded");
                 }
-
                 // handler.transformIntoTargetList()
 
                 // Return data to Handler
-                handler.sendDataToActivity(accountMap);
+                handler.sendDataToMapPresenter(accountMap);
 
             } catch (JSONException e) {
                 e.printStackTrace();

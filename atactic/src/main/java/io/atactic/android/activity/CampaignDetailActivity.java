@@ -6,12 +6,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
@@ -32,16 +30,9 @@ public class CampaignDetailActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "CampaignDetailActivity";
 
-    private Participation participation;
-
-    ArcProgress progressIndicatorView;
-    TextView questNameTextView;
-    TextView questBriefingTextView;
-    ViewPagerAdapter fragmentAdapter;
-
-    CampaignInfoFragment generalDataFragment;
-    CampaignDescriptionFragment longDescriptionFragment;
-    CampaignTargetsFragment targetListFragment;
+    private ArcProgress progressIndicatorView;
+    private TextView questNameTextView;
+    private TextView questBriefingTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,28 +40,25 @@ public class CampaignDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quest_detail);
 
         // Display back button in action bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        /*
-         * Get references to the views in the header
-         */
+        // Get references to the views in the header
         progressIndicatorView = findViewById(R.id.arc_questdetail_arcprogress);
         questNameTextView = findViewById(R.id.tv_questdetail_name);
         questBriefingTextView = findViewById(R.id.tv_questdetail_briefing);
 
-        /*
-         * Get info to display from intent variables
-         */
-        participation = getParticipationFromIntent(getIntent());
+        // Get info to display from intent
+        Participation participation = getParticipationFromIntent(getIntent());
 
+        // Display header data
         displayParticipationData(participation);
 
-        // Set up multi-tab panel
+        // Set up multi-tab panel as a ViewPagerAdapter containing different fragments
         ViewPager viewPager = findViewById(R.id.viewpager);
-        fragmentAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter fragmentAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        generalDataFragment = new CampaignInfoFragment(participation);
-        longDescriptionFragment = new CampaignDescriptionFragment(
+        CampaignInfoFragment generalDataFragment = new CampaignInfoFragment(participation);
+        CampaignDescriptionFragment longDescriptionFragment = new CampaignDescriptionFragment(
                 participation.getCampaign().getDescription());
 
         fragmentAdapter.addFragment(generalDataFragment, "General");
@@ -78,8 +66,8 @@ public class CampaignDetailActivity extends AppCompatActivity {
 
         if ("SEGMENT_COVERAGE".equals(participation.getCampaign().getType())) {
 
-            // Add targets segment
-            targetListFragment = new CampaignTargetsFragment();
+            // Add participation targets segment
+            CampaignTargetsFragment targetListFragment = new CampaignTargetsFragment();
             Bundle args = new Bundle();
             args.putInt("pid",participation.getId());
             targetListFragment.setArguments(args);
@@ -154,6 +142,7 @@ public class CampaignDetailActivity extends AppCompatActivity {
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
+
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 

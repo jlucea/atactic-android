@@ -5,15 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.CampaignListFragment">
 
-
-    <!--
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="CAMPAIGN LIST FRAGMENT" />
-    -->
-
-
     <!-- Status message -->
     <TextView
         android:id="@+id/tv_campaign_list_status_message"

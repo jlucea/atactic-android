@@ -137,8 +137,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             se.printStackTrace();
         }
 
-        System.out.println("MapReady - Requesting data to MapDataHandler...");
-        new MapDataHandler(this).getData();
+        // System.out.println("MapReady - Requesting data to MapDataHandler...");
+        // new MapDataHandler(this).getData();
 
         // Send an asynchronous request to get non-target accounts
         // new OffTargetAccountsAsyncHttpRequest().execute();

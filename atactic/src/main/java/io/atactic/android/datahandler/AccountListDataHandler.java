@@ -2,17 +2,12 @@ package io.atactic.android.datahandler;
 
 import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Comparator;
 import java.util.List;
 
-import io.atactic.android.activity.AccountListActivity;
-import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;
 import io.atactic.android.network.request.AccountListRequest;
@@ -21,44 +16,40 @@ import io.atactic.android.utils.DistanceUtils;
 import static io.atactic.android.json.JsonDecoder.decodeAccountList;
 
 /**
- * Provides a list of accounts for an AccountListActivity to display
+ * Provides a list of accounts for an AccountListPresenter to display
  */
 public class AccountListDataHandler {
 
-    private static final String LOG_TAG = "AccountListDataHandler";
-    private AccountListActivity activity;
+    // private static final String LOG_TAG = "AccountListDataHandler";
+    private io.atactic.android.datahandler.AccountListPresenter presenter;
 
 
-    public AccountListDataHandler(AccountListActivity activity){
-        this.activity = activity;
+    public AccountListDataHandler(AccountListPresenter accountListPresenter) {
+        this.presenter = accountListPresenter;
     }
 
     /**
      * Gets the list of accounts by asynchronously sending an HTTP request to the server.
      * Gets the user's id from the activity's context variables.
      */
-    public void getData(){
-
-        // Retrieve user id from application variables
-        int userId = ((AtacticApplication) this.activity.getApplication()).getUserId();
-        Log.d(LOG_TAG, "User ID: " + userId);
+    public void getData(int userId){
 
         // Instantiate and execute asynchronous Http request task
         new AccountListAsyncHttpRequest(this).execute(userId);
     }
 
-    private void sendDataToActivity(List<Account> accounts){
+    private void sendDataToPresenter(List<Account> accounts){
         // System.out.println("AccountListDataHandler - Sending data for the Activity to display (" + sublist.size() + " accounts)");
 
         Location currentLocation = LocationManager.getInstance().getLastKnownLocation();
         if (currentLocation != null) {
             accounts = calculateDistances(accounts, currentLocation);
         }
-        activity.displayData(accounts);
+        presenter.displayAccounts(accounts);
     }
 
     private void returnErrorMessage(String message){
-        activity.displayMessage(message);
+        presenter.displayMessage(message);
     }
 
     private List<Account> calculateDistances(List<Account> accounts, Location userLocation){
@@ -73,7 +64,6 @@ public class AccountListDataHandler {
 
         // Sort by distance
         // accounts.sort(Comparator.comparingDouble(Account::getDistanceTo));
-
         return accounts;
     }
 
@@ -114,7 +104,7 @@ public class AccountListDataHandler {
                 if (accountList != null) System.out.println(accountList.size() + " accounts decoded");
 
                 // Return data to Handler
-                handler.sendDataToActivity(accountList);
+                handler.sendDataToPresenter(accountList);
 
             } catch (JSONException e) {
                 handler.returnErrorMessage("Se ha producido un error al decodificar los datos");

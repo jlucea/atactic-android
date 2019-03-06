@@ -48,30 +48,49 @@ public class MainActivity extends AppCompatActivity implements LogoutResponder {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+            FragmentTransaction transaction;
+
             switch (item.getItemId()) {
                 case R.id.navigation_campaigns:
                     setTitle(R.string.title_activity_quest_list);
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    // transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    transaction.hide(activeFragment).show(campaignListFragment).commit();
                     activeFragment = campaignListFragment;
-                    break;
+                    return true;
+
                 case R.id.navigation_accounts:
                     setTitle(R.string.title_activity_target_list);
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    // transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    transaction.hide(activeFragment).show(accountListFragment).commit();
                     activeFragment = accountListFragment;
-                    break;
+                    return true;
+
                 case R.id.navigation_map:
                     setTitle(R.string.title_activity_map);
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    // transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    transaction.hide(activeFragment).show(mapFragment).commit();
                     activeFragment = mapFragment;
-                    break;
+                    return true;
+
                 case R.id.navigation_profile:
                     setTitle(R.string.title_activity_profile);
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    // transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    transaction.hide(activeFragment).show(profileFragment).commit();
                     activeFragment = profileFragment;
-                    break;
+                    return true;
             }
 
             // Create and animate a replacement fragment transaction
+            /*
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            transaction.replace(R.id.fragment_container, activeFragment).show(activeFragment).commit();
-            return true;
+            transaction.replace(R.id.fragment_container, activeFragment).show(activeFragment).commit(); */
+            return false;
         }
     };
 
@@ -81,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements LogoutResponder {
         setContentView(R.layout.activity_main);
 
         setTitle(R.string.title_activity_quest_list);
+        activeFragment = campaignListFragment;
 
         // Add all fragments to be managed by this Activity
         FragmentManager fragmentManager = getSupportFragmentManager();

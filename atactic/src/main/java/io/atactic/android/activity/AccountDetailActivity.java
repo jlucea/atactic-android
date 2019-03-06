@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -17,7 +18,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
@@ -41,10 +41,15 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
     private FrameLayout statusMessageLayout;
     private TextView statusMessageTextView;
 
+    private static final int ZOOM_LEVEL = 13;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_detail);
+
+        // Display back button in action bar
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         loadingIndicatorLayout = findViewById(R.id.account_campaigns_loading_indicator);
         loadingIndicatorLayout.setVisibility(View.VISIBLE);
@@ -133,13 +138,11 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(
                 R.drawable.marker_neutral_24g);
         markerOptions.icon(markerIcon);
-        Marker marker = googleMap.addMarker(markerOptions);
+        googleMap.addMarker(markerOptions);
 
         // marker.showInfoWindow();
 
-
-        final int mapZoomLevel = 13;
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, mapZoomLevel));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, ZOOM_LEVEL));
     }
 
 
@@ -156,6 +159,12 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         statusMessageTextView.setText(message);
         statusMessageLayout.setVisibility(View.VISIBLE);
         this.loadingIndicatorLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        this.finish();
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -2,6 +2,7 @@ package io.atactic.android.manager;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
@@ -59,7 +60,7 @@ public final class LocationManager implements OnSuccessListener<Location> {
             ActivityCompat.requestPermissions(activity, requiredPermissions, requestCode);
 
         } else {
-            System.out.println("LocationManager - Permissions OK. Adding onSuccessListener");
+            Log.v(LOG_TAG,"LocationManager - Permissions OK. Adding onSuccessListener");
             locationProvider.getLastLocation().addOnSuccessListener(globalInstance);
         }
     }
@@ -73,9 +74,29 @@ public final class LocationManager implements OnSuccessListener<Location> {
                     + " | Lng = " + lastKnownLocation.getLongitude());
 
             return lastKnownLocation;
+
         }else{
             Log.w(LOG_TAG, "Last known location is NULL");
             return null;
+        }
+    }
+
+
+    public void getLastLocation(Context context, OnSuccessListener<Location> listener){
+
+        Log.v(LOG_TAG,"Getting last location for a custom location listener");
+
+        FusedLocationProviderClient provider = LocationServices.getFusedLocationProviderClient(context);
+
+        // Check for location permissions
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            Log.e(LOG_TAG, "Permissions denied");
+
+        }else{
+            Log.v(LOG_TAG,"Permissions Ok");
+            provider.getLastLocation().addOnSuccessListener(listener);
         }
     }
 
@@ -98,5 +119,8 @@ public final class LocationManager implements OnSuccessListener<Location> {
             Log.w(LOG_TAG, "Location is null");
         }
     }
+
+
+
 
 }

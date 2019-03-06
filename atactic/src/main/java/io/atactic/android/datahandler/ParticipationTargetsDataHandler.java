@@ -112,10 +112,5 @@ public class ParticipationTargetsDataHandler {
         }
     }
 
-    public interface AccountListPresenter {
-        void displayAccounts(List<Account> accountList);
-        void displayMessage(String message);
-    }
-
 
 }

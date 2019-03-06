@@ -1,6 +1,7 @@
 package io.atactic.android.element;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,11 +15,12 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import io.atactic.android.R;
+import io.atactic.android.datahandler.AccountListPresenter;
 import io.atactic.android.datahandler.ParticipationTargetsDataHandler;
 import io.atactic.android.model.Account;
 import io.atactic.android.utils.CredentialsCache;
 
-public class CampaignTargetsFragment extends Fragment implements ParticipationTargetsDataHandler.AccountListPresenter{
+public class CampaignTargetsFragment extends Fragment implements AccountListPresenter {
 
     private static final String LOG_TAG = "CampaignTargetsFragment";
 
@@ -48,7 +50,7 @@ public class CampaignTargetsFragment extends Fragment implements ParticipationTa
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
