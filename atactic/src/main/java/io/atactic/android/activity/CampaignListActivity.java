@@ -11,13 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import io.atactic.android.R;
 import io.atactic.android.datahandler.ParticipationListDataHandler;
-import io.atactic.android.datahandler.ParticipationListPresenter;
+import io.atactic.android.presenter.ParticipationListPresenter;
 import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.BottomNavigationBarClickListenerFactory;
 import io.atactic.android.element.ParticipationListAdapter;

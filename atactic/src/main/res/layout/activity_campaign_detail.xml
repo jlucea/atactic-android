@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="io.atactic.android.activity.CampaignDetailActivity"
+
+    android:background="@color/White"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layout_header"
+        android:orientation="vertical"
+        android:background="@color/atactic_medium_dark_gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Campaign Name and Briefing -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/tv_questdetail_name"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quest name goes here"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_medium"
+                android:textAlignment="viewStart"
+                android:textColor="@color/White"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_questdetail_briefing"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/roboto"
+                android:text="This is the quest briefing / instructions. This is the quest briefing / instructions. This is the quest briefing / instructions. "
+                android:textAlignment="viewStart"
+                android:textColor="@color/White"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Campaign Progress Indicators -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="20dp">
+
+            <!-- Circular progress indicator -->
+            <com.github.lzyzsd.circleprogress.ArcProgress
+                android:id="@+id/arc_questdetail_arcprogress"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:paddingTop="4dp"
+                android:layout_gravity="center"
+                auto:arc_finished_color="@color/atactic_brighter_red"
+                auto:arc_unfinished_color="@color/Silver"
+                auto:arc_stroke_width="5dp"
+                auto:arc_text_size="30sp"
+                auto:arc_bottom_text_size="14sp"
+                auto:arc_text_color="@color/White"/>
+
+            <!-- Progress values, if applicable -->
+            <TextView
+                android:id="@+id/tv_progress_values"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:fontFamily="@font/roboto"
+                android:text="0.000 € / 0.000 €"
+                android:textColor="@color/White"
+                android:textSize="18sp"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/layout_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_header"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            auto:tabMode="fixed"
+            auto:tabGravity="fill"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/atactic_light_gray"
+            auto:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

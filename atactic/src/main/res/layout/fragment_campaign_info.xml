@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/GhostWhite">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Scrollable content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/atactic_light_gray"
+            android:paddingTop="4dp"
+            android:paddingBottom="50dp"
+            android:orientation="vertical">
+
+            <!-- Campaign administrator name -->
+            <LinearLayout
+                android:background="@color/White"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+
+                <!-- Field label -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="20dp"
+                    android:textSize="13sp"
+                    android:text="Administrador"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical" />
+
+                <!-- Field value -->
+                <TextView
+                    android:id="@+id/tv_questdetail_owner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="15sp"
+                    android:textColor="@color/atactic_dark_gray"
+                    android:gravity="center_vertical"
+                    android:text="Administrator name"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+
+            <!-- Separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/atactic_light_gray" />
+
+            <!-- Campaign deadline-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:orientation="vertical"
+                android:background="@color/White">
+
+                <!-- Field label -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="20dp"
+                    android:textSize="13sp"
+                    android:text="Fecha límite"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical" />
+
+                <!-- Field value -->
+                <TextView
+                    android:id="@+id/tv_questdetail_deadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="15sp"
+                    android:textColor="@color/atactic_dark_gray"
+                    android:gravity="center_vertical"
+                    android:text="01/01/2020 (Quedan x días)"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+
+            <!-- Separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/atactic_light_gray" />
+
+            <!-- Campaign scoring -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:orientation="vertical"
+                android:background="@color/White">
+
+                <!-- Field label -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="20dp"
+                    android:textSize="13sp"
+                    android:text="Puntuación"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical" />
+
+                <!-- Field value -->
+                <TextView
+                    android:id="@+id/tv_questdetail_reward"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="15sp"
+                    android:textColor="@color/atactic_dark_gray"
+                    android:gravity="center_vertical"
+                    android:text="300 puntos"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+
+            <!-- Separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/atactic_light_gray" />
+
+            <!-- Campaign long description -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:orientation="vertical"
+                android:background="@color/White"
+                android:layout_marginBottom="16dp">
+
+                <!-- Field label -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="20dp"
+                    android:textSize="13sp"
+                    android:text="Descripción"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical" />
+
+                <!-- Field value -->
+                <TextView
+                    android:id="@+id/tv_campaign_description"
+                    android:layout_marginTop="10dp"
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="30dp"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="15sp"
+                    android:textColor="@color/atactic_dark_gray"
+                    android:gravity="center_vertical"
+                    android:text=""
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+
+            <!--
+            <TextView
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="90sp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:paddingTop="0dp"
+                android:text="Administrador"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:layout_gravity="center_vertical"
+                />
+            -->
+
+            <!-- Deadline info: -->
+            <!--
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/atactic_dark_gray"
+                    android:src="@drawable/icon_sandclock_32" />
+
+                <TextView
+                    android:id="@+id/tv_questdetail_deadline"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:textSize="13sp"
+                    android:text="Quest deadline goes here"
+                    android:paddingTop="2dp"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="90sp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:paddingTop="0dp"
+                android:text="@string/quest_deadline"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:layout_gravity="center_vertical"
+                />
+
+                 -->
+
+            <!-- Reward info: -->
+            <!--
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/atactic_dark_gray"
+                    android:src="@drawable/icon_coins_32" />
+
+                <TextView
+                    android:id="@+id/tv_questdetail_reward"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="Quest score goes here"
+                    android:textSize="13sp"
+                    android:paddingTop="2dp"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="90sp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:paddingTop="1dp"
+                android:text="@string/quest_score"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="16dp" />
+            -->
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

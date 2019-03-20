@@ -10,6 +10,7 @@ import java.util.List;
 import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.model.Participation;
 import io.atactic.android.network.request.QuestListRequest;
+import io.atactic.android.presenter.ParticipationListPresenter;
 
 public class ParticipationListDataHandler {
 

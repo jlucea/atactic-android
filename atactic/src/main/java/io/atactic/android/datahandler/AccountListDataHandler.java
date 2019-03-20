@@ -11,6 +11,7 @@ import java.util.List;
 import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;
 import io.atactic.android.network.request.AccountListRequest;
+import io.atactic.android.presenter.AccountListPresenter;
 import io.atactic.android.utils.DistanceUtils;
 
 import static io.atactic.android.json.JsonDecoder.decodeAccountList;
@@ -21,7 +22,7 @@ import static io.atactic.android.json.JsonDecoder.decodeAccountList;
 public class AccountListDataHandler {
 
     // private static final String LOG_TAG = "AccountListDataHandler";
-    private io.atactic.android.datahandler.AccountListPresenter presenter;
+    private AccountListPresenter presenter;
 
 
     public AccountListDataHandler(AccountListPresenter accountListPresenter) {

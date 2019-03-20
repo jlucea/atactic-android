@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Status message -->
+    <TextView
+        android:id="@+id/tv_ranking_fragment_status_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="This is a Ranking Fragment"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:visibility="gone"/>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/ranking_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- RecyclerView will show the list of ranked elements -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_ranking"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="visible"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="center">
+
+        <ProgressBar
+            android:id="@+id/ranking_loading_indicator"
+            style="?android:attr/progressBarStyle"
+            android:indeterminate="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</FrameLayout>

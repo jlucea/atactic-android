@@ -11,6 +11,9 @@ public class Participation implements Serializable {
 
     private double currentProgress;
 
+    private double currentValue;
+    private double targetValue;
+
 
     public int getId() {
         return id;
@@ -42,5 +45,21 @@ public class Participation implements Serializable {
 
     public void setCurrentProgress(double currentProgress) {
         this.currentProgress = currentProgress;
+    }
+
+    public double getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(double currentValue) {
+        this.currentValue = currentValue;
+    }
+
+    public double getTargetValue() {
+        return targetValue;
+    }
+
+    public void setTargetValue(double targetValue) {
+        this.targetValue = targetValue;
     }
 }

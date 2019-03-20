@@ -127,11 +127,18 @@ public class JsonDecoder {
         User participant = decodeUser(participationJSON.getJSONObject("participant"));
         double currentProgress = participationJSON.getDouble("currentProgress");
 
+        double currentValue = participationJSON.getDouble("currentValue");
+        double targetValue = participationJSON.getDouble("targetValue");
+
+
         Participation participation = new Participation();
         participation.setId(participationId);
         participation.setCampaign(campaign);
         participation.setParticipant(participant);
         participation.setCurrentProgress(currentProgress);
+
+        participation.setCurrentValue(currentValue);
+        participation.setTargetValue(targetValue);
 
         return participation;
     }

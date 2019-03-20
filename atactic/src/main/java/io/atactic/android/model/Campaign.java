@@ -4,6 +4,11 @@ import java.util.Date;
 
 public class Campaign {
 
+    public static final String CAMPAIGN_TYPE_INTENSITY = "INTENSITY";
+    public static final String CAMPAIGN_TYPE_SEGMENT_COVERAGE = "SEGMENT_COVERAGE";
+    public static final String CAMPAIGN_TYPE_SALES_TARGET = "SALES_TARGET_TOTAL";
+    public static final String CAMPAIGN_TYPE_SALES_TARGET_REFERENCED = "SALES_TARGET_REFERENCED";
+
     private int id;
     private String name;
 

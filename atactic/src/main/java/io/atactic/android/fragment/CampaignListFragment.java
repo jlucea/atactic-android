@@ -19,7 +19,7 @@ import java.util.List;
 import io.atactic.android.R;
 import io.atactic.android.activity.CampaignDetailActivity;
 import io.atactic.android.datahandler.ParticipationListDataHandler;
-import io.atactic.android.datahandler.ParticipationListPresenter;
+import io.atactic.android.presenter.ParticipationListPresenter;
 import io.atactic.android.element.ParticipationListAdapter;
 import io.atactic.android.model.Participation;
 import io.atactic.android.utils.CredentialsCache;
@@ -141,17 +141,20 @@ public class CampaignListFragment extends Fragment
         Intent i = new Intent(this.getContext(), CampaignDetailActivity.class);
 
         i.putExtra("participationId",p.getId());
+        i.putExtra("questId", p.getCampaign().getId());
         i.putExtra("questName", p.getCampaign().getName());
         i.putExtra("questType", p.getCampaign().getType());
         i.putExtra("questSummary", p.getCampaign().getBriefing());
         i.putExtra("questLongDesc", p.getCampaign().getDescription());
         i.putExtra("questDeadline", p.getCampaign().getEndDate().getTime());
         i.putExtra("completionScore", p.getCampaign().getCompletionScore());
+        i.putExtra("currentValue", p.getCurrentValue());
+        i.putExtra("targetValue",p.getTargetValue());
         i.putExtra("currentProgress",p.getCurrentProgress());
         String questOwnerStr = p.getCampaign().getOwner().getFirstName() + " "
-                + p.getCampaign().getOwner().getLastName()
-                + "\n" + p.getCampaign().getOwner().getPosition();
+                + p.getCampaign().getOwner().getLastName();
         i.putExtra("questOwner", questOwnerStr);
+
 
         // Launch CampaignDetailActivity
         startActivity(i);

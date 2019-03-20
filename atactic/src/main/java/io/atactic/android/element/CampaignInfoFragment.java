@@ -22,11 +22,12 @@ public class CampaignInfoFragment extends Fragment {
     private String ownerStr;
     private String deadlineStr;
     private String rewardStr;
+    private String longDesc;
 
     private TextView ownerInfoTextView;
     private TextView deadlineTextView;
     private TextView rewardTextView;
-
+    private TextView longDescriptionTextView;
 
     public CampaignInfoFragment() {
 
@@ -41,8 +42,9 @@ public class CampaignInfoFragment extends Fragment {
         long daysDiff = TimeUnit.MILLISECONDS.toDays(timeDiff);
         SimpleDateFormat writingDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        deadlineStr = writingDateFormat.format(participation.getCampaign().getEndDate()) + "\n" + "Quedan " + daysDiff + " días";
+        deadlineStr = writingDateFormat.format(participation.getCampaign().getEndDate())  + " (Quedan " + daysDiff + " días)";
         rewardStr = participation.getCampaign().getCompletionScore() + " puntos por completar la campaña";
+        longDesc = participation.getCampaign().getDescription();
     }
 
 
@@ -55,11 +57,13 @@ public class CampaignInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_quest_detail_1, container, false);
+        View view = inflater.inflate(R.layout.fragment_campaign_info, container, false);
         ownerInfoTextView = view.findViewById(R.id.tv_questdetail_owner);
         deadlineTextView = view.findViewById(R.id.tv_questdetail_deadline);
         rewardTextView = view.findViewById(R.id.tv_questdetail_reward);
+        longDescriptionTextView = view.findViewById(R.id.tv_campaign_description);
 
+        longDescriptionTextView.setText(longDesc);
         ownerInfoTextView.setText(ownerStr);
         deadlineTextView.setText(deadlineStr);
         rewardTextView.setText(rewardStr);

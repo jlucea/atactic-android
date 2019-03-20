@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -19,9 +18,9 @@ import java.util.Date;
 import java.util.List;
 
 import io.atactic.android.R;
-import io.atactic.android.element.CampaignDescriptionFragment;
 import io.atactic.android.element.CampaignInfoFragment;
 import io.atactic.android.element.CampaignTargetsFragment;
+import io.atactic.android.fragment.RankingFragment;
 import io.atactic.android.model.Campaign;
 import io.atactic.android.model.Participation;
 import io.atactic.android.model.User;
@@ -31,19 +30,27 @@ public class CampaignDetailActivity extends AppCompatActivity {
     private static final String LOG_TAG = "CampaignDetailActivity";
 
     private ArcProgress progressIndicatorView;
+    private TextView progressValuesTextView;
     private TextView questNameTextView;
     private TextView questBriefingTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quest_detail);
+        setContentView(R.layout.activity_campaign_detail);
+
+        final String FRAGMENT_TITLE_GENERAL = "Detalles";
+        final String FRAGMENT_TITLE_DESCRIPTION = "Descripción";
+        final String FRAGMENT_TITLE_TARGET_ACCOUNTS = "Objetivos";
+        final String FRAGMENT_TITLE_RANKING = "Ranking";
 
         // Display back button in action bar
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get references to the views in the header
         progressIndicatorView = findViewById(R.id.arc_questdetail_arcprogress);
+        progressValuesTextView = findViewById(R.id.tv_progress_values);
         questNameTextView = findViewById(R.id.tv_questdetail_name);
         questBriefingTextView = findViewById(R.id.tv_questdetail_briefing);
 
@@ -57,21 +64,38 @@ public class CampaignDetailActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.viewpager);
         ViewPagerAdapter fragmentAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        CampaignInfoFragment generalDataFragment = new CampaignInfoFragment(participation);
-        CampaignDescriptionFragment longDescriptionFragment = new CampaignDescriptionFragment(
-                participation.getCampaign().getDescription());
+        /**
+         * DETAILS FRAGMENT
+         * TODO Use bundle instead of constructor parameter
+         */
+        CampaignInfoFragment infoFragment = new CampaignInfoFragment(participation);
 
-        fragmentAdapter.addFragment(generalDataFragment, "General");
-        fragmentAdapter.addFragment(longDescriptionFragment, "Descripción");
+        fragmentAdapter.addFragment(infoFragment, FRAGMENT_TITLE_GENERAL);
 
-        if ("SEGMENT_COVERAGE".equals(participation.getCampaign().getType())) {
 
-            // Add participation targets segment
+        if (this.shouldDisplayTargets(participation)) {
+
+            // Add participation targets fragment
             CampaignTargetsFragment targetListFragment = new CampaignTargetsFragment();
             Bundle args = new Bundle();
             args.putInt("pid",participation.getId());
             targetListFragment.setArguments(args);
-            fragmentAdapter.addFragment(targetListFragment, "Objetivos");
+            fragmentAdapter.addFragment(targetListFragment, FRAGMENT_TITLE_TARGET_ACCOUNTS);
+        }
+
+        if (this.shouldDisplayRanking()) {
+
+            // Add ranking fragment
+            RankingFragment rankingFragment = new RankingFragment();
+
+            // Set arguments
+            Bundle args = new Bundle();
+            args.putInt(RankingFragment.PARAM_KEY_CAMPAIGNID, participation.getCampaign().getId());
+            args.putString(RankingFragment.PARAM_KEY_MODE, RankingFragment.MODE_PROGRESS);
+            rankingFragment.setArguments(args);
+
+            // Add fragment
+            fragmentAdapter.addFragment(rankingFragment, FRAGMENT_TITLE_RANKING);
         }
 
         viewPager.setAdapter(fragmentAdapter);
@@ -81,11 +105,20 @@ public class CampaignDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.v(LOG_TAG, "Options item selected");
+        // Log.v(LOG_TAG, "Options item selected");
         this.finish();
         return super.onOptionsItemSelected(item);
     }
 
+
+    private boolean shouldDisplayTargets(Participation participation){
+        return Campaign.CAMPAIGN_TYPE_SEGMENT_COVERAGE.equals(participation.getCampaign().getType());
+    }
+
+
+    private boolean shouldDisplayRanking(){
+        return true;
+    }
 
 /*
     public void displayTargets(List<Account> data){
@@ -102,6 +135,18 @@ public class CampaignDetailActivity extends AppCompatActivity {
         }
         questNameTextView.setText(participation.getCampaign().getName());
         questBriefingTextView.setText(participation.getCampaign().getBriefing());
+
+        // Format progress values and include units, if applicable, based on Campaign Type
+        String progressValuesStr;
+        switch (participation.getCampaign().getType()){
+            case Campaign.CAMPAIGN_TYPE_INTENSITY:
+                progressValuesStr = (int)participation.getCurrentValue() + " / " + (int)participation.getTargetValue();
+                break;
+            default:
+                progressValuesStr = (int)participation.getCurrentValue() + " / " + (int)participation.getTargetValue();
+
+        }
+        progressValuesTextView.setText(progressValuesStr);
     }
 
 
@@ -118,6 +163,7 @@ public class CampaignDetailActivity extends AppCompatActivity {
 
         participation.setId(intent.getIntExtra("participationId",0));
 
+        campaign.setId(intent.getIntExtra("questId",0));
         campaign.setName(intent.getStringExtra("questName"));
         campaign.setType(intent.getStringExtra("questType"));
         campaign.setBriefing(intent.getStringExtra("questSummary"));
@@ -134,6 +180,8 @@ public class CampaignDetailActivity extends AppCompatActivity {
 
         campaign.setCompletionScore(intent.getIntExtra("completionScore",0));
 
+        participation.setCurrentValue(intent.getDoubleExtra("currentValue", 0));
+        participation.setTargetValue(intent.getDoubleExtra("targetValue", 0));
         participation.setCurrentProgress(intent.getDoubleExtra("currentProgress", 0));
 
         participation.setCampaign(campaign);

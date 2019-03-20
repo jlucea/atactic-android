@@ -20,7 +20,7 @@ import java.util.List;
 import io.atactic.android.R;
 import io.atactic.android.activity.AccountDetailActivity;
 import io.atactic.android.datahandler.AccountListDataHandler;
-import io.atactic.android.datahandler.AccountListPresenter;
+import io.atactic.android.presenter.AccountListPresenter;
 import io.atactic.android.element.AccountListAdapter;
 import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;

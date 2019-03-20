@@ -60,7 +60,7 @@
             android:label="@string/title_activity_map" />
         <activity
             android:name=".activity.CampaignDetailActivity"
-            android:label="@string/title_activity_quest_detail" />
+            android:label="" />
         <activity
             android:name=".activity.CheckInActivity"
             android:label="@string/title_activity_checkin" />

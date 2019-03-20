@@ -1,6 +1,7 @@
 package io.atactic.android.element;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
     /**
      * Constructor with no click listener
      */
-    public AccountListAdapter(){ }
+    AccountListAdapter(){ }
 
     public AccountListAdapter(ListItemClickListener listener){
         System.out.println("Instancing Account List Adapter with a click listener");
@@ -54,7 +55,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
     }
 
     public void setContent(List<Account> accounts){
-        System.out.println("AccountListAdapter - Setting content: " + accounts.size() + " accounts");
+        Log.v("AccountListAdapter", "Setting content: " + accounts.size() + " accounts");
         this.accountList = accounts;
         notifyDataSetChanged();
     }

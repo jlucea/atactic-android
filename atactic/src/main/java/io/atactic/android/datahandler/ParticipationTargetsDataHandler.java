@@ -13,6 +13,7 @@ import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.manager.LocationManager;
 import io.atactic.android.model.Account;
 import io.atactic.android.network.request.CampaignTargetsRequest;
+import io.atactic.android.presenter.AccountListPresenter;
 import io.atactic.android.utils.DistanceUtils;
 
 public class ParticipationTargetsDataHandler {

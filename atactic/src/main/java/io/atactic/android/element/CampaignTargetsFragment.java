@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import io.atactic.android.R;
-import io.atactic.android.datahandler.AccountListPresenter;
+import io.atactic.android.presenter.AccountListPresenter;
 import io.atactic.android.datahandler.ParticipationTargetsDataHandler;
 import io.atactic.android.model.Account;
 import io.atactic.android.utils.CredentialsCache;
@@ -56,7 +56,7 @@ public class CampaignTargetsFragment extends Fragment implements AccountListPres
 
         Log.v(LOG_TAG, "Fragment OnCreateView");
 
-        View view = inflater.inflate(R.layout.fragment_quest_detail_3,container, false);
+        View view = inflater.inflate(R.layout.fragment_campaign_targets,container, false);
 
         // Show loading indicator
         loadingIndicatorFrame = view.findViewById(R.id.targets_loading_indicator_layout);
