@@ -89,7 +89,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankedUs
                     rankedUserData.getString("lastName");
                 int score = rankedUserData.getInt("score");
 
-                rankedUserRankTextView.setText(String.valueOf(rank));
+                rankedUserRankTextView.setText("#".concat(String.valueOf(rank)));
                 rankedUserNameTextView.setText(fullName);
                 rankedUserScoreTextView.setText(String.valueOf(score));
 

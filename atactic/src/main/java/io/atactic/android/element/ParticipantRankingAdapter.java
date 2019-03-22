@@ -15,9 +15,9 @@ import java.util.Locale;
 import io.atactic.android.R;
 import io.atactic.android.model.Participation;
 
-public class ProgressRankingAdapter extends RecyclerView.Adapter<ProgressRankingAdapter.RankedParticipantViewHolder>{
+public class ParticipantRankingAdapter extends RecyclerView.Adapter<ParticipantRankingAdapter.RankedParticipantViewHolder>{
 
-    private static final String LOG_TAG = ProgressRankingAdapter.class.getSimpleName();
+    private static final String LOG_TAG = ParticipantRankingAdapter.class.getSimpleName();
 
     private List<Participation> participationList;
     private int userId;
@@ -78,14 +78,18 @@ public class ProgressRankingAdapter extends RecyclerView.Adapter<ProgressRanking
 
         void setData(int rank, Participation participation){
 
-            rankTextView.setText(String.valueOf(rank));
+            rankTextView.setText("#".concat(String.valueOf(rank)));
 
             String fullUserName = participation.getParticipant().getFirstName()
                     + " " + participation.getParticipant().getLastName();
             usernameTextView.setText(fullUserName);
 
+
             String progressStr = String.format(Locale.getDefault(),
-                    "%.1f", participation.getCurrentProgress()*100).concat(" %");
+                    "%.0f", participation.getCurrentProgress()*100).concat(" %");
+
+            // String progressStr = String.valueOf(participation.getCurrentProgress()*100).concat(" %");
+
             progressTextView.setText(progressStr);
         }
 

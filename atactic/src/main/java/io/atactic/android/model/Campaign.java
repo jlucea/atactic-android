@@ -6,7 +6,7 @@ public class Campaign {
 
     public static final String CAMPAIGN_TYPE_INTENSITY = "INTENSITY";
     public static final String CAMPAIGN_TYPE_SEGMENT_COVERAGE = "SEGMENT_COVERAGE";
-    public static final String CAMPAIGN_TYPE_SALES_TARGET = "SALES_TARGET_TOTAL";
+    public static final String CAMPAIGN_TYPE_SALES_TARGET = "SALES_TARGET";
     public static final String CAMPAIGN_TYPE_SALES_TARGET_REFERENCED = "SALES_TARGET_REFERENCED";
 
     private int id;
@@ -25,6 +25,9 @@ public class Campaign {
     private int completionScore;
 
     private User owner;
+
+    // Only used in Sales Campaigns
+    private String currency;
 
     public int getId() {
         return id;
@@ -112,5 +115,13 @@ public class Campaign {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

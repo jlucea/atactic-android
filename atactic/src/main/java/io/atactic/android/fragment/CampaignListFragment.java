@@ -19,6 +19,7 @@ import java.util.List;
 import io.atactic.android.R;
 import io.atactic.android.activity.CampaignDetailActivity;
 import io.atactic.android.datahandler.ParticipationListDataHandler;
+import io.atactic.android.model.Campaign;
 import io.atactic.android.presenter.ParticipationListPresenter;
 import io.atactic.android.element.ParticipationListAdapter;
 import io.atactic.android.model.Participation;
@@ -150,11 +151,15 @@ public class CampaignListFragment extends Fragment
         i.putExtra("completionScore", p.getCampaign().getCompletionScore());
         i.putExtra("currentValue", p.getCurrentValue());
         i.putExtra("targetValue",p.getTargetValue());
+
+        if (p.getCampaign().getType().equals(Campaign.CAMPAIGN_TYPE_SALES_TARGET) || p.getCampaign().getType().equals(Campaign.CAMPAIGN_TYPE_SALES_TARGET_REFERENCED)) {
+            i.putExtra("currency", p.getCampaign().getCurrency());
+        }
+
         i.putExtra("currentProgress",p.getCurrentProgress());
         String questOwnerStr = p.getCampaign().getOwner().getFirstName() + " "
                 + p.getCampaign().getOwner().getLastName();
         i.putExtra("questOwner", questOwnerStr);
-
 
         // Launch CampaignDetailActivity
         startActivity(i);

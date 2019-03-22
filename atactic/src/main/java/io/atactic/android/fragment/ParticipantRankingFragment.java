@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,32 +18,25 @@ import java.util.List;
 
 import io.atactic.android.R;
 import io.atactic.android.datahandler.CampaignRankingDataHandler;
-import io.atactic.android.element.ProgressRankingAdapter;
+import io.atactic.android.element.ParticipantRankingAdapter;
 import io.atactic.android.model.Participation;
-import io.atactic.android.model.User;
-import io.atactic.android.presenter.RankingPresenter;
 import io.atactic.android.utils.CredentialsCache;
 
 
-public class RankingFragment extends Fragment implements RankingPresenter {
+public class ParticipantRankingFragment extends Fragment {
 
-    private static final String LOG_TAG = RankingFragment.class.getSimpleName();
+    private static final String LOG_TAG = ParticipantRankingFragment.class.getSimpleName();
 
     private List<Participation> participations;
 
-    public static final String PARAM_KEY_MODE = "mode";
     public static final String PARAM_KEY_CAMPAIGNID = "cid";
 
-    public static final String MODE_PROGRESS = "progress";
-    public static final String MODE_SCORE = "score";
-
     private RecyclerView rankingRecyclerView;
-    private ProgressRankingAdapter adapter;
-    private SwipeRefreshLayout refreshLayout;
+    private ParticipantRankingAdapter adapter;
     private ProgressBar loadingIndicator;
     private TextView statusMessageTextView;
 
-    public RankingFragment() {
+    public ParticipantRankingFragment() {
         // Required empty public constructor
     }
 
@@ -53,22 +45,21 @@ public class RankingFragment extends Fragment implements RankingPresenter {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            String mode = getArguments().getString(PARAM_KEY_MODE);
-            if (MODE_PROGRESS.equals(mode)) {
 
-                // Will display a campaign progress ranking
-                // Recover userId from credentials cache and campaignId from Fragment arguments
-                int userId = CredentialsCache.recoverCredentials(this.getContext()).getUserId();
-                int campaignId = getArguments().getInt(PARAM_KEY_CAMPAIGNID);
+            // Will display a campaign progress ranking
+            // Recover userId from credentials cache and campaignId from Fragment arguments
+            int userId = CredentialsCache.recoverCredentials(this.getContext()).getUserId();
+            int campaignId = getArguments().getInt(PARAM_KEY_CAMPAIGNID);
 
-                Log.d(LOG_TAG, "userId=" + userId);
-                Log.d(LOG_TAG, "campaignId=" + campaignId);
+            Log.d(LOG_TAG, "userId=" + userId);
+            Log.d(LOG_TAG, "campaignId=" + campaignId);
 
-                // Request data
-                new CampaignRankingDataHandler(this).getData(userId, campaignId);
-            }
+            // Request data
+            new CampaignRankingDataHandler(this).getData(userId, campaignId);
+
+        } else {
+            Log.e(LOG_TAG, "Fragment is operating without parameters!");
         }
-        // TODO else if mode==MODE_SCORE--> Display a score Ranking
 
     }
 
@@ -82,7 +73,7 @@ public class RankingFragment extends Fragment implements RankingPresenter {
         rankingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         rankingRecyclerView.setHasFixedSize(true);
 
-        adapter = new ProgressRankingAdapter();
+        adapter = new ParticipantRankingAdapter();
         rankingRecyclerView.setAdapter(adapter);
 
         if (participations != null){
@@ -94,7 +85,6 @@ public class RankingFragment extends Fragment implements RankingPresenter {
     }
 
 
-    @Override
     public void displayProgressRanking(List<Participation> participations) {
         if (participations != null){
             this.participations = participations;
@@ -108,14 +98,9 @@ public class RankingFragment extends Fragment implements RankingPresenter {
         }
     }
 
-    @Override
-    public void displayScoreRanking(List<User> userList) {
-        // TODO
-    }
-
-    @Override
     public void displayMessage(String message) {
-        Log.d("RankingFragment", "Message: " + message);
+        // TODO
+        Log.d("ParticipantRankingFragment", "Message: " + message);
     }
 
 }

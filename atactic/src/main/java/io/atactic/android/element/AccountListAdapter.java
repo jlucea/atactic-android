@@ -26,7 +26,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
     /**
      * Constructor with no click listener
      */
-    AccountListAdapter(){ }
+    public AccountListAdapter(){ }
 
     public AccountListAdapter(ListItemClickListener listener){
         System.out.println("Instancing Account List Adapter with a click listener");

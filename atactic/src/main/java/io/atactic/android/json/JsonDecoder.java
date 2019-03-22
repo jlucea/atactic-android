@@ -68,6 +68,13 @@ public class JsonDecoder {
         String startDateStr = campaignJSON.getString("startDate");
         String endDateStr = campaignJSON.getString("endDate");
 
+        String currency;
+        try{
+            currency = campaignJSON.getString("currency");
+        }catch(JSONException err){
+            currency = null;
+        }
+
         // Parse Dates
         Date startDate = DateUtils.parseDate(startDateStr);
         Date endDate = DateUtils.parseDate(endDateStr);
@@ -86,6 +93,7 @@ public class JsonDecoder {
         campaign.setStartDate(startDate);
         campaign.setEndDate(endDate);
         campaign.setOwner(owner);
+        campaign.setCurrency(currency);
 
         return campaign;
     }
@@ -129,7 +137,6 @@ public class JsonDecoder {
 
         double currentValue = participationJSON.getDouble("currentValue");
         double targetValue = participationJSON.getDouble("targetValue");
-
 
         Participation participation = new Participation();
         participation.setId(participationId);

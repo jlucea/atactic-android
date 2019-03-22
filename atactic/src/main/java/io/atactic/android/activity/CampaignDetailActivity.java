@@ -13,14 +13,16 @@ import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.atactic.android.R;
-import io.atactic.android.element.CampaignInfoFragment;
-import io.atactic.android.element.CampaignTargetsFragment;
-import io.atactic.android.fragment.RankingFragment;
+import io.atactic.android.fragment.CampaignInfoFragment;
+import io.atactic.android.fragment.CampaignTargetsFragment;
+import io.atactic.android.fragment.ParticipantRankingFragment;
 import io.atactic.android.model.Campaign;
 import io.atactic.android.model.Participation;
 import io.atactic.android.model.User;
@@ -41,7 +43,6 @@ public class CampaignDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_campaign_detail);
 
         final String FRAGMENT_TITLE_GENERAL = "Detalles";
-        final String FRAGMENT_TITLE_DESCRIPTION = "Descripción";
         final String FRAGMENT_TITLE_TARGET_ACCOUNTS = "Objetivos";
         final String FRAGMENT_TITLE_RANKING = "Ranking";
 
@@ -86,16 +87,15 @@ public class CampaignDetailActivity extends AppCompatActivity {
         if (this.shouldDisplayRanking()) {
 
             // Add ranking fragment
-            RankingFragment rankingFragment = new RankingFragment();
+            ParticipantRankingFragment participantRankingFragment = new ParticipantRankingFragment();
 
             // Set arguments
             Bundle args = new Bundle();
-            args.putInt(RankingFragment.PARAM_KEY_CAMPAIGNID, participation.getCampaign().getId());
-            args.putString(RankingFragment.PARAM_KEY_MODE, RankingFragment.MODE_PROGRESS);
-            rankingFragment.setArguments(args);
+            args.putInt(ParticipantRankingFragment.PARAM_KEY_CAMPAIGNID, participation.getCampaign().getId());
+            participantRankingFragment.setArguments(args);
 
             // Add fragment
-            fragmentAdapter.addFragment(rankingFragment, FRAGMENT_TITLE_RANKING);
+            fragmentAdapter.addFragment(participantRankingFragment, FRAGMENT_TITLE_RANKING);
         }
 
         viewPager.setAdapter(fragmentAdapter);
@@ -138,13 +138,17 @@ public class CampaignDetailActivity extends AppCompatActivity {
 
         // Format progress values and include units, if applicable, based on Campaign Type
         String progressValuesStr;
-        switch (participation.getCampaign().getType()){
-            case Campaign.CAMPAIGN_TYPE_INTENSITY:
-                progressValuesStr = (int)participation.getCurrentValue() + " / " + (int)participation.getTargetValue();
-                break;
-            default:
-                progressValuesStr = (int)participation.getCurrentValue() + " / " + (int)participation.getTargetValue();
+        if (participation.getCampaign().getType().equals(Campaign.CAMPAIGN_TYPE_SALES_TARGET)||
+                participation.getCampaign().getType().equals(Campaign.CAMPAIGN_TYPE_SALES_TARGET_REFERENCED)){
 
+            String currentValueStr = NumberFormat.getNumberInstance(Locale.forLanguageTag("ES")).format((int)participation.getCurrentValue());
+            String targetValueStr = NumberFormat.getNumberInstance(Locale.forLanguageTag("ES")).format((int)participation.getTargetValue());
+
+            progressValuesStr = currentValueStr + " " + participation.getCampaign().getCurrency() + " / "
+                    + targetValueStr + " " + participation.getCampaign().getCurrency() ;
+
+        }else{
+            progressValuesStr = (int)participation.getCurrentValue() + " / " + (int)participation.getTargetValue();
         }
         progressValuesTextView.setText(progressValuesStr);
     }
@@ -179,10 +183,13 @@ public class CampaignDetailActivity extends AppCompatActivity {
         campaign.setEndDate(endDate);
 
         campaign.setCompletionScore(intent.getIntExtra("completionScore",0));
-
         participation.setCurrentValue(intent.getDoubleExtra("currentValue", 0));
         participation.setTargetValue(intent.getDoubleExtra("targetValue", 0));
         participation.setCurrentProgress(intent.getDoubleExtra("currentProgress", 0));
+
+        if (campaign.getType().equals(Campaign.CAMPAIGN_TYPE_SALES_TARGET) || campaign.getType().equals(Campaign.CAMPAIGN_TYPE_SALES_TARGET_REFERENCED)){
+            campaign.setCurrency(intent.getStringExtra("currency"));
+        }
 
         participation.setCampaign(campaign);
         return participation;

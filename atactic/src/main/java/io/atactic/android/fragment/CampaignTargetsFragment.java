@@ -1,4 +1,4 @@
-package io.atactic.android.element;
+package io.atactic.android.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import io.atactic.android.R;
+import io.atactic.android.element.AccountListAdapter;
 import io.atactic.android.presenter.AccountListPresenter;
 import io.atactic.android.datahandler.ParticipationTargetsDataHandler;
 import io.atactic.android.model.Account;

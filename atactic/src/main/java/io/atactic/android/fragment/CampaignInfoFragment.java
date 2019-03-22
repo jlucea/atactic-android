@@ -1,4 +1,4 @@
-package io.atactic.android.element;
+package io.atactic.android.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

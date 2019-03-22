@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="52dp"
+    android:orientation="horizontal"
     android:layout_marginStart="0dp"
-    android:layout_marginEnd="0dp">
+    android:layout_marginEnd="0dp"
+    android:background="@color/White">
 
     <TextView
         android:id="@+id/tv_rank"
-        android:layout_width="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_gravity="center_vertical"
-        android:text="000"
-        android:textSize="16sp"
+        android:layout_centerVertical="true"
+        android:textAlignment="textEnd"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="#00"
+        android:fontFamily="@font/roboto_medium"
+        android:textSize="15sp"
         android:textStyle="bold"
-        android:gravity="right"/>
+        />
 
+    <!--
     <ImageView
         android:id="@+id/icon_ranking"
         android:layout_width="wrap_content"
@@ -26,24 +31,30 @@
         android:layout_gravity="center"
         android:src="@drawable/icon_user_32x32"
         android:tint="@color/atactic_medium_dark_gray"/>
-
+    -->
     <TextView
         android:id="@+id/tv_ranked_user_name"
-        android:layout_width="168dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="User name goes here"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/tv_rank"
+        android:layout_toStartOf="@id/tv_ranked_user_score"
+        android:text="User name here"
         android:textColor="@color/atactic_dark_gray"
-        android:textSize="16sp" />
+        android:fontFamily="@font/roboto"
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/tv_ranked_user_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="10dp"
-        android:gravity="end"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
         android:text="000"
-        android:textSize="18sp" />
+        android:textSize="15sp"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/atactic_dark_gray" />
 
-</LinearLayout>
+
+</RelativeLayout>

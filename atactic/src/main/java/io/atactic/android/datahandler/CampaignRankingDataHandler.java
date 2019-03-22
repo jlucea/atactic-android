@@ -9,16 +9,16 @@ import org.json.JSONException;
 import java.text.ParseException;
 import java.util.List;
 
+import io.atactic.android.fragment.ParticipantRankingFragment;
 import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.model.Participation;
 import io.atactic.android.network.request.CampaignRankingRequest;
-import io.atactic.android.presenter.RankingPresenter;
 
 public class CampaignRankingDataHandler {
 
-    private RankingPresenter presenter;
+    private ParticipantRankingFragment presenter;
 
-    public CampaignRankingDataHandler(RankingPresenter rankingPresenter){
+    public CampaignRankingDataHandler(ParticipantRankingFragment rankingPresenter){
         this.presenter = rankingPresenter;
     }
 
