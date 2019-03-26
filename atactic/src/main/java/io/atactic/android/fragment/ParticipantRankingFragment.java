@@ -67,7 +67,10 @@ public class ParticipantRankingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_ranking,container, false);
+        View view = inflater.inflate(R.layout.fragment_campaign_ranking,container, false);
+
+        loadingIndicator = view.findViewById(R.id.ranking_loading_indicator);
+        statusMessageTextView = view.findViewById(R.id.tv_ranking_fragment_status_message);
 
         rankingRecyclerView = view.findViewById(R.id.rv_ranking);
         rankingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -79,6 +82,8 @@ public class ParticipantRankingFragment extends Fragment {
         if (participations != null){
             int userId = CredentialsCache.recoverCredentials(this.getContext()).getUserId();
             adapter.setContent(participations, userId);
+        }else{
+            loadingIndicator.setVisibility(View.VISIBLE);
         }
 
         return view;
@@ -86,6 +91,7 @@ public class ParticipantRankingFragment extends Fragment {
 
 
     public void displayProgressRanking(List<Participation> participations) {
+        loadingIndicator.setVisibility(View.GONE);
         if (participations != null){
             this.participations = participations;
             Log.d(LOG_TAG, "Will display " + participations.size() + " participations");

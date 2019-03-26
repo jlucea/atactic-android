@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.text.ParseException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.atactic.android.fragment.ParticipantRankingFragment;
@@ -70,6 +72,8 @@ public class CampaignRankingDataHandler {
             try {
                 List<Participation> participations = JsonDecoder.decodeParticipationList(jsonArray);
 
+                Collections.sort(participations, new ProgressComparator());
+
                 handler.presentData(participations);
 
             } catch (JSONException e) {
@@ -80,6 +84,23 @@ public class CampaignRankingDataHandler {
             }
 
         }
+
+
+        private class ProgressComparator implements Comparator<Participation>{
+
+            @Override
+            public int compare(Participation o1, Participation o2) {
+                if (o1.getCurrentProgress() < o2.getCurrentProgress()){
+                    return 1;
+                } else if (o1.getCurrentProgress() > o2.getCurrentProgress()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+
+
     }
 
 
