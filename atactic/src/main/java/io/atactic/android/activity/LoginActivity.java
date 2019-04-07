@@ -1,13 +1,18 @@
 package io.atactic.android.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import io.atactic.android.R;
@@ -16,7 +21,7 @@ import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.manager.ConfigurationManager;
 import io.atactic.android.utils.CredentialsCache;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements TextView.OnEditorActionListener {
 
     private Button loginButton;
     private EditText emailTextField;
@@ -61,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         */
 
-        setContentView(R.layout.activity_simple_login);
+        setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.login_button);
         loginButton.setEnabled(true);
@@ -89,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.v(LOG_TAG, "Requesting configuration");
         ConfigurationManager.getInstance().requestUpdatedConfiguration(userId);
 
+        // Launch Main Activity
         Log.v(LOG_TAG, "Entering app ...");
         Intent i = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(i);
@@ -139,6 +145,18 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setEnabled(true);
         loginButton.setBackgroundColor(getResources().getColor(R.color.atactic_bright_red, null));
         progressIndicator.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            // InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            v.clearFocus();
+            return true;
+        }
+        return false;
     }
 
 }
