@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import io.atactic.android.R;
 import io.atactic.android.datahandler.PasswordManager;
+import io.atactic.android.utils.CredentialsCache;
 
 public class ChangePasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,8 +39,10 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         if (newPassWordTextField.getText().toString().equals(verificationTextField.getText().toString())){
             // Toast.makeText(this, "Se cambiará el password", Toast.LENGTH_SHORT).show();
 
+            int userId = CredentialsCache.recoverCredentials(this).getUserId();
+
             // Call PasswordManager to change the password
-            new PasswordManager(this).changePassword(newPassWordTextField.getText().toString());
+            new PasswordManager(this).changePassword(userId, newPassWordTextField.getText().toString());
 
         }else{
             Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();

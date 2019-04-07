@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements TextView.OnEdito
         Log.v(LOG_TAG, "Storing user credentials in app cache");
 
         // Store credentials as a global application variable, so it can be referenced from other activities
-        ((AtacticApplication)getApplication()).storeUserCredentialsInAppCache(userId, username, password);
+        // ((AtacticApplication)getApplication()).storeUserCredentialsInAppCache(userId, username, password);
 
         // Store in Preferences for future authentication
         CredentialsCache.storeCredentials(this, username, password, userId);

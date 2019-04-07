@@ -28,6 +28,7 @@ import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.SimpleParticipationListAdapter;
 import io.atactic.android.model.Account;
 import io.atactic.android.model.Participation;
+import io.atactic.android.utils.CredentialsCache;
 import io.atactic.android.utils.DistanceUtils;
 
 public class AccountDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -86,7 +87,9 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         accountAddressLine2TextView.setText(account.getPostalCode() + ", " + account.getCity());
         distanceToAccountTextView.setText(DistanceUtils.formatDistanceText(account.getDistanceTo()));
 
-        int userId = ((AtacticApplication)getApplication()).getUserId();
+        // int userId = ((AtacticApplication)getApplication()).getUserId();
+        int userId = CredentialsCache.recoverCredentials(this).getUserId();
+
 
         // Request list of campaigns related to the account
         new AccountParticipationsDataHandler(this).getData(userId, account.getId());

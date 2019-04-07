@@ -11,7 +11,7 @@ public class CredentialsCache {
         String password;
         int userId;
 
-        public UserCredentials(String usr, String pwd, int uid){
+        UserCredentials(String usr, String pwd, int uid){
             userName = usr;
             password = pwd;
             userId = uid;
@@ -46,13 +46,14 @@ public class CredentialsCache {
                 .apply();
     }
 
+    /*
     public static void storeToken(Context context, String token){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
                 .putString(TOKEN_KEY, token)
                 .apply();
 
-    }
+    } */
 
     public static void crearAll(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -72,11 +73,7 @@ public class CredentialsCache {
         String password = prefs.getString(PASSWORD_KEY, null);
         int userId = prefs.getInt(USERID_KEY, 0);
 
-        if ((username != null) && (password!=null)) {
-            return new UserCredentials(username, password, userId);
-        } else {
-            return null;
-        }
+        return new UserCredentials(username, password, userId);
     }
 
 

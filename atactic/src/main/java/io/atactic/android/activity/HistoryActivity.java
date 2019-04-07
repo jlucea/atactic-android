@@ -15,15 +15,14 @@ import java.util.List;
 import io.atactic.android.R;
 import io.atactic.android.datahandler.ActivityHistoryDataHandler;
 import io.atactic.android.element.ActivityListAdapter;
-import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.model.Visit;
+import io.atactic.android.utils.CredentialsCache;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = HistoryActivity.class.getSimpleName();;
+    private static final String LOG_TAG = HistoryActivity.class.getSimpleName();
 
     private ActivityListAdapter adapter;
-    private RecyclerView recyclerView;
     private FrameLayout loadingIndicatorFrame;
     private TextView statusMessageTextView;
 
@@ -33,7 +32,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         // Display back button in action bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.loadingIndicatorFrame = findViewById(R.id.activity_history_loading_indicator_layout);
         this.loadingIndicatorFrame.setVisibility(View.VISIBLE);
@@ -41,12 +40,13 @@ public class HistoryActivity extends AppCompatActivity {
         this.statusMessageTextView = findViewById(R.id.tv_activity_history_status_message);
 
         this.adapter = new ActivityListAdapter();
-        this.recyclerView = findViewById(R.id.rv_activity_list);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.recyclerView.setHasFixedSize(true);
-        this.recyclerView.setAdapter(adapter);
+        RecyclerView recyclerView = findViewById(R.id.rv_activity_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
 
-        int userId = ((AtacticApplication) this.getApplication()).getUserId();
+        // int userId = ((AtacticApplication) this.getApplication()).getUserId();
+        int userId = CredentialsCache.recoverCredentials(this).getUserId();
 
         Log.v(LOG_TAG, "Requesting activity history for user " + userId);
         new ActivityHistoryDataHandler(this).getData(userId);

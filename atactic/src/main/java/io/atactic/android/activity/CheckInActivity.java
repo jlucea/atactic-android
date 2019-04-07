@@ -27,6 +27,7 @@ import io.atactic.android.network.request.CheckInEligibleTargetsRequest;
 import io.atactic.android.network.request.CheckInRequest;
 import io.atactic.android.network.HttpResponse;
 import io.atactic.android.element.AtacticApplication;
+import io.atactic.android.utils.CredentialsCache;
 
 public class CheckInActivity extends AppCompatActivity {
 
@@ -95,7 +96,8 @@ public class CheckInActivity extends AppCompatActivity {
                                  *
                                  * and display the eligible account names and pre-select the closest one
                                  */
-                                new EligibleTargetsHttpRequest().execute();
+                                int userId = CredentialsCache.recoverCredentials(getApplicationContext()).getUserId();
+                                new EligibleTargetsHttpRequest().execute(userId);
                             }
                         }
                     });
@@ -131,7 +133,9 @@ public class CheckInActivity extends AppCompatActivity {
          */
         int index = accountSpinnerView.getSelectedItemPosition();
         int accountId = Integer.parseInt(eligibleAccounts[index][0]);
-        int userId = ((AtacticApplication)CheckInActivity.this.getApplication()).getUserId();
+        // int userId = ((AtacticApplication)CheckInActivity.this.getApplication()).getUserId();
+        int userId = CredentialsCache.recoverCredentials(this).getUserId();
+
 
         CheckInParams params = new CheckInParams(userId, accountId,
                 commentsTextField.getText().toString(),
@@ -202,12 +206,13 @@ public class CheckInActivity extends AppCompatActivity {
 
 
 
-    private class EligibleTargetsHttpRequest extends AsyncTask<Void, Void, JSONArray>{
+    private class EligibleTargetsHttpRequest extends AsyncTask<Integer, Void, JSONArray>{
 
         @Override
-        protected JSONArray doInBackground(Void... params) {
+        protected JSONArray doInBackground(Integer... params) {
             // Recover user's id from global variables
-            int userId = ((AtacticApplication)CheckInActivity.this.getApplication()).getUserId();
+            // int userId = ((AtacticApplication)CheckInActivity.this.getApplication()).getUserId();
+            int userId = params[0];
 
             // Send an Http request to the server asking for accounts eligible for checkin,
             // based on the user's location

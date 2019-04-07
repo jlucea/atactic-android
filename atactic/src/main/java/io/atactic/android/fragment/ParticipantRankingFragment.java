@@ -67,7 +67,7 @@ public class ParticipantRankingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_campaign_ranking,container, false);
+        View view = inflater.inflate(R.layout.fragment_progress_ranking,container, false);
 
         loadingIndicator = view.findViewById(R.id.ranking_loading_indicator);
         statusMessageTextView = view.findViewById(R.id.tv_ranking_fragment_status_message);

@@ -18,6 +18,7 @@ import io.atactic.android.R;
 import io.atactic.android.network.request.RankingRequest;
 import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.RankingAdapter;
+import io.atactic.android.utils.CredentialsCache;
 
 public class RankingActivity extends AppCompatActivity {
 
@@ -53,17 +54,23 @@ public class RankingActivity extends AppCompatActivity {
         adapter = new RankingAdapter();
         rankingRecyclerView.setAdapter(adapter);
 
-        new RankingAsyncHttpRequest().execute();
+
+        int userId = CredentialsCache.recoverCredentials(this).getUserId();
+        new RankingAsyncHttpRequest().execute(userId);
     }
 
 
-    public class RankingAsyncHttpRequest extends AsyncTask<Void, Void, JSONArray> {
+    public class RankingAsyncHttpRequest extends AsyncTask<Integer, Void, JSONArray> {
+
+        private int userId;
 
         @Override
-        protected JSONArray doInBackground(Void... params) {
+        protected JSONArray doInBackground(Integer... params) {
 
             // Retrieve user identification from global variables
-            int userId = ((AtacticApplication)RankingActivity.this.getApplication()).getUserId();
+            // int userId = ((AtacticApplication)RankingActivity.this.getApplication()).getUserId();
+            // int userId = CredentialsCache.recoverCredentials(this).getUserId();
+            userId = params[0];
 
             return RankingRequest.send(userId);
         }
@@ -72,7 +79,7 @@ public class RankingActivity extends AppCompatActivity {
         protected void onPostExecute(JSONArray jsonArray) {
             Log.d("RankingActivity", jsonArray.toString());
 
-            int userId = ((AtacticApplication)RankingActivity.this.getApplication()).getUserId();
+            // int userId = ((AtacticApplication)RankingActivity.this.getApplication()).getUserId();
             Log.d("RankingActivity", "User ID = " + userId);
 
             adapter.setContent(jsonArray, userId);
