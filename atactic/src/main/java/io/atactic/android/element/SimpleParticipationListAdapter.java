@@ -6,14 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.lzyzsd.circleprogress.ArcProgress;
-
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import io.atactic.android.R;
 import io.atactic.android.model.Participation;
@@ -49,7 +44,7 @@ public class SimpleParticipationListAdapter extends RecyclerView.Adapter<SimpleP
     @Override
     public SimpleParticipationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_simple_participation, parent, false);      // boolean shouldAttachToParentImmediately = false;
+        View view = inflater.inflate(R.layout.list_item_participation_line, parent, false);      // boolean shouldAttachToParentImmediately = false;
         return new SimpleParticipationViewHolder(view);
     }
 

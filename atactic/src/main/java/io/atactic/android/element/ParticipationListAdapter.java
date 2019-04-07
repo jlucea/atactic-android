@@ -47,7 +47,7 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
     @Override
     public ParticipationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_quest, parent, false);      // boolean shouldAttachToParentImmediately = false;
+        View view = inflater.inflate(R.layout.list_item_participation_card, parent, false);      // boolean shouldAttachToParentImmediately = false;
         return new ParticipationViewHolder(view);
     }
 

@@ -27,7 +27,7 @@ public class ParticipantRankingAdapter extends RecyclerView.Adapter<ParticipantR
     public RankedParticipantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Log.v(LOG_TAG,"ViewHolder created");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_ranking, parent, false);
+        View view = inflater.inflate(R.layout.list_item_ranked_user, parent, false);
         return new RankedParticipantViewHolder(view);
     }
 

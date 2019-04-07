@@ -1,10 +1,8 @@
 package io.atactic.android.element;
 
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.atactic.android.R;
-import io.atactic.android.activity.RankingActivity;
 
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankedUserViewHolder>{
 
@@ -28,7 +25,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankedUs
     public RankedUserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("RankingAdapter","ViewHolder created");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_item_ranking, parent, false);
+        View view = inflater.inflate(R.layout.list_item_ranked_user, parent, false);
         return new RankedUserViewHolder(view);
     }
 

@@ -26,7 +26,9 @@ import io.atactic.android.model.Participation;
 import io.atactic.android.utils.CredentialsCache;
 
 /**
- * Fragment managing the Campaign List section
+ * Fragment managing the Campaign List section.
+ *
+ * Implements click listener for the campaigns in the list, which launch a CampaignDetailActivity.
  *
  * @author Jaime Lucea
  * @author ATACTIC

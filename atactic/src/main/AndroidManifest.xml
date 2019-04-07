@@ -35,6 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
@@ -47,26 +48,14 @@
             -->
         </activity>
         <activity
-            android:name=".activity.CampaignListActivity"
-            android:label="@string/title_activity_quest_list" />
-        <activity
-            android:name=".activity.AccountListActivity"
-            android:label="@string/title_activity_target_list" />
-        <activity
             android:name=".activity.AccountDetailActivity"
             android:label="@string/title_activity_account_detail" />
-        <activity
-            android:name=".activity.MapActivity"
-            android:label="@string/title_activity_map" />
         <activity
             android:name=".activity.CampaignDetailActivity"
             android:label="" />
         <activity
             android:name=".activity.CheckInActivity"
             android:label="@string/title_activity_checkin" />
-        <activity
-            android:name=".activity.ProfileActivity"
-            android:label="@string/title_activity_profile" />
         <activity
             android:name=".activity.ChangePasswordActivity"
             android:label="@string/title_activity_change_password" />
