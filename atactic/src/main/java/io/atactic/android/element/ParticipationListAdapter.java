@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import at.grabner.circleprogress.CircleProgressView;
 import io.atactic.android.R;
 import io.atactic.android.model.Participation;
 
@@ -89,7 +90,7 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
      */
     public class ParticipationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final ArcProgress progressIndicatorView;
+        private final CircleProgressView progressIndicatorView;
         private final TextView questNameTextView;
         private final TextView questBriefingTextView;
         private final TextView questDeadlineTextView;
@@ -102,7 +103,7 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
 
             questNameTextView = itemView.findViewById(R.id.tv_quest_name);
             questBriefingTextView = itemView.findViewById(R.id.tv_quest_briefing);
-            progressIndicatorView = itemView.findViewById(R.id.arc_progress);
+            progressIndicatorView = itemView.findViewById(R.id.participation_circle_progress_view);
             questDeadlineTextView = itemView.findViewById(R.id.tv_quest_deadline);
             // questScoreTextView = itemView.findViewById(R.id.tv_quest_score);
 
@@ -111,12 +112,11 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
         }
 
         public void setContent(Participation participation) {
-            int roundedProgressValue = (int)(participation.getCurrentProgress()*100);
-            if (roundedProgressValue > 100) {
-                progressIndicatorView.setProgress(100);
-            }else{
-                progressIndicatorView.setProgress(roundedProgressValue);
-            }
+
+            float roundedProgressValue = (float)(participation.getCurrentProgress()*100);
+            progressIndicatorView.setValue(roundedProgressValue);
+            progressIndicatorView.setText(String.valueOf(roundedProgressValue));
+
             questNameTextView.setText(participation.getCampaign().getName());
             questBriefingTextView.setText(participation.getCampaign().getBriefing());
 

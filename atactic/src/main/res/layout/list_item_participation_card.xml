@@ -24,6 +24,7 @@
         android:orientation="horizontal" >
 
         <!-- Circular progress indicator -->
+        <!--
         <com.github.lzyzsd.circleprogress.ArcProgress
             android:id="@+id/arc_progress"
             android:layout_marginTop="20dp"
@@ -35,6 +36,28 @@
             auto:arc_stroke_width="5dp"
             auto:arc_bottom_text_size="13sp"
             auto:arc_text_color="@color/atactic_medium_dark_gray"/>
+        -->
+
+        <at.grabner.circleprogress.CircleProgressView
+            android:id="@+id/participation_circle_progress_view"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="14dp"
+            auto:cpv_autoTextSize="true"
+            auto:cpv_textMode="Percent"
+            auto:cpv_showUnit="true"
+            auto:cpv_unit="%"
+            auto:cpv_unitColor="@color/atactic_medium_dark_gray"
+            auto:cpv_textColor="@color/atactic_medium_dark_gray"
+            auto:cpv_barColor="@color/atactic_brighter_red"
+            auto:cpv_rimColor="@color/atactic_silver"
+            auto:cpv_rimWidth="5dp"
+            auto:cpv_barWidth="5dp"
+            auto:cpv_innerContourColor="@color/White"
+            auto:cpv_innerContourSize="14dp"
+            />
+
 
         <LinearLayout
             android:layout_width="match_parent"

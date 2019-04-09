@@ -11,14 +11,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.github.lzyzsd.circleprogress.ArcProgress;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import at.grabner.circleprogress.CircleProgressView;
 import io.atactic.android.R;
 import io.atactic.android.fragment.CampaignInfoFragment;
 import io.atactic.android.fragment.CampaignTargetsFragment;
@@ -31,7 +30,7 @@ public class CampaignDetailActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "CampaignDetailActivity";
 
-    private ArcProgress progressIndicatorView;
+    private CircleProgressView progressIndicatorView;
     private TextView progressValuesTextView;
     private TextView questNameTextView;
     private TextView questBriefingTextView;
@@ -50,7 +49,7 @@ public class CampaignDetailActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get references to the views in the header
-        progressIndicatorView = findViewById(R.id.arc_questdetail_arcprogress);
+        progressIndicatorView = findViewById(R.id.circle_progress_view);
         progressValuesTextView = findViewById(R.id.tv_progress_values);
         questNameTextView = findViewById(R.id.tv_questdetail_name);
         questBriefingTextView = findViewById(R.id.tv_questdetail_briefing);
@@ -65,7 +64,7 @@ public class CampaignDetailActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.viewpager);
         ViewPagerAdapter fragmentAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        /**
+        /*
          * DETAILS FRAGMENT
          * TODO Use bundle instead of constructor parameter
          */
@@ -127,12 +126,10 @@ public class CampaignDetailActivity extends AppCompatActivity {
     */
 
     private void displayParticipationData(Participation participation){
-        int roundedProgressValue = (int)(participation.getCurrentProgress()*100);
-        if (roundedProgressValue > 100) {
-            progressIndicatorView.setProgress(100);
-        }else{
-            progressIndicatorView.setProgress(roundedProgressValue);
-        }
+
+        progressIndicatorView.setValueAnimated((float)participation.getCurrentProgress()*100,1000);
+        progressIndicatorView.setText(String.valueOf((float)participation.getCurrentProgress()*100));
+
         questNameTextView.setText(participation.getCampaign().getName());
         questBriefingTextView.setText(participation.getCampaign().getBriefing());
 

@@ -66,6 +66,7 @@
             android:layout_marginBottom="20dp">
 
             <!-- Circular progress indicator -->
+            <!--
             <com.github.lzyzsd.circleprogress.ArcProgress
                 android:id="@+id/arc_questdetail_arcprogress"
                 android:layout_width="80dp"
@@ -78,6 +79,26 @@
                 auto:arc_text_size="30sp"
                 auto:arc_bottom_text_size="14sp"
                 auto:arc_text_color="@color/White"/>
+            -->
+
+            <at.grabner.circleprogress.CircleProgressView
+                android:id="@+id/circle_progress_view"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                auto:cpv_autoTextSize="true"
+                auto:cpv_textMode="Percent"
+                auto:cpv_showUnit="true"
+                auto:cpv_unit="%"
+                auto:cpv_unitColor="@color/White"
+                auto:cpv_textColor="@color/White"
+                auto:cpv_barColor="@color/atactic_bright_red"
+                auto:cpv_rimColor="@color/atactic_light_gray"
+                auto:cpv_rimWidth="6dp"
+                auto:cpv_barWidth="6dp"
+                auto:cpv_innerContourColor="@color/atactic_medium_dark_gray"
+                auto:cpv_innerContourSize="10dp"
+                 />
+
 
             <!-- Progress values, if applicable -->
             <TextView
@@ -86,6 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="8dp"
                 android:maxLines="1"
                 android:fontFamily="@font/roboto"
                 android:text="0.000 € / 0.000 €"
