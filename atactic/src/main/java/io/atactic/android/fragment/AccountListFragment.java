@@ -103,6 +103,7 @@ public class AccountListFragment extends Fragment implements AccountListAdapter.
         i.putExtra("accountLatitude", acc.getLatitude());
         i.putExtra("accountLongitude", acc.getLongitude());
         i.putExtra("accountDistanceAway", acc.getDistanceTo());
+        i.putExtra("accountRelevance", acc.getRelevanceScore());
 
         startActivity(i);
     }

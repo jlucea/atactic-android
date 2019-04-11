@@ -24,7 +24,6 @@ import java.util.List;
 
 import io.atactic.android.R;
 import io.atactic.android.datahandler.AccountParticipationsDataHandler;
-import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.SimpleParticipationListAdapter;
 import io.atactic.android.model.Account;
 import io.atactic.android.model.Participation;
@@ -70,6 +69,7 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         TextView accountAddressLine1TextView = findViewById(R.id.tv_account_address_line1);
         TextView accountAddressLine2TextView = findViewById(R.id.tv_account_address_line2);
         TextView distanceToAccountTextView = findViewById(R.id.tv_distance_to_account);
+        TextView relevanceScoreTextView = findViewById(R.id.tv_account_priority);
         statusMessageTextView = findViewById(R.id.tv_status_message);
         statusMessageLayout = findViewById(R.id.status_message_layout);
         participationListRecyclerView = findViewById(R.id.rv_account_campaigns);
@@ -86,10 +86,9 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         accountAddressLine1TextView.setText(account.getAddress());
         accountAddressLine2TextView.setText(account.getPostalCode() + ", " + account.getCity());
         distanceToAccountTextView.setText(DistanceUtils.formatDistanceText(account.getDistanceTo()));
+        relevanceScoreTextView.setText(String.valueOf(account.getRelevanceScore()));
 
-        // int userId = ((AtacticApplication)getApplication()).getUserId();
         int userId = CredentialsCache.recoverCredentials(this).getUserId();
-
 
         // Request list of campaigns related to the account
         new AccountParticipationsDataHandler(this).getData(userId, account.getId());
@@ -109,6 +108,7 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         double latitude = intent.getDoubleExtra("accountLatitude", 0);
         double longitude = intent.getDoubleExtra("accountLongitude", 0);
         double distanceAway = intent.getDoubleExtra("accountDistanceAway", 0);
+        int relevance = intent.getIntExtra("accountRelevance", 0);
 
         Account account = new Account();
         account.setId(accountId);
@@ -122,6 +122,7 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         account.setLatitude(latitude);
         account.setLongitude(longitude);
         account.setDistanceTo(distanceAway);
+        account.setRelevanceScore(relevance);
 
         return account;
     }

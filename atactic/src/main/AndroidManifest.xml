@@ -49,7 +49,7 @@
         </activity>
         <activity
             android:name=".activity.AccountDetailActivity"
-            android:label="@string/title_activity_account_detail" />
+            android:label="" />
         <activity
             android:name=".activity.CampaignDetailActivity"
             android:label="" />
