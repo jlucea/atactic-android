@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,6 +54,8 @@ public class MapFragment extends Fragment implements
 
     private GoogleMap map;
 
+    private ProgressBar loadingIndicator;
+
     public MapFragment() {
         // Required empty public constructor
     }
@@ -83,17 +85,7 @@ public class MapFragment extends Fragment implements
         // Enable options menu (tob bar buttons)
         setHasOptionsMenu(true);
 
-        // Check tenant configuration
-        // TenantConfiguration configuration = ConfigurationManager.getInstance().getConfiguration();
-        /*
-        FloatingActionButton myFab = view.findViewById(R.id.fab_checkin);
-        if (configuration.isCheckInEnabled()) {
-            // Activate the check-in floating button
-            myFab.setVisibility(View.VISIBLE);
-            myFab.setOnClickListener(this);
-        } else {
-            myFab.setVisibility(View.GONE);
-        } */
+        loadingIndicator = view.findViewById(R.id.map_progress_bar);
 
         return view;
     }
@@ -207,6 +199,14 @@ public class MapFragment extends Fragment implements
 
         // Use the inflater's inflate method to inflate our top_menu_items layout to this top_menu_items
         inflater.inflate(R.menu.top_menu_items, menu);
+
+        // Check tenant configuration
+        TenantConfiguration configuration = ConfigurationManager.getInstance().getConfiguration();
+
+        if (!configuration.isCheckInEnabled()) {
+            // Disable the check-in button
+            menu.findItem(R.id.btn_checkIn).setVisible(false);
+        }
     }
 
     @Override
@@ -214,6 +214,8 @@ public class MapFragment extends Fragment implements
 
         if (item.getItemId() == R.id.btn_daily_route) {
             Log.v(LOG_TAG,"Route button pressed");
+
+            showLoadingIndicator();
 
             int userId = CredentialsCache.recoverCredentials(getContext()).getUserId();
             Location location = LocationManager.getInstance().getLastKnownLocation();
@@ -236,6 +238,8 @@ public class MapFragment extends Fragment implements
                 LocationManager.getInstance().getLastKnownLocation());
 
         launchMapsApp(googleMapsUri);
+
+        hideLoadingIndicator();
     }
 
     private void launchMapsApp(Uri uri){
@@ -261,6 +265,7 @@ public class MapFragment extends Fragment implements
     @Override
     public void displayRouteError(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        hideLoadingIndicator();
     }
 
     // Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=18.519513,73.868315&destination=18.518496,73.879259&waypoints=18.520561,73.872435|18.519254,73.876614|18.52152,73.877327|18.52019,73.879935&travelmode=driving");
@@ -306,6 +311,14 @@ public class MapFragment extends Fragment implements
     private void openCheckIn(){
         Intent i = new Intent(getContext(), CheckInActivity.class);
         startActivity(i);
+    }
+
+    private void showLoadingIndicator(){
+        loadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingIndicator(){
+        loadingIndicator.setVisibility(View.GONE);
     }
 
 }
