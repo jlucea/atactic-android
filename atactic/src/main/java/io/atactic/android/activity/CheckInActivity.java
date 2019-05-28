@@ -204,6 +204,7 @@ public class CheckInActivity extends AppCompatActivity {
             if (checkInResponse.getCode() == HttpURLConnection.HTTP_OK){
                 Toast.makeText(CheckInActivity.this,
                         R.string.msg_checkin_ok, Toast.LENGTH_LONG).show();
+
             }else{
                 Toast.makeText(CheckInActivity.this,
                         R.string.msg_checkin_error, Toast.LENGTH_LONG).show();

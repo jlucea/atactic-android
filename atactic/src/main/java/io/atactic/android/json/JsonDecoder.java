@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,8 +42,14 @@ public class JsonDecoder {
 
         v.setComments(visitJSON.getString("comments"));
 
-        String dateStr = visitJSON.getString("timeReported");
-        Date date = DateUtils.parseDate(dateStr);
+        // UTC
+        String timestamp = visitJSON.getString("timeReported");
+
+        // This would require API Level 26
+        // Instant instant = Instant.parse(timestamp);
+
+
+        Date date = DateUtils.parseDate(timestamp);
         v.setDate(date);
 
         return v;

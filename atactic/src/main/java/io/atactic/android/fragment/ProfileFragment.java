@@ -4,6 +4,7 @@ package io.atactic.android.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, P
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int userId = CredentialsCache.recoverCredentials(getContext()).getUserId();
+        int userId = CredentialsCache.recoverCredentials().getUserId();
 
         // Get Data
         new ProfileManager(this).getData(userId);
@@ -47,7 +48,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, P
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment

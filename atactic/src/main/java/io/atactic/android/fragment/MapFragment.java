@@ -44,10 +44,11 @@ import io.atactic.android.model.Account;
 import io.atactic.android.model.ParticipationSummary;
 import io.atactic.android.model.TargetAccount;
 import io.atactic.android.model.TenantConfiguration;
+import io.atactic.android.presenter.MapDataPresenter;
 import io.atactic.android.utils.CredentialsCache;
 
 public class MapFragment extends Fragment implements
-        OnMapReadyCallback, OnSuccessListener<Location>, MapDataHandler.MapDataPresenter,
+        OnMapReadyCallback, OnSuccessListener<Location>, MapDataPresenter,
         RouteGenerationHandler.RoutePresenter {
 
     private static final String LOG_TAG = MapFragment.class.getSimpleName();
@@ -191,6 +192,11 @@ public class MapFragment extends Fragment implements
                 drawTargetMarker(target);
             }
         }
+    }
+
+    @Override
+    public void displayError(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override

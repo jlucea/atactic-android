@@ -16,16 +16,13 @@ import io.atactic.android.model.AccountTargetingParticipation;
 import io.atactic.android.model.ParticipationSummary;
 import io.atactic.android.model.TargetAccount;
 import io.atactic.android.network.request.AccountMapRequest;
+import io.atactic.android.presenter.MapDataPresenter;
 
 public class MapDataHandler {
 
-    private final String LOG_TAG = "MapDataHandler";
+    private static final String LOG_TAG = "MapDataHandler";
 
     private MapDataPresenter presenter;
-
-    public interface MapDataPresenter{
-        void displayMarkers(List<Account> accounts, List<TargetAccount> targets);
-    }
 
 
     public MapDataHandler(MapDataPresenter dataPresenter){
@@ -89,6 +86,7 @@ public class MapDataHandler {
                     // If the accounts has already been added as a target, add the participation
                     TargetAccount target = findTargetAccount(acc.getId(), targets);
                     target.getParticipations().add(participation);
+
                 } else {
                     // If it's a new target, add the account to the target list as such
                     TargetAccount newTarget = new TargetAccount(acc);
@@ -160,32 +158,45 @@ public class MapDataHandler {
 
             // Return JSON array containing the data to show in the view
             try {
-                return new JSONObject(response);
 
-            } catch (JSONException ex) {
-                ex.printStackTrace();
-                return null;
+                if (response != null) {
+                    return new JSONObject(response);
+                }
+
+            } catch (Exception err) {
+                Log.e(LOG_TAG, "Invalid server response error", err);
             }
+            return null;
         }
 
         @Override
         protected void onPostExecute(JSONObject accountAndTargetsMapJSON) {
-            try {
-                // Decode JSON response into an Account List object
-                AccountMap accountMap = JsonDecoder.decodeAccountMap(accountAndTargetsMapJSON);
-                if (accountMap != null){
-                    Log.v("AccountMapRequestTask", "Account Map decoded");
-                    Log.d("AccountMapRequestTask", accountMap.getAccounts().size() + " accounts decoded");
+
+            if (accountAndTargetsMapJSON != null) {
+
+                try {
+                    // Decode JSON response into an Account List object
+                    AccountMap accountMap = JsonDecoder.decodeAccountMap(accountAndTargetsMapJSON);
+                    if (accountMap != null) {
+                        Log.v(LOG_TAG, "Account Map successfully decoded");
+                        Log.d(LOG_TAG, accountMap.getAccounts().size() + " accounts decoded");
+
+                        // Return data to Handler
+                        handler.sendDataToMapPresenter(accountMap);
+
+                    } else {
+                        Log.e(LOG_TAG,"Null Map data");
+                        handler.presenter.displayError("Se ha producido un error al cargar los datos del mapa");
+                    }
+
+                } catch (JSONException err) {
+                    Log.e(LOG_TAG,"JSON error when decoding account map data", err);
+                    handler.presenter.displayError("Se ha producido un error al cargar los datos del mapa");
                 }
-                // handler.transformIntoTargetList()
-
-                // Return data to Handler
-                handler.sendDataToMapPresenter(accountMap);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                // handler.returnErrorMessage("Se ha producido un error al decodificar los datos");
+            } else {
+                handler.presenter.displayError("No se han podido cargar los datos del mapa");
             }
+
         }
 
     }

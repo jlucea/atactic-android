@@ -1,6 +1,5 @@
 package io.atactic.android.element;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import io.atactic.android.R;
 import io.atactic.android.model.Visit;
@@ -29,7 +28,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
     }
 
     @Override
-    public void onBindViewHolder(ActivityViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ActivityViewHolder viewHolder, int i) {
         viewHolder.setData(activityList.get(i));
     }
 
@@ -51,20 +50,25 @@ public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapte
 
         private TextView accountNameTextView;
         private TextView visitDateTextView;
+        private TextView commentsTextView;
 
         ActivityViewHolder(@NonNull View itemView) {
             super(itemView);
 
             accountNameTextView = itemView.findViewById(R.id.tv_visited_account_name);
             visitDateTextView = itemView.findViewById(R.id.tv_date_of_visit);
+            commentsTextView = itemView.findViewById(R.id.tv_visit_comments);
         }
 
         public void setData(Visit v){
             accountNameTextView.setText(v.getAccount().getName());
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            sdf.setTimeZone(TimeZone.getDefault());
             String dateStr = sdf.format(v.getDate());
             visitDateTextView.setText(dateStr);
+
+            commentsTextView.setText(v.getComments());
         }
 
     }

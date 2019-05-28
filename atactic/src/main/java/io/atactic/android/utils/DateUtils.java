@@ -1,10 +1,13 @@
 package io.atactic.android.utils;
 
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class DateUtils {
 
@@ -35,6 +38,8 @@ public class DateUtils {
      *
      * If the original String contains 'Z' and/or [TimeZone], these elements will be filtered.
      *
+     * The parsed Date will be in UTC! Apply TimeZone before displaying it!
+     *
      * @param dateString String describing a date
      * @return Date object
      * @throws ParseException In case it's unable to parse the date
@@ -43,28 +48,37 @@ public class DateUtils {
         String parseThis = filterDateString(dateString);
 
         SimpleDateFormat sdf;
+        // TimeZone timeZone = TimeZone.getDefault();
+        TimeZone sourcetimeZone = TimeZone.getTimeZone("UTC");
         Date parsed;
 
         try {
             sdf = new SimpleDateFormat(ZONED_DATE_FORMAT, Locale.getDefault());
+
+            sdf.setTimeZone(sourcetimeZone);
             parsed = sdf.parse(parseThis);
+
         } catch (Exception ex1) {
             try {
                 sdf = new SimpleDateFormat(NOMILIS_DATE_FORMAT, Locale.getDefault());
+                sdf.setTimeZone(sourcetimeZone);
                 parsed = sdf.parse(parseThis);
 
             } catch (Exception ex2) {
                 try {
                     sdf = new SimpleDateFormat(BASE_DATE_FORMAT, Locale.getDefault());
+                    sdf.setTimeZone(sourcetimeZone);
                     parsed = sdf.parse(parseThis);
 
                 } catch (Exception ex3) {
                     try {
                         sdf = new SimpleDateFormat(ZONED_DATE_FORMAT2, Locale.getDefault());
+                        sdf.setTimeZone(sourcetimeZone);
                         parsed = sdf.parse(parseThis);
 
                     }catch (Exception ex4){
                         sdf = new SimpleDateFormat(NOSECS_DATE_FORMAT, Locale.getDefault());
+                        sdf.setTimeZone(sourcetimeZone);
                         parsed = sdf.parse(parseThis);
                     }
                 }
@@ -72,6 +86,8 @@ public class DateUtils {
         }
         return parsed;
     }
+
+
 
 
     // TODO Days Diff
