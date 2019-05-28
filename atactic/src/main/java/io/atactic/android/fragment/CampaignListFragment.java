@@ -3,6 +3,7 @@ package io.atactic.android.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +24,6 @@ import io.atactic.android.model.Campaign;
 import io.atactic.android.presenter.ParticipationListPresenter;
 import io.atactic.android.element.ParticipationListAdapter;
 import io.atactic.android.model.Participation;
-import io.atactic.android.utils.CredentialsCache;
 
 /**
  * Fragment managing the Campaign List section.
@@ -39,7 +39,7 @@ public class CampaignListFragment extends Fragment
     private static final String LOG_TAG = CampaignListFragment.class.getSimpleName();
 
     private RecyclerView recyclerView;
-    private ParticipationListAdapter adapter = new ParticipationListAdapter(this);;
+    private ParticipationListAdapter adapter = new ParticipationListAdapter(this);
     private SwipeRefreshLayout refreshLayout;
     private ProgressBar loadingIndicator;
     private TextView statusMessageTextView;
@@ -55,16 +55,16 @@ public class CampaignListFragment extends Fragment
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_campaign_list, container, false);
 
         loadingIndicator = view.findViewById(R.id.questlist_loading_indicator);
         statusMessageTextView = view.findViewById(R.id.tv_campaign_list_status_message);
-        refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
-        refreshLayout.setOnRefreshListener(() -> requestData());
+        refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        refreshLayout.setOnRefreshListener(() -> dataHandler.getData());
 
         if (campaigns == null) {
             loadingIndicator.setVisibility(View.VISIBLE);
@@ -92,25 +92,17 @@ public class CampaignListFragment extends Fragment
         if (campaigns == null){
             Log.v(LOG_TAG, "onCreateView - Requesting data...");
             dataHandler = new ParticipationListDataHandler(this);
-            requestData();
+
+            /*
+             * Asynchronous request gets the list of campaigns for the current user
+             *  and displays them on the UI
+             */
+            dataHandler.getData();
         }
 
         return view;
     }
 
-    /**
-     * Asynchronous request gets the list of campaigns for the current user
-     *  and displays them on the UI
-     */
-    private void requestData(){
-
-        CredentialsCache.UserCredentials credentials = CredentialsCache.recoverCredentials(getContext());
-        if (credentials != null) {
-            Log.v(LOG_TAG, "Requesting campaign list for user... " + credentials.getUserId());
-
-            dataHandler.getData(credentials.getUserId());
-        }
-    }
 
     @Override
     public void displayCampaignList(List<Participation> data) {

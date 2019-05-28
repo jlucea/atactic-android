@@ -220,9 +220,15 @@ public class MapFragment extends Fragment implements
             int userId = CredentialsCache.recoverCredentials(getContext()).getUserId();
             Location location = LocationManager.getInstance().getLastKnownLocation();
 
-            new RouteGenerationHandler(this).generateRoute(userId,
-                    (float)location.getLatitude(), (float)location.getLongitude(),
-                    5);
+            if (location!=null) {
+
+                new RouteGenerationHandler(this).generateRoute(userId,
+                        (float) location.getLatitude(), (float) location.getLongitude(),
+                        5);
+
+            }else{
+                displayRouteError("Ubicación desconocida - No se puede calcular la ruta");
+            }
 
         } else if (item.getItemId() == R.id.btn_checkIn) {
             Log.v(LOG_TAG,"Check-in button pressed");

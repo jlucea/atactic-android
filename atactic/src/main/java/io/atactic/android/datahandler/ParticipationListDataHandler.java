@@ -11,21 +11,27 @@ import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.model.Participation;
 import io.atactic.android.network.request.QuestListRequest;
 import io.atactic.android.presenter.ParticipationListPresenter;
+import io.atactic.android.utils.CredentialsCache;
 
 public class ParticipationListDataHandler {
 
     private ParticipationListPresenter presenter;
 
-    private static final String LOG_TAG = "ParticipationListDataHandler";
+    private static final String LOG_TAG = "ParticipationListDH";
 
     public ParticipationListDataHandler(ParticipationListPresenter activity){
         this.presenter = activity;
     }
 
-    public void getData(int userId){
-        new CampaignListAsyncHttpRequest(this).execute(userId);
-    }
+    public void getData(){
 
+        CredentialsCache.UserCredentials credentials = CredentialsCache.recoverCredentials();
+        if (credentials != null){
+            Log.v(LOG_TAG, "Requesting campaign list for user... " + credentials.getUserId());
+            new CampaignListAsyncHttpRequest(this).execute(credentials.getUserId());
+        }
+
+    }
 
     private void handleResponse(String response){
         if (response != null) {
@@ -44,7 +50,6 @@ public class ParticipationListDataHandler {
                 for (Participation p : participationList){
                     Log.d(LOG_TAG, p.getId() + " - " + p.getCampaign().getName());
                 }
-
 
                 // Send participation list to presenter
                 presenter.displayCampaignList(participationList);

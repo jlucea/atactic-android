@@ -7,6 +7,8 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.atactic.android.json.JsonDecoder;
@@ -18,7 +20,7 @@ import io.atactic.android.utils.DistanceUtils;
 
 public class ParticipationTargetsDataHandler {
 
-    private final static String LOG_TAG = "ParticipationTargetsDataHandler";
+    private final static String LOG_TAG = "PTargetsDataHandler";
 
     private AccountListPresenter presenter;
 
@@ -60,6 +62,12 @@ public class ParticipationTargetsDataHandler {
         }
 
         // Sort by distance
+        Collections.sort(accounts, new Comparator<Account>() {
+            @Override
+            public int compare(Account o1, Account o2) {
+                return (int) (o1.getDistanceTo() - o2.getDistanceTo()) ;
+            }
+        });
         // accounts.sort(Comparator.comparingDouble(Account::getDistanceTo));
 
         return accounts;
@@ -106,7 +114,7 @@ public class ParticipationTargetsDataHandler {
                     handler.returnData(targets);
 
                 } catch (JSONException err) {
-                    Log.e("ParticipationTargetsRequestTask", "Error while decoding targets JSON array", err);
+                    Log.e(LOG_TAG, "Error while decoding targets JSON array", err);
                     handler.returnMessage("Se ha producido un error al leer la lista de clientes");
                 }
             }

@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.atactic.android.manager.LocationManager;
@@ -64,9 +66,15 @@ public class AccountListDataHandler {
         }
 
         // Sort by distance
-        // accounts.sort(Comparator.comparingDouble(Account::getDistanceTo));
+        Collections.sort(accounts, new Comparator<Account>() {
+            @Override
+            public int compare(Account o1, Account o2) {
+                return (int) (o1.getDistanceTo() - o2.getDistanceTo()) ;
+            }
+        });
         return accounts;
     }
+
 
 
     /**

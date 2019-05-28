@@ -20,7 +20,6 @@ import io.atactic.android.R;
 import io.atactic.android.datahandler.CampaignRankingDataHandler;
 import io.atactic.android.element.ParticipantRankingAdapter;
 import io.atactic.android.model.Participation;
-import io.atactic.android.utils.CredentialsCache;
 
 
 public class ParticipantRankingFragment extends Fragment {
@@ -31,7 +30,6 @@ public class ParticipantRankingFragment extends Fragment {
 
     public static final String PARAM_KEY_CAMPAIGNID = "cid";
 
-    private RecyclerView rankingRecyclerView;
     private ParticipantRankingAdapter adapter;
     private ProgressBar loadingIndicator;
     private TextView statusMessageTextView;
@@ -48,14 +46,12 @@ public class ParticipantRankingFragment extends Fragment {
 
             // Will display a campaign progress ranking
             // Recover userId from credentials cache and campaignId from Fragment arguments
-            int userId = CredentialsCache.recoverCredentials(this.getContext()).getUserId();
-            int campaignId = getArguments().getInt(PARAM_KEY_CAMPAIGNID);
 
-            Log.d(LOG_TAG, "userId=" + userId);
+            int campaignId = getArguments().getInt(PARAM_KEY_CAMPAIGNID);
             Log.d(LOG_TAG, "campaignId=" + campaignId);
 
             // Request data
-            new CampaignRankingDataHandler(this).getData(userId, campaignId);
+            new CampaignRankingDataHandler(this).getData(campaignId);
 
         } else {
             Log.e(LOG_TAG, "Fragment is operating without parameters!");
@@ -72,7 +68,7 @@ public class ParticipantRankingFragment extends Fragment {
         loadingIndicator = view.findViewById(R.id.ranking_loading_indicator);
         statusMessageTextView = view.findViewById(R.id.tv_ranking_fragment_status_message);
 
-        rankingRecyclerView = view.findViewById(R.id.rv_ranking);
+        RecyclerView rankingRecyclerView = view.findViewById(R.id.rv_ranking);
         rankingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         rankingRecyclerView.setHasFixedSize(true);
 
@@ -80,8 +76,7 @@ public class ParticipantRankingFragment extends Fragment {
         rankingRecyclerView.setAdapter(adapter);
 
         if (participations != null){
-            int userId = CredentialsCache.recoverCredentials(this.getContext()).getUserId();
-            adapter.setContent(participations, userId);
+            adapter.setContent(participations);
         }else{
             loadingIndicator.setVisibility(View.VISIBLE);
         }
@@ -96,17 +91,20 @@ public class ParticipantRankingFragment extends Fragment {
             this.participations = participations;
             Log.d(LOG_TAG, "Will display " + participations.size() + " participations");
 
-            int userId = CredentialsCache.recoverCredentials(this.getContext()).getUserId();
-            this.adapter.setContent(participations, userId);
+            this.adapter.setContent(participations);
 
         } else {
             Log.w(LOG_TAG,"NULL participation list received");
         }
     }
 
+
     public void displayMessage(String message) {
-        // TODO
-        Log.d("ParticipantRankingFragment", "Message: " + message);
+        statusMessageTextView.setText(message);
+        statusMessageTextView.setVisibility(View.VISIBLE);
+
+        Log.d(LOG_TAG, "Message: " + message);
     }
+
 
 }

@@ -20,7 +20,7 @@ public class ParticipantRankingAdapter extends RecyclerView.Adapter<ParticipantR
     private static final String LOG_TAG = ParticipantRankingAdapter.class.getSimpleName();
 
     private List<Participation> participationList;
-    private int userId;
+    // private int userId;
 
     @NonNull
     @Override
@@ -49,10 +49,10 @@ public class ParticipantRankingAdapter extends RecyclerView.Adapter<ParticipantR
     }
 
 
-    public void setContent(List<Participation> participations, int userId){
+    public void setContent(List<Participation> participations){
         Log.v(LOG_TAG,"Setting content: " + participations.size() + " participations");
         this.participationList = participations;
-        this.userId = userId;
+        // this.userId = userId;
         notifyDataSetChanged();
     }
 

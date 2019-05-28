@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import io.atactic.android.R;
 import io.atactic.android.datahandler.AuthenticationHandler;
-import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.manager.ConfigurationManager;
 import io.atactic.android.utils.CredentialsCache;
 
@@ -39,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements TextView.OnEdito
         super.onCreate(savedInstanceState);
 
         // Try to recover credentials from Application cache
-        CredentialsCache.UserCredentials recoveredCredentials = CredentialsCache.recoverCredentials(this);
+        CredentialsCache.UserCredentials recoveredCredentials = CredentialsCache.recoverCredentials();
 
         if (recoveredCredentials != null){
             Log.d(LOG_TAG, "Credentials found - Username: " + recoveredCredentials.getUserName());
@@ -51,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements TextView.OnEdito
 
         } else {
             // Initialize Login screen
-            Log.v(LOG_TAG, "Initializing login screen");
+            Log.v(LOG_TAG, "Credentials not found - Initializing login screen");
             usingRecoveredCredentials = false;
             initialize();
         }
@@ -69,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements TextView.OnEdito
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.login_button);
-        loginButton.setEnabled(true);
+        // loginButton.setEnabled(true);
 
         emailTextField = findViewById(R.id.txt_email);
         passwordTextField = findViewById(R.id.txt_password);
@@ -84,11 +83,8 @@ public class LoginActivity extends AppCompatActivity implements TextView.OnEdito
 
         Log.v(LOG_TAG, "Storing user credentials in app cache");
 
-        // Store credentials as a global application variable, so it can be referenced from other activities
-        // ((AtacticApplication)getApplication()).storeUserCredentialsInAppCache(userId, username, password);
-
-        // Store in Preferences for future authentication
-        CredentialsCache.storeCredentials(this, username, password, userId);
+        // Store credentials for future reference throughout the app
+        CredentialsCache.storeCredentials(username, password, userId);
 
         // Start configuration manager and request configuration
         Log.v(LOG_TAG, "Requesting configuration");

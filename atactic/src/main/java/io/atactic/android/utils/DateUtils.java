@@ -48,22 +48,22 @@ public class DateUtils {
         try {
             sdf = new SimpleDateFormat(ZONED_DATE_FORMAT, Locale.getDefault());
             parsed = sdf.parse(parseThis);
-        } catch (ParseException ex1) {
+        } catch (Exception ex1) {
             try {
                 sdf = new SimpleDateFormat(NOMILIS_DATE_FORMAT, Locale.getDefault());
                 parsed = sdf.parse(parseThis);
 
-            } catch (ParseException ex2) {
+            } catch (Exception ex2) {
                 try {
                     sdf = new SimpleDateFormat(BASE_DATE_FORMAT, Locale.getDefault());
                     parsed = sdf.parse(parseThis);
 
-                } catch (ParseException ex3) {
+                } catch (Exception ex3) {
                     try {
                         sdf = new SimpleDateFormat(ZONED_DATE_FORMAT2, Locale.getDefault());
                         parsed = sdf.parse(parseThis);
 
-                    }catch (ParseException ex4){
+                    }catch (Exception ex4){
                         sdf = new SimpleDateFormat(NOSECS_DATE_FORMAT, Locale.getDefault());
                         parsed = sdf.parse(parseThis);
                     }

@@ -16,7 +16,6 @@ import org.json.JSONObject;
 
 import io.atactic.android.R;
 import io.atactic.android.network.request.RankingRequest;
-import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.element.RankingAdapter;
 import io.atactic.android.utils.CredentialsCache;
 
@@ -55,7 +54,7 @@ public class RankingActivity extends AppCompatActivity {
         rankingRecyclerView.setAdapter(adapter);
 
 
-        int userId = CredentialsCache.recoverCredentials(this).getUserId();
+        int userId = CredentialsCache.recoverCredentials().getUserId();
         new RankingAsyncHttpRequest().execute(userId);
     }
 

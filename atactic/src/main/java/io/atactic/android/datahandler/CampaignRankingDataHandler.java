@@ -15,13 +15,32 @@ import io.atactic.android.fragment.ParticipantRankingFragment;
 import io.atactic.android.json.JsonDecoder;
 import io.atactic.android.model.Participation;
 import io.atactic.android.network.request.CampaignRankingRequest;
+import io.atactic.android.utils.CredentialsCache;
 
 public class CampaignRankingDataHandler {
 
+    private static final String LOG_TAG = "CRankingDataHandler";
+
     private ParticipantRankingFragment presenter;
+
 
     public CampaignRankingDataHandler(ParticipantRankingFragment rankingPresenter){
         this.presenter = rankingPresenter;
+    }
+
+
+    public void getData(int campaignId) {
+
+        CredentialsCache.UserCredentials credentials = CredentialsCache.recoverCredentials();
+
+        if (credentials != null) {
+            int[] params = {credentials.getUserId(), campaignId};
+
+            new CampaignRankingAsyncHttpRequest(this).execute(params);
+
+        } else {
+            presentError("Error de seguridad. Por favor, reinicie la app");
+        }
     }
 
 
@@ -29,8 +48,8 @@ public class CampaignRankingDataHandler {
 
         int[] params = {userId, campaignId};
 
-        Log.d("CampaignRankingDataHandler", "userId=" + userId);
-        Log.d("CampaignRankingDataHandler", "campaignId=" + campaignId);
+        Log.d(LOG_TAG, "userId=" + userId);
+        Log.d(LOG_TAG, "campaignId=" + campaignId);
 
         new CampaignRankingAsyncHttpRequest(this).execute(params);
     }
@@ -58,8 +77,8 @@ public class CampaignRankingDataHandler {
             int userId = params[0][0];
             int campaignId = params[0][1];
 
-            Log.d("CampaignRankingRequest", "userId=" + userId);
-            Log.d("CampaignRankingRequest", "campaignId=" + campaignId);
+            Log.d(LOG_TAG, "userId=" + userId);
+            Log.d(LOG_TAG, "campaignId=" + campaignId);
 
             return CampaignRankingRequest.send(userId, campaignId);
         }
@@ -67,7 +86,7 @@ public class CampaignRankingDataHandler {
         @Override
         protected void onPostExecute(JSONArray jsonArray) {
 
-            Log.d("CampaignRankingRequest", jsonArray.toString());
+            Log.d(LOG_TAG, jsonArray.toString());
 
             try {
                 List<Participation> participations = JsonDecoder.decodeParticipationList(jsonArray);
@@ -82,7 +101,6 @@ public class CampaignRankingDataHandler {
             } catch (ParseException e) {
                 handler.presentError("Se ha producido un error al descodificar los datos");
             }
-
         }
 
 
@@ -90,7 +108,7 @@ public class CampaignRankingDataHandler {
 
             @Override
             public int compare(Participation o1, Participation o2) {
-                if (o1.getCurrentProgress() < o2.getCurrentProgress()){
+                if (o1.getCurrentProgress() < o2.getCurrentProgress()) {
                     return 1;
                 } else if (o1.getCurrentProgress() > o2.getCurrentProgress()) {
                     return -1;

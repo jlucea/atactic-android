@@ -26,7 +26,6 @@ import io.atactic.android.R;
 import io.atactic.android.network.request.CheckInEligibleTargetsRequest;
 import io.atactic.android.network.request.CheckInRequest;
 import io.atactic.android.network.HttpResponse;
-import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.utils.CredentialsCache;
 
 public class CheckInActivity extends AppCompatActivity {
@@ -43,6 +42,8 @@ public class CheckInActivity extends AppCompatActivity {
 
     private String[][] eligibleAccounts;
 
+    private int userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,15 @@ public class CheckInActivity extends AppCompatActivity {
         // Display back button in action bar
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        CredentialsCache.UserCredentials credentials = CredentialsCache.recoverCredentials();
+        if (credentials != null) {
+            userId = credentials.getUserId();
+        } else {
+            Log.wtf(LOG_TAG, "Unable to recover user credentials");
+            finish();
+        }
+
         /*
          * Add a click listener to the button that will call the checkIn method,
          *  but disable checkIn until the activity loads the accounts eligible for checkIn
@@ -68,6 +78,7 @@ public class CheckInActivity extends AppCompatActivity {
             }
         });
         checkInButton.setClickable(false);
+
 
         // Get user's location (latitude and longitude)
         FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(this);
@@ -96,15 +107,14 @@ public class CheckInActivity extends AppCompatActivity {
                                  *
                                  * and display the eligible account names and pre-select the closest one
                                  */
-                                int userId = CredentialsCache.recoverCredentials(getApplicationContext()).getUserId();
                                 new EligibleTargetsHttpRequest().execute(userId);
                             }
                         }
                     });
         }catch(SecurityException se){
-            Log.w("LOG_TAG", "Security exception caught.·);" +
+            Log.w(LOG_TAG, "Security exception caught.·);" +
                     " Device location will probably be unavailable.");
-            Log.w("LOG_TAG", se);
+            Log.w(LOG_TAG, se);
 
             /*
              * Currently the app doesn't allow a user to check-in in his location is unavailable.
@@ -133,9 +143,6 @@ public class CheckInActivity extends AppCompatActivity {
          */
         int index = accountSpinnerView.getSelectedItemPosition();
         int accountId = Integer.parseInt(eligibleAccounts[index][0]);
-        // int userId = ((AtacticApplication)CheckInActivity.this.getApplication()).getUserId();
-        int userId = CredentialsCache.recoverCredentials(this).getUserId();
-
 
         CheckInParams params = new CheckInParams(userId, accountId,
                 commentsTextField.getText().toString(),
@@ -158,7 +165,7 @@ public class CheckInActivity extends AppCompatActivity {
         float latitude;
         float longitude;
 
-        public CheckInParams(int userId, int accountId, String comments,
+        CheckInParams(int userId, int accountId, String comments,
                              float latitude, float longitude) {
 
             this.userId = userId;

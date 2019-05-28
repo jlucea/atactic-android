@@ -17,10 +17,10 @@ import io.atactic.android.fragment.CampaignListFragment;
 import io.atactic.android.fragment.LogoutResponder;
 import io.atactic.android.fragment.MapFragment;
 import io.atactic.android.fragment.ProfileFragment;
-import io.atactic.android.utils.CredentialsCache;
 
 /**
- *
+ * Main Activity. Contains the main fragments and manages the bottom navigation bar element
+ *  that allows the user to navigate between them.
  */
 public class MainActivity extends AppCompatActivity implements LogoutResponder {
 
@@ -99,8 +99,12 @@ public class MainActivity extends AppCompatActivity implements LogoutResponder {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.v(LOG_TAG, "MainActivity onCreate");
+
         setTitle(R.string.title_activity_quest_list);
         activeFragment = campaignListFragment;
+
+        Log.v(LOG_TAG, "Adding fragments to FragmentManager..");
 
         // Add all fragments to be managed by this Activity
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -122,6 +126,5 @@ public class MainActivity extends AppCompatActivity implements LogoutResponder {
         startActivity(i);
         finish();
     }
-
 
 }

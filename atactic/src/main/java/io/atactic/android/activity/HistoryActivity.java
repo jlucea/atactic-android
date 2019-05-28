@@ -45,8 +45,7 @@ public class HistoryActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
-        // int userId = ((AtacticApplication) this.getApplication()).getUserId();
-        int userId = CredentialsCache.recoverCredentials(this).getUserId();
+        int userId = CredentialsCache.recoverCredentials().getUserId();
 
         Log.v(LOG_TAG, "Requesting activity history for user " + userId);
         new ActivityHistoryDataHandler(this).getData(userId);

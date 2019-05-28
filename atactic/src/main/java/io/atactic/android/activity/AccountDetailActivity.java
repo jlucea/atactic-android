@@ -88,10 +88,17 @@ public class AccountDetailActivity extends AppCompatActivity implements OnMapRea
         distanceToAccountTextView.setText(DistanceUtils.formatDistanceText(account.getDistanceTo()));
         relevanceScoreTextView.setText(String.valueOf(account.getRelevanceScore()));
 
-        int userId = CredentialsCache.recoverCredentials(this).getUserId();
+        CredentialsCache.UserCredentials credentials = CredentialsCache.recoverCredentials();
+        if (credentials != null) {
+            int userId = credentials.getUserId();
 
-        // Request list of campaigns related to the account
-        new AccountParticipationsDataHandler(this).getData(userId, account.getId());
+            // Request list of campaigns related to the account
+            new AccountParticipationsDataHandler(this).getData(userId, account.getId());
+
+        } else {
+            displayMessage("No se han podido cargar las campañas (credenciales desconocidas)");
+            this.finish();
+        }
     }
 
 

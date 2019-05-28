@@ -1,7 +1,5 @@
 package io.atactic.android.json;
 
-import android.app.Activity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
