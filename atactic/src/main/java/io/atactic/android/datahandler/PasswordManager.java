@@ -3,10 +3,8 @@ package io.atactic.android.datahandler;
 import android.os.AsyncTask;
 
 import io.atactic.android.activity.ChangePasswordActivity;
-import io.atactic.android.element.AtacticApplication;
 import io.atactic.android.network.HttpResponse;
 import io.atactic.android.network.request.ChangePasswordRequest;
-import io.atactic.android.utils.CredentialsCache;
 
 public class PasswordManager {
 
@@ -51,7 +49,7 @@ public class PasswordManager {
             if (response.getCode() == 200) {
                 activity.setOk();
             }else{
-                activity.setError(response.getMessage());
+                activity.setError(response.getContent());
             }
         }
     }

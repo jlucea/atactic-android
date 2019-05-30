@@ -4,13 +4,13 @@ package io.atactic.android.network;
 public class HttpResponse {
 
     private int code;
-    private String message;
+    private String content;
 
     public HttpResponse(){}
 
-    public HttpResponse(int code, String message) {
+    public HttpResponse(int code, String content) {
         this.code = code;
-        this.message = message;
+        this.content = content;
     }
 
     public int getCode() {
@@ -21,11 +21,11 @@ public class HttpResponse {
         this.code = code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getContent() {
+        return content;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setContent(String content) {
+        this.content = content;
     }
 }

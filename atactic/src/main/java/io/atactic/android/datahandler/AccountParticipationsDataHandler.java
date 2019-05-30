@@ -18,7 +18,7 @@ import io.atactic.android.network.request.AccountCampaignsRequest;
 
 public class AccountParticipationsDataHandler {
 
-    private static final String LOG_TAG = "AccountParticipationsDataHandler";
+    private static final String LOG_TAG = "AccountParticipsDH";
 
     private AccountDetailActivity activity;
 
@@ -35,11 +35,10 @@ public class AccountParticipationsDataHandler {
 
         if (response != null){
             Log.v(LOG_TAG, "Response received");
-
             if (response.getCode() == HttpURLConnection.HTTP_OK){
 
                 try {
-                    JSONArray participationsJSONArray = new JSONArray(response.getMessage());
+                    JSONArray participationsJSONArray = new JSONArray(response.getContent());
                     List<Participation> participationList = JsonDecoder.decodeParticipationList(participationsJSONArray);
 
                     if (participationList != null) {
@@ -50,7 +49,7 @@ public class AccountParticipationsDataHandler {
                         activity.displayMessage("No se encontraron campañas relacionadas");
                     }
 
-                } catch (JSONException | ParseException jsonErr){
+                } catch (JSONException | ParseException | NullPointerException jsonErr){
                     Log.e(LOG_TAG, "JSON error decoding response", jsonErr);
                     activity.displayMessage("Error al consultar las campañas");
                 }

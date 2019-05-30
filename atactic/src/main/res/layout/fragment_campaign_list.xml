@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".fragment.CampaignListFragment">
 
-    <!-- Status message -->
+    <!-- Status content -->
     <TextView
         android:id="@+id/tv_campaign_list_status_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Status message here"
+        android:text="Status content here"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:visibility="gone"/>

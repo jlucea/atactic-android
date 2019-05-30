@@ -11,7 +11,7 @@ import io.atactic.android.network.NetworkUtils;
 
 public class TenantConfigurationRequest {
 
-    private static final String LOG_TAG = "TenantConfigurationRequest";
+    private static final String LOG_TAG = "TenantConfigRequest";
     private static final String CONFIG_RESOURCE = "/user/config";
 
     public static HttpResponse send(int userId) {

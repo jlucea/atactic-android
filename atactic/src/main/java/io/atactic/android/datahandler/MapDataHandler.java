@@ -3,9 +3,9 @@ package io.atactic.android.datahandler;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,7 @@ import io.atactic.android.model.AccountMap;
 import io.atactic.android.model.AccountTargetingParticipation;
 import io.atactic.android.model.ParticipationSummary;
 import io.atactic.android.model.TargetAccount;
+import io.atactic.android.network.HttpResponse;
 import io.atactic.android.network.request.AccountMapRequest;
 import io.atactic.android.presenter.MapDataPresenter;
 
@@ -36,19 +37,41 @@ public class MapDataHandler {
         new AccountMapAsyncHttpRequest(this).execute(userId);
     }
 
-    private void sendDataToMapPresenter(AccountMap accountMap){
 
-        Log.d(LOG_TAG, "Map contains " + accountMap.getAccounts().size() + " accounts" +
-                " and " + accountMap.getTargetingParticipations().size() + " targeting participations");
+    private void handleResponse(HttpResponse response) {
 
-        AccountsAndTargets data = transform(accountMap);
+        if (response != null) {
+            if (response.getCode() == HttpURLConnection.HTTP_OK) {
+                try {
+                    JSONObject accountAndTargetsMapJSON = new JSONObject(response.getContent());
+                    AccountMap accountMap = JsonDecoder.decodeAccountMap(accountAndTargetsMapJSON);
+                    Log.v(LOG_TAG, "Account Map successfully decoded");
+                    Log.d(LOG_TAG, "Map contains " + accountMap.getAccounts().size() + " accounts" +
+                            " and " + accountMap.getTargetingParticipations().size() + " targeting participations");
 
-        Log.d(LOG_TAG, "After transformation: "
-                + data.accounts.size() + " accounts | " +
-                + data.targets.size() + " targets");
+                    // Transform data into a presenter-friendly structure
+                    AccountsAndTargets data = transform(accountMap);
 
-        Log.v(LOG_TAG, "Returning data to MapDataPresenter");
-        this.presenter.displayMarkers(data.accounts, data.targets);
+                    Log.d(LOG_TAG, "After transformation: "
+                            + data.accounts.size() + " accounts | " +
+                            + data.targets.size() + " targets");
+
+                    // Return data to presenter
+                    Log.v(LOG_TAG, "Returning data to MapDataPresenter");
+                    this.presenter.displayMarkers(data.accounts, data.targets);
+
+                } catch (Exception err) {
+                    Log.e(LOG_TAG, "Exception while decoding map data", err);
+                    presenter.displayError("Error al leer los datos del mapa");
+                }
+            } else {
+                Log.e(LOG_TAG, "Invalid server response - Error" + response.getCode());
+                presenter.displayError("Error al cargar los datos del mapa (error " + response.getCode() + ")");
+            }
+        } else {
+            Log.e(LOG_TAG,"No response from server");
+            presenter.displayError("Error al cargar los datos del mapa (no hay conexión)");
+        }
     }
 
 
@@ -138,10 +161,11 @@ public class MapDataHandler {
         return null;
     }
 
+
     /**
-     * Asynchronous task that performs an AccountListRequest
+     * Asynchronous task that performs an Http request to retrieve accounts to display on a map
      */
-    private static class AccountMapAsyncHttpRequest extends AsyncTask<Integer, Void, JSONObject> {
+    private static class AccountMapAsyncHttpRequest extends AsyncTask<Integer, Void, HttpResponse> {
 
         private final MapDataHandler handler;
 
@@ -150,53 +174,15 @@ public class MapDataHandler {
         }
 
         @Override
-        protected JSONObject doInBackground(Integer... params) {
+        protected HttpResponse doInBackground(Integer... params) {
 
-            // Send Http request and receive JSON response
-            String response = AccountMapRequest.send(params[0]);
-            // Log.d("AccountMapRequestTask", "JSON Response: " + response);
-
-            // Return JSON array containing the data to show in the view
-            try {
-
-                if (response != null) {
-                    return new JSONObject(response);
-                }
-
-            } catch (Exception err) {
-                Log.e(LOG_TAG, "Invalid server response error", err);
-            }
-            return null;
+            // Send Http request and receive Http response
+            return AccountMapRequest.send(params[0]);
         }
 
         @Override
-        protected void onPostExecute(JSONObject accountAndTargetsMapJSON) {
-
-            if (accountAndTargetsMapJSON != null) {
-
-                try {
-                    // Decode JSON response into an Account List object
-                    AccountMap accountMap = JsonDecoder.decodeAccountMap(accountAndTargetsMapJSON);
-                    if (accountMap != null) {
-                        Log.v(LOG_TAG, "Account Map successfully decoded");
-                        Log.d(LOG_TAG, accountMap.getAccounts().size() + " accounts decoded");
-
-                        // Return data to Handler
-                        handler.sendDataToMapPresenter(accountMap);
-
-                    } else {
-                        Log.e(LOG_TAG,"Null Map data");
-                        handler.presenter.displayError("Se ha producido un error al cargar los datos del mapa");
-                    }
-
-                } catch (JSONException err) {
-                    Log.e(LOG_TAG,"JSON error when decoding account map data", err);
-                    handler.presenter.displayError("Se ha producido un error al cargar los datos del mapa");
-                }
-            } else {
-                handler.presenter.displayError("No se han podido cargar los datos del mapa");
-            }
-
+        protected void onPostExecute(HttpResponse response) {
+            handler.handleResponse(response);
         }
 
     }

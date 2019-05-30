@@ -1,43 +1,87 @@
 package io.atactic.android.datahandler;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
+
+import io.atactic.android.network.HttpResponse;
 import io.atactic.android.network.request.UserProfileRequest;
+import io.atactic.android.utils.CredentialsCache;
 
 /**
- * Gets user profile information for a presenter to display
+ * Gets user profile information for a profile presenter to display
  *
  * @author Jaime Lucea
  * @author ATACTIC
  */
 public class ProfileManager {
 
+    private static final String LOG_TAG = "ProfileManager";
+
     private ProfileDataPresenter presenter;
+
+
+    public interface ProfileDataPresenter {
+        void displayData(String fullUserName, String userPosition, String userScore);
+        void displayMessage(String message);
+    }
 
     public ProfileManager(ProfileDataPresenter profileDataPresenter){
         this.presenter = profileDataPresenter;
     }
 
-    public void getData(int userId){
-        // Execute asynchronous request
-        new UserProfileAsyncHttpRequest(this).execute(userId);
+    public void getData(){
+        CredentialsCache.UserCredentials credentials =  CredentialsCache.recoverCredentials();
+        if (credentials != null) {
+            int userId = credentials.getUserId();
+
+            // Execute asynchronous request
+            new UserProfileAsyncHttpRequest(this).execute(userId);
+
+        } else {
+            Log.wtf(LOG_TAG, "Could not recover user credentials");
+        }
     }
 
-    private void presentData(String name, String role, String score){
-        presenter.displayData(name, role, score);
+
+    private void handleResponse(HttpResponse response) {
+
+        if (response != null) {
+            if (response.getCode() == HttpURLConnection.HTTP_OK) {
+                try {
+                    JSONObject profileJSON = new JSONObject(response.getContent());
+                    String fullName =
+                              profileJSON.getString("firstName") + " "
+                            + profileJSON.getString("lastName");
+                    String role = profileJSON.getString("position");
+                    String scoreStr = profileJSON.getString("score");
+
+                    presenter.displayData(fullName, role, scoreStr);
+
+                }catch (JSONException err){
+                    Log.e(LOG_TAG, "Error while decoding profile data", err);
+                    presenter.displayMessage("Error al leer los datos de perfil de usuario");
+                }
+            } else {
+                Log.e(LOG_TAG, "Server error - " + response.getCode());
+                presenter.displayMessage("Se ha producido un error en el servidor al consultar el perfil de usuario");
+            }
+        } else {
+            Log.e(LOG_TAG,"No response from server");
+            presenter.displayMessage("Se ha perdido la conexión con el servidor");
+        }
+
     }
 
-    private void presentMessage(String message){
-        presenter.displayMessage(message);
-    }
 
     /**
      * Asynchronous HTTP data request
      */
-    public static class UserProfileAsyncHttpRequest extends AsyncTask<Integer, Void, JSONObject> {
+    public static class UserProfileAsyncHttpRequest extends AsyncTask<Integer, Void, HttpResponse> {
 
         private ProfileManager profileManager;
 
@@ -46,35 +90,14 @@ public class ProfileManager {
         }
 
         @Override
-        protected JSONObject doInBackground(Integer... params) {
-
-            // Retrieve user's id from parameters
-            int userId = params[0];
-
-            // Send UserProfileRequest
-            return UserProfileRequest.send(userId);
+        protected HttpResponse doInBackground(Integer... params) {
+            return UserProfileRequest.send(params[0]);
         }
 
         @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            try {
-                String fullName = jsonObject.getString("firstName") + " "
-                        + jsonObject.getString("lastName");
-                String role = jsonObject.getString("position");
-                String scoreStr = jsonObject.getString("score");
-
-                profileManager.presentData(fullName, role, scoreStr);
-
-            }catch (JSONException err){
-                // TODO Log error
-                profileManager.presentMessage("Error al leer los datos de perfil de usuario");
-            }
+        protected void onPostExecute(HttpResponse response) {
+            profileManager.handleResponse(response);
         }
-    }
-
-    public interface ProfileDataPresenter {
-        void displayData(String fullUserName, String userPosition, String userScore);
-        void displayMessage(String message);
     }
 
 

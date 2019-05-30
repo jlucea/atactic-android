@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import io.atactic.android.network.HttpResponse;
 import io.atactic.android.network.NetworkConstants;
 import io.atactic.android.network.NetworkUtils;
 
@@ -21,7 +22,7 @@ public class AccountMapRequest {
      * @param userId User's ID
      * @return JSON block containing the Map of Accounts and Targets
      */
-    public static String send(int userId){
+    public static HttpResponse send(int userId){
         URL url = NetworkUtils.buildUrl(NetworkConstants.RSC_ACCOUNT_MAP
                 + "?" + PARAM_USERID + "=" + userId);
 
@@ -31,8 +32,13 @@ public class AccountMapRequest {
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
 
+            HttpResponse response = new HttpResponse();
+            response.setCode(urlConnection.getResponseCode());
+
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
-                return NetworkUtils.readStreamContent(urlConnection.getInputStream());
+                String content = NetworkUtils.readStreamContent(urlConnection.getInputStream());
+                response.setContent(content);
+                return response;
             }
 
         } catch(IOException ioe) {

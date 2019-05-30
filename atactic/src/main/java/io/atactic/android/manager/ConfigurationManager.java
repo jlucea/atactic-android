@@ -31,6 +31,7 @@ public class ConfigurationManager {
 
     public void requestUpdatedConfiguration(int userId){
         Log.v(LOG_TAG,"Requesting updated tenant configuration values");
+
         new ConfigurationRequestAsyncTask(this).execute(userId);
     }
 
@@ -39,10 +40,35 @@ public class ConfigurationManager {
     }
 
     private void updateLastKnownConfiguration(TenantConfiguration newconfig){
+        Log.v(LOG_TAG,"Tenant configuration values have been updated");
         this.lastKnownConfig = newconfig;
     }
 
-    private static class ConfigurationRequestAsyncTask extends AsyncTask<Integer, Void, JSONObject> {
+
+    private void handleResponse(HttpResponse response){
+
+        if (response != null) {
+            if (response.getCode() == HttpURLConnection.HTTP_OK) {
+                try {
+                    JSONObject configJSON = new JSONObject(response.getContent());
+                    TenantConfiguration configuration = JsonDecoder.decodeConfiguration(configJSON);
+                    updateLastKnownConfiguration(configuration);
+
+                } catch (JSONException | NullPointerException err) {
+                    Log.e(LOG_TAG, "Error decoding tenant configuration", err);
+                    if (lastKnownConfig == null)
+                        Log.w(LOG_TAG, "Operating with unknown tenant configuration values");
+                }
+            }
+        }else{
+            Log.e(LOG_TAG, "Null response from server");
+            if (lastKnownConfig == null)
+                Log.w(LOG_TAG, "Operating with unknown tenant configuration values");
+        }
+
+    }
+
+    private static class ConfigurationRequestAsyncTask extends AsyncTask<Integer, Void, HttpResponse> {
 
         private ConfigurationManager manager;
 
@@ -51,36 +77,14 @@ public class ConfigurationManager {
         }
 
         @Override
-        protected JSONObject doInBackground(Integer... integers) {
-
-            HttpResponse response = TenantConfigurationRequest.send(integers[0]);
-            if (response.getCode() == HttpURLConnection.HTTP_OK) {
-                try {
-                    return new JSONObject(response.getMessage());
-
-                }catch (JSONException jsonerr){
-                    jsonerr.printStackTrace();
-                    return null;
-                }
-            } else {
-                return null;
-            }
+        protected HttpResponse doInBackground(Integer... integers) {
+            return TenantConfigurationRequest.send(integers[0]);
         }
 
 
         @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-
-            try {
-                TenantConfiguration configuration = JsonDecoder.decodeConfiguration(jsonObject);
-                if (configuration != null) {
-                    Log.v(LOG_TAG,"Tenant configuration values have been updated");
-                    manager.updateLastKnownConfiguration(configuration);
-                }
-            }catch (JSONException jsonex){
-                Log.e(LOG_TAG,"Error when requesting tenant configuration", jsonex);
-                jsonex.printStackTrace();
-            }
+        protected void onPostExecute(HttpResponse response) {
+            manager.handleResponse(response);
         }
     }
 

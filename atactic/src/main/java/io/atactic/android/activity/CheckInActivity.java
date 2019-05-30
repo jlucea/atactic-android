@@ -23,6 +23,7 @@ import org.json.JSONException;
 import java.net.HttpURLConnection;
 
 import io.atactic.android.R;
+import io.atactic.android.datahandler.CheckInHandler;
 import io.atactic.android.network.request.CheckInEligibleTargetsRequest;
 import io.atactic.android.network.request.CheckInRequest;
 import io.atactic.android.network.HttpResponse;
@@ -37,12 +38,13 @@ public class CheckInActivity extends AppCompatActivity {
 
     private float userLocationLatitude;
     private float userLocationLongitude;
+    private int userId;
 
     private static final String LOG_TAG = "CheckInActivity";
 
     private String[][] eligibleAccounts;
 
-    private int userId;
+    private CheckInHandler checkInHandler;
 
 
     @Override
@@ -194,7 +196,7 @@ public class CheckInActivity extends AppCompatActivity {
                 Log.w("CheckInAsyncHttpRequest", "Check In response: null ");
             }else{
                 Log.d("CheckInAsyncHttpRequest", "Check In response: " + response.getCode()
-                        + " - " + response.getMessage());
+                        + " - " + response.getContent());
             }
             return response;
         }
@@ -230,24 +232,31 @@ public class CheckInActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(JSONArray eligibleAccountsJsonArray) {
-            if ((eligibleAccountsJsonArray != null) & (eligibleAccountsJsonArray.length()>0)){
-                /*
-                Toast.makeText(CheckInActivity.this,
-                        "Found " + eligibleAccountsJsonArray.length()
-                                + " accounts eligible for checkin",
-                        Toast.LENGTH_LONG).show();
-                */
+            if (eligibleAccountsJsonArray != null) {
+                if (eligibleAccountsJsonArray.length()>0) {
+                    /*
+                    Toast.makeText(CheckInActivity.this,
+                            "Found " + eligibleAccountsJsonArray.length()
+                                    + " accounts eligible for checkin",
+                            Toast.LENGTH_LONG).show();
+                    */
 
-                // Parse eligible accounts JSON block and populate spinner
-                String[] accountDescriptors = parseAccounts(eligibleAccountsJsonArray);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                        accountSpinnerView.getContext(),
-                        R.layout.support_simple_spinner_dropdown_item);
-                adapter.addAll(accountDescriptors);
-                accountSpinnerView.setAdapter(adapter);
+                    // Parse eligible accounts JSON block and populate spinner
+                    String[] accountDescriptors = parseAccounts(eligibleAccountsJsonArray);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            accountSpinnerView.getContext(),
+                            R.layout.support_simple_spinner_dropdown_item);
+                    adapter.addAll(accountDescriptors);
+                    accountSpinnerView.setAdapter(adapter);
 
-                // Activate the check-in button
-                checkInButton.setClickable(true);
+                    // Activate the check-in button
+                    checkInButton.setClickable(true);
+                } else {
+                    Toast.makeText(CheckInActivity.this,
+                            R.string.err_no_eligible_accounts,
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                }
             }else{
                 Toast.makeText(CheckInActivity.this,
                         R.string.err_no_eligible_accounts,

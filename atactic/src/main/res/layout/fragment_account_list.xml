@@ -6,13 +6,13 @@
     tools:context=".fragment.AccountListFragment"
     android:background="@color/White">
 
-    <!-- Status message -->
+    <!-- Status content -->
     <TextView
         android:id="@+id/tv_account_list_status_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Status message here"
+        android:text="Status content here"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:visibility="gone"/>

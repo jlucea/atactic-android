@@ -24,13 +24,15 @@ public class ParticipationListDataHandler {
     }
 
     public void getData(){
-
         CredentialsCache.UserCredentials credentials = CredentialsCache.recoverCredentials();
         if (credentials != null){
             Log.v(LOG_TAG, "Requesting campaign list for user... " + credentials.getUserId());
             new CampaignListAsyncHttpRequest(this).execute(credentials.getUserId());
-        }
 
+        } else {
+            Log.wtf(LOG_TAG, "Unable to recover user credentials");
+            presenter.displayMessage("No se ha podido obtener la lista de campañas");
+        }
     }
 
     private void handleResponse(String response){
@@ -38,18 +40,18 @@ public class ParticipationListDataHandler {
             Log.v(LOG_TAG,"Response received");
 
             try {
-                JSONArray participationsJSON = new JSONArray(response);
-
-                // Log.d(LOG_TAG, participationsJSON.toString());
-
                 // Decode JSON Array into a List<Participation> object
+                JSONArray participationsJSON = new JSONArray(response);
                 Log.v(LOG_TAG, "Decoding participation list from JSON response ...");
-                List<Participation> participationList = JsonDecoder.decodeParticipationList(participationsJSON);
-                Log.d(LOG_TAG, participationList.size() + " participations decoded");
 
+                List<Participation> participationList = JsonDecoder.decodeParticipationList(participationsJSON);
+                Log.d(LOG_TAG, participationList.size() + " participations read");
+
+                /*
                 for (Participation p : participationList){
                     Log.d(LOG_TAG, p.getId() + " - " + p.getCampaign().getName());
                 }
+                */
 
                 // Send participation list to presenter
                 presenter.displayCampaignList(participationList);
@@ -59,7 +61,7 @@ public class ParticipationListDataHandler {
                 presenter.displayMessage("Se ha producido un error al leer la lista de campañas");
             }
         } else {
-            Log.w(LOG_TAG,"No response from server");
+            Log.e(LOG_TAG,"No response from server");
             presenter.displayMessage("No hay conexión con el servidor");
         }
     }
@@ -87,8 +89,9 @@ public class ParticipationListDataHandler {
         }
 
         @Override
-        protected void onPostExecute(String questData) {
-            handler.handleResponse(questData);
+        protected void onPostExecute(String participationList) {
+
+            handler.handleResponse(participationList);
         }
 
     }

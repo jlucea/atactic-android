@@ -12,7 +12,6 @@ import io.atactic.android.network.NetworkUtils;
 
 public class AccountCampaignsRequest {
 
-
     private static final String LOG_TAG = "AccountCampaignsRequest";
 
     private static final String PARAM_USERID = "uid";
@@ -35,7 +34,7 @@ public class AccountCampaignsRequest {
 
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
                 String content = NetworkUtils.readStreamContent(urlConnection.getInputStream());
-                response.setMessage(content);
+                response.setContent(content);
             }
 
             return response;
@@ -47,7 +46,6 @@ public class AccountCampaignsRequest {
         }
         return null;
     }
-
 
 
 }

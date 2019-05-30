@@ -33,7 +33,7 @@ public class ActivityHistoryRequest {
 
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK){
                 String content = NetworkUtils.readStreamContent(urlConnection.getInputStream());
-                response.setMessage(content);
+                response.setContent(content);
             }
 
             return response;

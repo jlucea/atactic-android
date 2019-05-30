@@ -208,10 +208,11 @@ public class MapFragment extends Fragment implements
 
         // Check tenant configuration
         TenantConfiguration configuration = ConfigurationManager.getInstance().getConfiguration();
-
-        if (!configuration.isCheckInEnabled()) {
-            // Disable the check-in button
-            menu.findItem(R.id.btn_checkIn).setVisible(false);
+        if (configuration != null) {
+            if (!configuration.isCheckInEnabled()) {
+                // Disable the check-in button
+                menu.findItem(R.id.btn_checkIn).setVisible(false);
+            }
         }
     }
 
@@ -245,11 +246,18 @@ public class MapFragment extends Fragment implements
 
     @Override
     public void displayRoute(JSONArray waypointsJSON) {
-        // Build Uri for Google Maps intent call
-        Uri googleMapsUri = buildGoogleMapsUri(waypointsJSON,
-                LocationManager.getInstance().getLastKnownLocation());
 
-        launchMapsApp(googleMapsUri);
+        Location currentLocation = LocationManager.getInstance().getLastKnownLocation();
+
+        if (currentLocation != null) {
+
+            // Build Uri for Google Maps intent call
+            Uri googleMapsUri = buildGoogleMapsUri(waypointsJSON, currentLocation);
+
+            launchMapsApp(googleMapsUri);
+        } else {
+            displayRouteError("No se puede generar la ruta (ubicación desconocida)");
+        }
 
         hideLoadingIndicator();
     }

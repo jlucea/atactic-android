@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Status message -->
+    <!-- Status content -->
     <TextView
         android:id="@+id/tv_ranking_fragment_status_message"
         android:layout_width="wrap_content"

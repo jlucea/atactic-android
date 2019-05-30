@@ -40,10 +40,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, P
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int userId = CredentialsCache.recoverCredentials().getUserId();
-
         // Get Data
-        new ProfileManager(this).getData(userId);
+        new ProfileManager(this).getData();
 
     }
 

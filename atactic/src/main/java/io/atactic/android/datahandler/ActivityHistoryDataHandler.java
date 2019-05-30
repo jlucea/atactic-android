@@ -67,7 +67,7 @@ public class ActivityHistoryDataHandler {
 
                     try {
                         // Decode JSON Array into a list of Visit objects
-                        JSONArray jsonArray = new JSONArray(response.getMessage());
+                        JSONArray jsonArray = new JSONArray(response.getContent());
                         List<Visit> visits = JsonDecoder.decodeActivityList(jsonArray);
 
                         if (visits.size() > 0) {
