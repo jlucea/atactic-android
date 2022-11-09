@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ATACTIC Android.iml" filepath="$PROJECT_DIR$/ATACTIC Android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/atactic/atactic.iml" filepath="$PROJECT_DIR$/atactic/atactic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ATACTIC_Android.iml" filepath="$PROJECT_DIR$/.idea/modules/ATACTIC_Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/atactic/ATACTIC_Android.atactic.iml" filepath="$PROJECT_DIR$/.idea/modules/atactic/ATACTIC_Android.atactic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/atactic/ATACTIC_Android.atactic.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/atactic/ATACTIC_Android.atactic.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/atactic/ATACTIC_Android.atactic.main.iml" filepath="$PROJECT_DIR$/.idea/modules/atactic/ATACTIC_Android.atactic.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/atactic/ATACTIC_Android.atactic.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/atactic/ATACTIC_Android.atactic.unitTest.iml" />
     </modules>
   </component>
 </project>
